@@ -1,4 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+import nextRoutes from "nextjs-routes/config";
+const withRoutes = nextRoutes();
 
-export default nextConfig;
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+};
+
+export default withRoutes(nextConfig);

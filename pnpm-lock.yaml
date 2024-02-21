@@ -20,6 +20,9 @@ dependencies:
   next:
     specifier: 14.1.0
     version: 14.1.0(react-dom@18.2.0)(react@18.2.0)
+  nextjs-routes:
+    specifier: ^2.1.0
+    version: 2.1.0(next@14.1.0)
   react:
     specifier: ^18
     version: 18.2.0
@@ -1931,6 +1934,16 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    dev: false
+
+  /nextjs-routes@2.1.0(next@14.1.0):
+    resolution: {integrity: sha512-co/bo6XVQYTBu9u9bFE4SVDjKecqJQEbggCr47Z9nbjW4/uPqrn6VniqYCxuWj6lK+S8qzVlXp0uWFCCfdPv7g==}
+    hasBin: true
+    peerDependencies:
+      next: '*'
+    dependencies:
+      chokidar: 3.6.0
+      next: 14.1.0(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /node-releases@2.0.14:
