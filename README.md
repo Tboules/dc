@@ -1,7 +1,8 @@
 ## Desert Collections
 
 - [x] setup shadcn
-- [ ] drizzle init and auth schema
+- [x] drizzle init and auth schema
+  - [ ] reconfigure auth schema for next-auth
 - [ ] setup auth and protected routes
 - [ ] setup routing and page layout
 - [ ] create UI for layout
