@@ -1,6 +1,7 @@
 ## Desert Collections
 
-- [ ] devops backend workflow
+- [x] devops backend workflow
+  - [ ] Vercel Deploy Dev and Prod
 - [x] setup shadcn
 - [x] drizzle init and auth schema
   - [ ] reconfigure auth schema for next-auth
