@@ -10,6 +10,7 @@
     "add_comp": "pnpm dlx shadcn-ui@latest add"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^0.7.0",
     "@planetscale/database": "^1.16.0",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
