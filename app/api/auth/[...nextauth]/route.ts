@@ -12,6 +12,9 @@ const nextAuthConfig = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
 } satisfies AuthOptions;
 
 export const handler = NextAuth(nextAuthConfig);
