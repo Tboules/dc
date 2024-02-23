@@ -1,5 +1,6 @@
 ## Desert Collections
 
+- [ ] devops backend workflow
 - [x] setup shadcn
 - [x] drizzle init and auth schema
   - [ ] reconfigure auth schema for next-auth
