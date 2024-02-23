@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "add_comp": "pnpm dlx shadcn-ui@latest add"
+    "add_comp": "pnpm dlx shadcn-ui@latest add",
+    "db_push": "pnpm drizzle-kit push:mysql",
+    "gen_migration": "pnpm drizzle-kit generate:mysql"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.7.0",
