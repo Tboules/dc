@@ -1,12 +1,12 @@
 ## Desert Collections
 
 - [x] devops backend workflow
-  - [ ] Vercel Deploy Dev and Prod
+  - [x] Vercel Deploy Dev and Prod
 - [x] setup shadcn
 - [x] drizzle init and auth schema
-  - [ ] reconfigure auth schema for next-auth
-- [ ] setup auth and protected routes
-- [ ] setup routing and page layout
+  - [x] reconfigure auth schema for next-auth
+- [x] setup auth and protected routes
+- [x] setup routing and page layout
 - [ ] create UI for layout
 - [ ] Drizzle Schema for application
 - [ ] create UI for forms
