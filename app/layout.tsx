@@ -3,8 +3,9 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getServerSession } from "next-auth";
-import SessionProvider from "@/components/SessionProvider";
 import NavMenu from "@/components/nav/NavMenu";
+import SessionProvider from "@/components/providers/session-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -21,7 +22,7 @@ export default async function RootLayout({
   const session = await getServerSession();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen, bg-background font-sans antialiased",
@@ -29,10 +30,17 @@ export default async function RootLayout({
         )}
       >
         <SessionProvider session={session}>
-          <main>
-            <NavMenu />
-            {children}
-          </main>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main>
+              <NavMenu />
+              {children}
+            </main>
+          </ThemeProvider>
         </SessionProvider>
       </body>
     </html>

@@ -16,7 +16,7 @@ function AuthButton() {
 export default function NavMenu() {
   return (
     <nav className="w-full">
-      <div className="p-4 bg-slate-900/5 w-full max-w-screen-xl m-auto flex justify-between items-center">
+      <div className="p-4 bg-secondary text-secondary-foreground w-full max-w-screen-xl m-auto flex justify-between items-center">
         <Link href="/">
           <h1 className="text-lg font-semibold">Desert Collections</h1>
         </Link>
