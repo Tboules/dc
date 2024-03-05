@@ -7,7 +7,7 @@
   - [x] reconfigure auth schema for next-auth
 - [x] setup auth and protected routes
 - [x] setup routing and page layout
-- [ ] create UI for layout
+- [x] create UI for layout
 - [ ] Drizzle Schema for application
 - [ ] create UI for forms
 - [ ] add author / quote / tag
