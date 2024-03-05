@@ -2,7 +2,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, Quote, SquareUser } from "lucide-react";
 import { Separator } from "../ui/separator";
 import {
   NavigationMenu,
@@ -15,12 +15,16 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Route } from "nextjs-routes";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 type TNavMenuItems = {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -28,6 +32,7 @@ type TNavMenuItems = {
 }[];
 
 const NAV_MENU_ITEMS: TNavMenuItems = [
+  { route: "/", name: "Dashboard" },
   { route: "/desert_figures", name: "Desert Figures" },
   { route: "/tags", name: "Tags" },
   { route: "/icons", name: "Icons" },
@@ -47,9 +52,7 @@ export default function NavMenu() {
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b border-b-border/60">
       <div className="p-4 text-secondary-foreground w-full max-w-screen-xl m-auto flex items-center gap-4">
-        <Link href="/" className="flex-1">
-          <h1 className="text-lg font-semibold">Desert Collections</h1>
-        </Link>
+        <h1 className="text-lg font-semibold flex-1">Desert Collections</h1>
 
         {/* navigation menu */}
         <NavigationMenu className="hidden sm:block">
@@ -68,11 +71,29 @@ export default function NavMenu() {
 
         <Separator className="h-4" orientation="vertical" />
         <div className="hidden sm:flex items-center gap-4">
-          <Link href="/excerpt/new">
-            <Button className="w-full" variant={"outline"}>
-              Add
-            </Button>
-          </Link>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button className="w-full" variant={"outline"}>
+                Add
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="flex gap-2 p-2">
+              <Link
+                href="/excerpt/new"
+                className="border border-border p-4 rounded flex-1 hover:bg-secondary transition"
+              >
+                <Quote className="mb-8" />
+                Excerpt
+              </Link>
+              <Link
+                href="/icons/new"
+                className="border border-border p-4 rounded flex-1 hover:bg-secondary transition"
+              >
+                <SquareUser className="mb-8" />
+                Icons
+              </Link>
+            </PopoverContent>
+          </Popover>
           <AuthButton />
         </div>
 
@@ -107,11 +128,23 @@ export default function NavMenu() {
               <Link href="/excerpt/new">
                 <SheetClose asChild>
                   <Button className="w-full" variant={"outline"}>
-                    Add
+                    <Quote className="mr-2 p-1" />
+                    Add Excerpt
                   </Button>
                 </SheetClose>
               </Link>
-              <AuthButton />
+              <Link href="/icons/new">
+                <SheetClose asChild>
+                  <Button className="w-full" variant={"outline"}>
+                    <SquareUser className="mr-2 p-1" />
+                    Add Icons
+                  </Button>
+                </SheetClose>
+              </Link>
+
+              <SheetClose asChild>
+                <AuthButton />
+              </SheetClose>
             </SheetHeader>
           </SheetContent>
         </Sheet>
