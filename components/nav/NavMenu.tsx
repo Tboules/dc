@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -68,7 +69,9 @@ export default function NavMenu() {
         <Separator className="h-4" orientation="vertical" />
         <div className="hidden sm:flex items-center gap-4">
           <Link href="/excerpt/new">
-            <Button variant={"outline"}>Add</Button>
+            <Button className="w-full" variant={"outline"}>
+              Add
+            </Button>
           </Link>
           <AuthButton />
         </div>
@@ -76,16 +79,39 @@ export default function NavMenu() {
         {/* Mobile Nav */}
 
         <Sheet>
-          <SheetTrigger className="sm:hidden p-1 rounded-md hover:bg-secondary">
-            <Menu />
+          <SheetTrigger>
+            <Menu className="sm:hidden w-8 h-8 p-1 rounded-md hover:bg-secondary" />
           </SheetTrigger>
           <SheetContent className="max-w-[400px] w-full">
             <SheetHeader>
               <SheetTitle>Desert Collections</SheetTitle>
-              <SheetDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </SheetDescription>
+              <ul className="pt-4">
+                {NAV_MENU_ITEMS.map((item) => (
+                  <li key={item.name} className="w-full text-start py-2">
+                    <Link href={item.route}>
+                      <SheetClose asChild>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start"
+                        >
+                          {item.name}
+                        </Button>
+                      </SheetClose>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              <Separator className="mx-auto !mb-2" />
+
+              <Link href="/excerpt/new">
+                <SheetClose asChild>
+                  <Button className="w-full" variant={"outline"}>
+                    Add
+                  </Button>
+                </SheetClose>
+              </Link>
+              <AuthButton />
             </SheetHeader>
           </SheetContent>
         </Sheet>
