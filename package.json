@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "add_comp": "pnpm dlx shadcn-ui@latest add",
-    "db_push": "pnpm drizzle-kit push:pg",
+    "db_push": "npx tsx ./lib/database/migration.ts",
     "gen_migration": "pnpm drizzle-kit generate:pg"
   },
   "dependencies": {
