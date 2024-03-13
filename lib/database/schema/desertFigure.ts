@@ -1,5 +1,7 @@
 import { pgTable, text, timestamp, uuid, smallint } from "drizzle-orm/pg-core";
 import { users } from "./users";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 
 export enum EDesertFigureTypes {
   SUBJECT = 2,
@@ -16,7 +18,11 @@ export const desertFigures = pgTable("desert_figure", {
   thumbnail: text("thumbnail"),
   dateAdded: timestamp("date_added").defaultNow(),
   lastUpdated: timestamp("last_updated").defaultNow(),
-  createdBy: text("added_by").references(() => users.id, {
-    onDelete: "cascade",
-  }),
+  createdBy: text("added_by").references(() => users.id),
 });
+
+export const newDesertFigureSchema = createInsertSchema(desertFigures);
+export const desertFigureSchema = createSelectSchema(desertFigures);
+
+export type IDesertFigure = z.infer<typeof desertFigureSchema>;
+export type INewDesertFigure = z.infer<typeof newDesertFigureSchema>;

@@ -1,5 +1,6 @@
 import { desertFigure } from "@/lib/database/drizzle/schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 
 export enum EDesertFigureTypes {
   SUBJECT = 2,
