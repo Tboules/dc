@@ -1,8 +1,8 @@
 import { pgTable, smallint, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { desertFigures } from "./desertFigure";
+import { desertFigures } from "./desertFigures";
 import { users } from "./users";
 
-export enum EExcerptType {
+export enum ExcerptType {
   STORY = 2,
   QUOTE = 1,
 }
