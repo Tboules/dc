@@ -3,7 +3,7 @@ import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export enum EDesertFigureTypes {
+export enum DesertFigureType {
   SUBJECT = 2,
   AUTHOR = 1,
 }
@@ -24,5 +24,5 @@ export const desertFigures = pgTable("desert_figure", {
 export const newDesertFigureSchema = createInsertSchema(desertFigures);
 export const desertFigureSchema = createSelectSchema(desertFigures);
 
-export type IDesertFigure = z.infer<typeof desertFigureSchema>;
-export type INewDesertFigure = z.infer<typeof newDesertFigureSchema>;
+export type DesertFigure = z.infer<typeof desertFigureSchema>;
+export type NewDesertFigure = z.infer<typeof newDesertFigureSchema>;
