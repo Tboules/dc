@@ -6,9 +6,11 @@ import { Menu, Quote, SquareUser } from "lucide-react";
 import { Separator } from "../ui/separator";
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
@@ -20,11 +22,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Route } from "nextjs-routes";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
 type TNavMenuItems = {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -46,6 +43,38 @@ function AuthButton() {
   }
 
   return <Button onClick={() => signIn()}>Sign In</Button>;
+}
+
+function AddMenu() {
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Add</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <div className="p-2 min-w-32 space-y-2">
+              <Link href="/excerpt/new" legacyBehavior passHref>
+                <NavigationMenuLink>
+                  <div className="w-full border border-border p-4 rounded hover:bg-secondary transition mb-2">
+                    <Quote className="mb-2" />
+                    <p>Excerpt</p>
+                  </div>
+                </NavigationMenuLink>
+              </Link>
+              <Link href="/icons/new" legacyBehavior passHref>
+                <NavigationMenuLink>
+                  <div className="w-full border border-border p-4 rounded hover:bg-secondary transition">
+                    <SquareUser className="mb-2" />
+                    <p>Icons</p>
+                  </div>
+                </NavigationMenuLink>
+              </Link>
+            </div>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
 }
 
 export default function NavMenu() {
@@ -71,29 +100,7 @@ export default function NavMenu() {
 
         <Separator className="h-4" orientation="vertical" />
         <div className="hidden sm:flex items-center gap-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button className="w-full" variant={"outline"}>
-                Add
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="flex gap-2 p-2">
-              <Link
-                href="/excerpt/new"
-                className="border border-border p-4 rounded flex-1 hover:bg-secondary transition"
-              >
-                <Quote className="mb-8" />
-                Excerpt
-              </Link>
-              <Link
-                href="/icons/new"
-                className="border border-border p-4 rounded flex-1 hover:bg-secondary transition"
-              >
-                <SquareUser className="mb-8" />
-                Icons
-              </Link>
-            </PopoverContent>
-          </Popover>
+          <AddMenu />
           <AuthButton />
         </div>
 
