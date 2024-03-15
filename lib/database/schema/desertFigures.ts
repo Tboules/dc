@@ -34,7 +34,9 @@ export const desertFigures = pgTable("desert_figure", {
 });
 
 export const desertFigureSchema = createSelectSchema(desertFigures);
-export const newDesertFigureSchema = createInsertSchema(desertFigures);
+export const newDesertFigureSchema = createInsertSchema(desertFigures, {
+  firstName: (s) => s.firstName.min(1, "First Name is required"),
+});
 
 export type DesertFigure = z.infer<typeof desertFigureSchema>;
 export type NewDesertFigure = z.infer<typeof newDesertFigureSchema>;
