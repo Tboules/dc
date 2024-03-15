@@ -11,7 +11,7 @@ export default async function NewExcerptFormPage() {
   }
 
   return (
-    <div className="max-w-screen-xl flex flex-col items-center min-h-screen m-auto p-4">
+    <div className="max-w-screen-xl flex flex-col items-center m-auto p-4">
       <PostFigureForm />
     </div>
   );
