@@ -26,6 +26,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "../ui/separator";
+import { postDesertFigureAction } from "@/app/excerpt/new/action";
+import { useFormState } from "react-dom";
+import { useRef } from "react";
 
 /*
   fields for ui:
@@ -38,6 +41,9 @@ import { Separator } from "../ui/separator";
 */
 
 export default function PostFigureForm() {
+  const [state, formAction] = useFormState(postDesertFigureAction, {
+    message: "",
+  });
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
     defaultValues: {
@@ -48,21 +54,26 @@ export default function PostFigureForm() {
       type: DESERT_FIGURE_TYPE.AUTHOR,
     },
   });
-
-  function onSubmit(values: NewDesertFigure) {
-    console.log(values);
-  }
+  const formRef = useRef<HTMLFormElement>(null);
 
   return (
     <>
       <Form {...form}>
         <form
+          ref={formRef}
           className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit(() => {
+              formAction(new FormData(formRef.current!));
+            })(e);
+          }}
+          action={formAction}
         >
           <h1 className="md:col-span-2 mb-2 text-xl font-bold">
             Add a Desert Figure
           </h1>
+          <h3>{state.message}</h3>
           <Separator className="md:col-span-2 mb-2" />
 
           <FormField
@@ -74,6 +85,7 @@ export default function PostFigureForm() {
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value ?? ""}
+                  name={field.name}
                 >
                   <FormControl>
                     <SelectTrigger>
