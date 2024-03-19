@@ -2,23 +2,6 @@ import { pgTable, text, timestamp, uuid, smallint } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
-import { ObjectValues } from "@/lib/utils";
-
-export const DESERT_FIGURE_TYPE = {
-  AUTHOR: 1,
-  SUBJECT: 2,
-} as const;
-
-export type DesertFigureType = ObjectValues<typeof DESERT_FIGURE_TYPE>;
-
-export const DESERT_FIGURE_TITLE = {
-  SAINT: "Saint",
-  DOCTOR: "Doctor",
-  FATHER: "Father",
-  MOTHER: "Mother",
-} as const;
-
-export type DesertFigureTitle = ObjectValues<typeof DESERT_FIGURE_TITLE>;
 
 export const desertFigures = pgTable("desert_figure", {
   id: uuid("id").defaultRandom().primaryKey(),

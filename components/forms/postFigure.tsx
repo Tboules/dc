@@ -1,7 +1,5 @@
 "use client";
 import {
-  DESERT_FIGURE_TITLE,
-  DESERT_FIGURE_TYPE,
   NewDesertFigure,
   newDesertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
@@ -29,20 +27,15 @@ import { Separator } from "../ui/separator";
 import { postDesertFigureAction } from "@/app/excerpt/new/action";
 import { useFormState } from "react-dom";
 import { useRef } from "react";
-
-/*
-  fields for ui:
-  1. first name
-  2. last name
-  3. title (Desert Figure Title)
-  4. epithet 
-  5. type
-  6. thumbnail
-*/
+import {
+  INTERNAL_FORM_STATE_STATUS,
+  DESERT_FIGURE_TITLE,
+  DESERT_FIGURE_TYPE,
+} from "@/lib/enums";
 
 export default function PostFigureForm() {
   const [state, formAction] = useFormState(postDesertFigureAction, {
-    message: "",
+    status: INTERNAL_FORM_STATE_STATUS.PENDING,
   });
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
@@ -52,6 +45,7 @@ export default function PostFigureForm() {
       lastName: "",
       epithet: "",
       type: DESERT_FIGURE_TYPE.AUTHOR,
+      ...(state?.fields ?? {}),
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
@@ -64,8 +58,10 @@ export default function PostFigureForm() {
           className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4"
           onSubmit={(e) => {
             e.preventDefault();
+            state.status = INTERNAL_FORM_STATE_STATUS.LOADING;
             form.handleSubmit(() => {
-              formAction(new FormData(formRef.current!));
+              const d = new FormData(formRef.current!);
+              formAction(d);
             })(e);
           }}
           action={formAction}
