@@ -4,7 +4,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import db from "@/lib/database";
 import { Adapter } from "next-auth/adapters";
 
-const nextAuthConfig = {
+export const nextAuthConfig = {
   adapter: DrizzleAdapter(db) as Adapter,
   providers: [
     GoogleProvider({
@@ -14,6 +14,21 @@ const nextAuthConfig = {
   ],
   session: {
     strategy: "jwt",
+  },
+  callbacks: {
+    async session({ session, token }) {
+      if (token.userId) {
+        session.user.id = token.userId;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.userId = user.id;
+      }
+
+      return token;
+    },
   },
 } satisfies AuthOptions;
 

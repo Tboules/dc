@@ -7,6 +7,7 @@ import {
 } from "@/lib/database/schema/desertFigures";
 import { InternalFormState } from "@/@types/forms";
 import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
+import { serverAuthSession } from "@/lib/utils/auth";
 
 export async function postDesertFigureAction(
   formState: InternalFormState,
@@ -15,6 +16,7 @@ export async function postDesertFigureAction(
   try {
     const d = Object.fromEntries(formData);
     const parsed = newDesertFigureSchema.safeParse(d);
+    const session = await serverAuthSession();
 
     if (!parsed.success) {
       return {
@@ -22,6 +24,7 @@ export async function postDesertFigureAction(
         status: INTERNAL_FORM_STATE_STATUS.FAILURE,
       };
     }
+    console.log(session);
 
     // await db.insert(desertFigures).values(parsed.data);
 

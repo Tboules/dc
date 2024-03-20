@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+import { Button, LoadingButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -58,8 +58,8 @@ export default function PostFigureForm() {
           className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4"
           onSubmit={(e) => {
             e.preventDefault();
-            state.status = INTERNAL_FORM_STATE_STATUS.LOADING;
             form.handleSubmit(() => {
+              state.status = INTERNAL_FORM_STATE_STATUS.LOADING;
               const d = new FormData(formRef.current!);
               formAction(d);
             })(e);
@@ -155,9 +155,13 @@ export default function PostFigureForm() {
           />
 
           <Separator className="md:col-span-2 mb-2" />
-          <Button className="md:col-span-2" type="submit">
+          <LoadingButton
+            loading={state.status == INTERNAL_FORM_STATE_STATUS.LOADING}
+            className="md:col-span-2"
+            type="submit"
+          >
             Submit
-          </Button>
+          </LoadingButton>
         </form>
       </Form>
     </>
