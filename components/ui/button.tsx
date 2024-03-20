@@ -69,5 +69,6 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
     );
   },
 );
+LoadingButton.displayName = "LoadingButton";
 
 export { Button, buttonVariants, LoadingButton };
