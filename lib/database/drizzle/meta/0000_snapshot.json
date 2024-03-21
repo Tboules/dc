@@ -1,5 +1,5 @@
 {
-  "id": "49593946-5ac8-409a-9079-ca662c87a61e",
+  "id": "b09fa89b-4dec-4fca-99bb-a469966fb660",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -285,6 +285,151 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "excerpt_tag": {
+      "name": "excerpt_tag",
+      "schema": "",
+      "columns": {
+        "excerpt_id": {
+          "name": "excerpt_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "excerpt_tag_excerpt_id_excerpt_id_fk": {
+          "name": "excerpt_tag_excerpt_id_excerpt_id_fk",
+          "tableFrom": "excerpt_tag",
+          "tableTo": "excerpt",
+          "columnsFrom": [
+            "excerpt_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "excerpt_tag_tag_id_tag_id_fk": {
+          "name": "excerpt_tag_tag_id_tag_id_fk",
+          "tableFrom": "excerpt_tag",
+          "tableTo": "tag",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "excerpt_tag_tag_id_excerpt_id_pk": {
+          "name": "excerpt_tag_tag_id_excerpt_id_pk",
+          "columns": [
+            "tag_id",
+            "excerpt_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "icon": {
+      "name": "icon",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "file": {
+          "name": "file",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "desert_figure_id": {
+          "name": "desert_figure_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "last_updated": {
+          "name": "last_updated",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "added_by": {
+          "name": "added_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "icon_desert_figure_id_desert_figure_id_fk": {
+          "name": "icon_desert_figure_id_desert_figure_id_fk",
+          "tableFrom": "icon",
+          "tableTo": "desert_figure",
+          "columnsFrom": [
+            "desert_figure_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "icon_added_by_user_id_fk": {
+          "name": "icon_added_by_user_id_fk",
+          "tableFrom": "icon",
+          "tableTo": "user",
+          "columnsFrom": [
+            "added_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "session": {
       "name": "session",
       "schema": "",
@@ -321,6 +466,56 @@
             "id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "tag": {
+      "name": "tag",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "added_by": {
+          "name": "added_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tag_added_by_user_id_fk": {
+          "name": "tag_added_by_user_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "user",
+          "columnsFrom": [
+            "added_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },

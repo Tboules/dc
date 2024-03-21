@@ -24,11 +24,11 @@ export async function postDesertFigureAction(
         status: INTERNAL_FORM_STATE_STATUS.FAILURE,
       };
     }
-    console.log(session);
 
+    //add user id to created by
+    parsed.data.createdBy = session?.user?.id;
     // await db.insert(desertFigures).values(parsed.data);
 
-    console.log(formState);
     return {
       ...formState,
       status: INTERNAL_FORM_STATE_STATUS.SUCCESS,

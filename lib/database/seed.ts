@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { NewDesertFigure, desertFigures } from "./schema/desertFigures";
+import { DESERT_FIGURE_TITLE } from "../enums";
 dotenv.config({ path: ".env.local" });
 
 const sql = postgres(process.env.DATABASE_URL, {
@@ -14,9 +15,14 @@ const main = async () => {
   try {
     const seedDesertFigures: NewDesertFigure[] = [
       {
-        title: "Saint",
+        title: DESERT_FIGURE_TITLE.SAINT,
         firstName: "Antony",
         epithet: "the Great",
+      },
+      {
+        title: DESERT_FIGURE_TITLE.FATHER,
+        firstName: "Alexander",
+        lastName: "Schmemann",
       },
     ];
 

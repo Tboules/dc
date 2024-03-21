@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1710360119485,
-      "tag": "0000_dazzling_rogue",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1710361336961,
-      "tag": "0001_sparkling_whiplash",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1710368302448,
-      "tag": "0002_fluffy_mockingbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1710368410664,
-      "tag": "0003_flimsy_scorpion",
+      "when": 1711047834864,
+      "tag": "0000_redundant_lady_vermin",
       "breakpoints": true
     }
   ]
