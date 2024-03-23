@@ -1,6 +1,8 @@
 import { pgTable, smallint, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { desertFigures } from "./desertFigures";
 import { users } from "./users";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 
 export enum ExcerptType {
   STORY = 2,
@@ -18,3 +20,9 @@ export const excerpts = pgTable("excerpt", {
   lastUpdated: timestamp("last_updated").defaultNow(),
   createdBy: text("added_by").references(() => users.id),
 });
+
+export const excerptSchema = createSelectSchema(excerpts);
+export const newExcerptSchema = createInsertSchema(excerpts);
+
+export type Excerpt = z.infer<typeof excerptSchema>;
+export type NewExcerpt = z.infer<typeof newExcerptSchema>;
