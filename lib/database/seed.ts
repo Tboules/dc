@@ -9,6 +9,8 @@ dotenv.config({ path: ".env.local" });
 const CREATED_BY_ID = "d53d1855-14fa-4365-bb51-f30b29d28506";
 const BOOK_REFERENCES = {
   paradiseOfTheFathers: "The Sayings of the Desert Fathers",
+  forTheLifeOfTheWorld: "For the Life of the World",
+  faceToFace: "Face to Face: Knowing God Beyond Our Shame",
 };
 
 const sql = postgres(process.env.DATABASE_URL, {
@@ -189,7 +191,55 @@ const main = async () => {
         createdBy: CREATED_BY_ID,
       },
       // Fr. Alexander Schmemann
+      // 14 tags -- eucharist, priest, communion
+      {
+        body: "The first, the basic definition of man is that he is the priest. He stands in the center of the world and unifies it in his act of blessing God, of both receiving the world from God and offering it to God--and by filling the world with this eucharist, he tranforms his life, the one that he receives from the world into life in God, into communion with him. The world was created as the 'matter,' the material of on all-embracing eucharist, and man was created as the priest of this cosmic sacrament.",
+        title: "Man as Priest",
+        reference: BOOK_REFERENCES.forTheLifeOfTheWorld,
+        desertFigureID: authorIds[5].id,
+        createdBy: CREATED_BY_ID,
+      },
+      // 15 tags -- the fall, communion, meaning
+      {
+        body: "It is not accidental, therefore, that the biblical story of the Fall is centered again on food. Man ate the forbidden fruit. The fruit of that one tree, whatever else it may signify, was unlike every other fruit in the Garden: it was not offered as a gift to man. Not given, not blessed by God, it was food whose eating was condemned to be communion with itself alone, and not with God. It is the image of the world loved for itself, and eating it is the image of life understood as an end in itself...He[man] forgets that the world, its air or its food cannot by themselves bring life, but only as they are received and accepted for God's sake, in God, and as bearers of the divine gift of life. By themselves they can produce only the appearance of life. When we see the world as an end in itself, everything becomes itself a value and consequently loses all value, because only in God is found the meaning(value) of everything, and the world is meaningful only when it is the 'sacrament' of God's presence. Things treated merely as things in themselves destroy themselves because only in God have they any life. The world of nature, cut off from the source of life is a dying world.",
+        title: "The Fall as Living Life as an End In Itself",
+        reference: BOOK_REFERENCES.forTheLifeOfTheWorld,
+        desertFigureID: authorIds[5].id,
+        createdBy: CREATED_BY_ID,
+      },
+      // 16 tags -- liturgy, eucharist, church
+      {
+        body: "The Eucharist is a liturgy. And he who says liturgy today is likely to get involved in a controversy. For to some--the 'liturgically minded'--of all the activities of the Church, liturgy is the most important, if not the only one. To others, liturgy is aesthetic, and a spiritual deviation from the real task of the Church. There exists today 'liturgical' and 'non-liturgical' churches and Christians. But this controversy is unnecessary, for it has its roots in one basic misunderstanding--the 'liturgical' understanding of liturgy. This is the reduction of the liturgy to 'cultic' categories, its definition as a sacred act of worship, different as such not only from the 'profane' area of life, but even from all other activies of the Church itself. But this is not the original meaning of the Greek word leitourgia. It meant an action by which a group of people become something corporately which they had not been as a mere collection of individuals--a whole greater than the sum of its parts...The Eucharist is the enterance of the Church into the joy of its Lord. And to enter into that joy, so as to be a witness to it in the world, is indeed the very calling of the Church, its essential leitourgia, the sacrament by which it 'becomes what it is.'",
+        title: "A Proper Understanding of Liturgy",
+        reference: BOOK_REFERENCES.forTheLifeOfTheWorld,
+        desertFigureID: authorIds[5].id,
+        createdBy: CREATED_BY_ID,
+      },
       // Fr. Stephen Freeman
+      // 17 tags --
+      {
+        body: "",
+        title: "",
+        reference: BOOK_REFERENCES.faceToFace,
+        desertFigureID: authorIds[6].id,
+        createdBy: CREATED_BY_ID,
+      },
+      // 18 tags --
+      {
+        body: "",
+        title: "",
+        reference: BOOK_REFERENCES.faceToFace,
+        desertFigureID: authorIds[6].id,
+        createdBy: CREATED_BY_ID,
+      },
+      // 19 tags --
+      {
+        body: "",
+        title: "",
+        reference: BOOK_REFERENCES.faceToFace,
+        desertFigureID: authorIds[6].id,
+        createdBy: CREATED_BY_ID,
+      },
     ];
 
     const excerptIds = await db
