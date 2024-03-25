@@ -41,8 +41,8 @@ const main = async () => {
       },
       {
         title: DESERT_FIGURE_TITLE.SAINT,
-        firstName: "Basil",
-        epithet: "the Great",
+        firstName: "John",
+        epithet: "the Short",
         createdBy: CREATED_BY_ID,
       },
       {
@@ -146,8 +146,48 @@ const main = async () => {
         desertFigureID: authorIds[2].id,
         createdBy: CREATED_BY_ID,
       },
-      // St. Basil the Great
+      // St. John the Short
+      // 9 tags -- obedience, persistence, discipleship
+      {
+        body: "It was said of Abba John the Dwarf that he withdrew and lived in the desert at Scetis with an old man of Thebes. His abba, taking a piece of dry wood, planted it and said to him, 'Water it every day with a bottle of water, until it bears fruit.' Now the water was so far away that he had to leave in the evening and return the following morning. At the end of three years the wood came to life and bore fruit. Then the old man took some of the fruit and arried it to the church saying to the brethren, 'Take and eat the fruit of obedience.'",
+        title: "The Fruit of Obedience",
+        reference: BOOK_REFERENCES.paradiseOfTheFathers,
+        desertFigureID: authorIds[3].id,
+        createdBy: CREATED_BY_ID,
+      },
+      // 10 tags -- humility, zeal, pride
+      {
+        body: "It was said of Abba John the Dwarf, that one day he said to his elder brother, 'I should like to be free of all care, like the angels, who do not work, but ceaselessly offer worship to God.' So he took off his cloak and went away into the desert. After a week he came back to his brother. When he knocked on the door, he heard his brother say, before he opened it 'Who are you?' He said, 'I am John, your brother.' But he replied, 'John has become an angel, and henceforth he is no longer among men.' Then the other begged him saying, 'It is I.' However, his brother did not let him in, but left him there in distress until morning. Then, pening the door, he said to him, 'You are a man and you must once again work in order to eat.' Then John made a prostration before him, saying, 'Forgive me.'",
+        title: "Abba John Learns Humility",
+        reference: BOOK_REFERENCES.paradiseOfTheFathers,
+        desertFigureID: authorIds[3].id,
+        createdBy: CREATED_BY_ID,
+      },
+      // 11 tags -- fasting, passions, struggle
+      {
+        body: "Abba John the Dwarf said, 'If a king wanted to take possession of his enemy's city, he would begin by cutting off the water and the food and so his enemies, dying of hunger, would submit to him. It is the same with the passions of the flesh: if a man goes about fasting and hungry the enemies of his soul grow weak.'",
+        title: "Fasting Weakens The Passions",
+        reference: BOOK_REFERENCES.paradiseOfTheFathers,
+        desertFigureID: authorIds[3].id,
+        createdBy: CREATED_BY_ID,
+      },
       // St. Gregory the Theologian
+      // 12 tags -- faith, speak truth, temperance
+      {
+        body: "Abba Gregory said, 'These three things God requires of all the baptized: right faith in the heart, truth on the tongue, temperance in the body.'",
+        title: "Three Requirements",
+        reference: BOOK_REFERENCES.paradiseOfTheFathers,
+        desertFigureID: authorIds[4].id,
+        createdBy: CREATED_BY_ID,
+      },
+      // 13 tags -- hard work, desire
+      {
+        body: "Abba Gregory said, 'The whole life of a man is but one single day for those who are working hard with longing.'",
+        title: "Life as One Day",
+        reference: BOOK_REFERENCES.paradiseOfTheFathers,
+        desertFigureID: authorIds[4].id,
+        createdBy: CREATED_BY_ID,
+      },
       // Fr. Alexander Schmemann
       // Fr. Stephen Freeman
     ];
