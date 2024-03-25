@@ -4,6 +4,7 @@ import postgres from "postgres";
 import { NewDesertFigure, desertFigures } from "./schema/desertFigures";
 import { DESERT_FIGURE_TITLE } from "../enums";
 import { NewExcerpt, excerpts } from "./schema/excerpts";
+import { NewTag } from "./schema/tags";
 dotenv.config({ path: ".env.local" });
 
 const CREATED_BY_ID = "d53d1855-14fa-4365-bb51-f30b29d28506";
@@ -216,26 +217,18 @@ const main = async () => {
         createdBy: CREATED_BY_ID,
       },
       // Fr. Stephen Freeman
-      // 17 tags --
+      // 17 tags -- shame, identity, seeking
       {
-        body: "",
-        title: "",
+        body: "There is within us the very image of God: 'life and the kingdom...the treasures of grace.' If shame is part of our answer to the question, 'How do I feel about who I am?' this path reminds us that the truth of who I am is not found on the surface. Who I am is not to be mistaken for the 'garments of skin'-- the various strategies, identities, and designs with which we seek to clothe ourselves. The deepest mode of the spiritual life is one that searches for God, that asks, seeks, and knocks, in order to find the Kingdom. That is a search that takes us beneath layers of shame, beneath our false identities, into the very place where the image of God and the true self reside. This is a difficult journey.",
+        title: "Who I Am Beyond Shame",
         reference: BOOK_REFERENCES.faceToFace,
         desertFigureID: authorIds[6].id,
         createdBy: CREATED_BY_ID,
       },
-      // 18 tags --
+      // 18 tags -- shame, identity, healthy sexuality
       {
-        body: "",
-        title: "",
-        reference: BOOK_REFERENCES.faceToFace,
-        desertFigureID: authorIds[6].id,
-        createdBy: CREATED_BY_ID,
-      },
-      // 19 tags --
-      {
-        body: "",
-        title: "",
+        body: "Speaking to adolescents, I have often used this imagery of the inner temple to help them understand the Church's teaching regarding sexual intimacy. There is a 'narthex' of the soul, our 'outer courtyard.' This most public part of our lives represents the face we show the world. It is a place of casual encounters, some of which bring joy, some of which we quickly reject. A few of the people we encounter in this way may be invited into friendship, into the 'inner courtyard' or 'nave' of the soul. That invitation is extended to those who can be trusted to value us, to respect the honor they have been given, and to acknowledge that they are guests here. We also have a 'holy place' that is our most intimate and delicate place. Into some portion of that place, we invite the most intimate of all human relationships--a spouse. The Church surrounds that relationship with rules and norms, not out of a fascination with a legalistic morality; instead, it is the deepest care of the soul that the Church seeks to guard. If this place is violated, particularly on a regular basis--as it is violated by sexual contact outside marriage--it begins to lose its ability to function. The result is a loss of the true self, an alientation from who we truly are, and an inability to find God. In plain terms, if the most intimate part of the soul is turned into the most public part of the soul, the mystery is trampled underfoot. We become lost. The darkness that results manifests itself in a myriad of ways, none of them healthy or life-giving.",
+        title: "The Human as a Temple",
         reference: BOOK_REFERENCES.faceToFace,
         desertFigureID: authorIds[6].id,
         createdBy: CREATED_BY_ID,
@@ -246,6 +239,224 @@ const main = async () => {
       .insert(excerpts)
       .values(EXCERPTS_SEED)
       .returning({ id: excerpts.id });
+
+    const TAGS_SEED: NewTag[] = [
+      // 0
+      {
+        name: "boredom",
+        createdBy: CREATED_BY_ID,
+      },
+      // 1
+      {
+        name: "dryness",
+        createdBy: CREATED_BY_ID,
+      },
+      // 2
+      {
+        name: "spiritual struggle",
+        createdBy: CREATED_BY_ID,
+      },
+      // 3
+      {
+        name: "trust",
+        createdBy: CREATED_BY_ID,
+      },
+      // 4
+      {
+        name: "humility",
+        createdBy: CREATED_BY_ID,
+      },
+      // 5
+      {
+        name: "doubt",
+        createdBy: CREATED_BY_ID,
+      },
+      // 6
+      {
+        name: "pleasing God",
+        createdBy: CREATED_BY_ID,
+      },
+      // 7
+      {
+        name: "presence of God",
+        createdBy: CREATED_BY_ID,
+      },
+      // 8
+      {
+        name: "watchfullness",
+        createdBy: CREATED_BY_ID,
+      },
+      // 9
+      {
+        name: "vulnerability",
+        createdBy: CREATED_BY_ID,
+      },
+      // 10
+      {
+        name: "confession",
+        createdBy: CREATED_BY_ID,
+      },
+      // 11
+      {
+        name: "shame",
+        createdBy: CREATED_BY_ID,
+      },
+      // 12
+      {
+        name: "warfare",
+        createdBy: CREATED_BY_ID,
+      },
+      // 13
+      {
+        name: "deception",
+        createdBy: CREATED_BY_ID,
+      },
+      // 14
+      {
+        name: "love",
+        createdBy: CREATED_BY_ID,
+      },
+      // 15
+      {
+        name: "selfless",
+        createdBy: CREATED_BY_ID,
+      },
+      // 16
+      {
+        name: "gifts",
+        createdBy: CREATED_BY_ID,
+      },
+      // 17
+      {
+        name: "do not judge",
+        createdBy: CREATED_BY_ID,
+      },
+      // 18
+      {
+        name: "priorities",
+        createdBy: CREATED_BY_ID,
+      },
+      // 19
+      {
+        name: "hospitality",
+        createdBy: CREATED_BY_ID,
+      },
+      // 20
+      {
+        name: "wisdom",
+        createdBy: CREATED_BY_ID,
+      },
+      // 21
+      {
+        name: "stillness",
+        createdBy: CREATED_BY_ID,
+      },
+      // 22
+      {
+        name: "patience",
+        createdBy: CREATED_BY_ID,
+      },
+      // 23
+      {
+        name: "obedience",
+        createdBy: CREATED_BY_ID,
+      },
+      // 24
+      {
+        name: "persistence",
+        createdBy: CREATED_BY_ID,
+      },
+      // 25
+      {
+        name: "discipleship",
+        createdBy: CREATED_BY_ID,
+      },
+      // 26
+      {
+        name: "zeal",
+        createdBy: CREATED_BY_ID,
+      },
+      // 27
+      {
+        name: "pride",
+        createdBy: CREATED_BY_ID,
+      },
+      // 28
+      {
+        name: "fasting",
+        createdBy: CREATED_BY_ID,
+      },
+      // 29
+      {
+        name: "passions",
+        createdBy: CREATED_BY_ID,
+      },
+      // 30
+      {
+        name: "faith",
+        createdBy: CREATED_BY_ID,
+      },
+      // 31
+      {
+        name: "speak truth",
+        createdBy: CREATED_BY_ID,
+      },
+      // 32
+      {
+        name: "temperance",
+        createdBy: CREATED_BY_ID,
+      },
+      // 33
+      {
+        name: "longing",
+        createdBy: CREATED_BY_ID,
+      },
+      // 34
+      {
+        name: "eucharist",
+        createdBy: CREATED_BY_ID,
+      },
+      // 35
+      {
+        name: "priest",
+        createdBy: CREATED_BY_ID,
+      },
+      // 36
+      {
+        name: "communion",
+        createdBy: CREATED_BY_ID,
+      },
+      // 37
+      {
+        name: "the fall",
+        createdBy: CREATED_BY_ID,
+      },
+      // 38
+      {
+        name: "meaning",
+        createdBy: CREATED_BY_ID,
+      },
+      // 39
+      {
+        name: "liturgy",
+        createdBy: CREATED_BY_ID,
+      },
+      // 40
+      {
+        name: "church",
+        createdBy: CREATED_BY_ID,
+      },
+      // 41
+      {
+        name: "identity",
+        createdBy: CREATED_BY_ID,
+      },
+      // 42
+      {
+        name: "healthy sexuality",
+        createdBy: CREATED_BY_ID,
+      },
+    ];
 
     console.log(excerptIds);
 
