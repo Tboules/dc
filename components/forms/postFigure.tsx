@@ -181,13 +181,9 @@ export default function PostFigureForm() {
           />
 
           <Separator className="md:col-span-2 mb-2" />
-          <LoadingButton
-            loading={state.status == INTERNAL_FORM_STATE_STATUS.LOADING}
-            className="md:col-span-2"
-            type="submit"
-          >
+          <Button className="md:col-span-2" type="submit">
             Submit
-          </LoadingButton>
+          </Button>
         </form>
       </Form>
     </>
