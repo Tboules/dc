@@ -9,6 +9,10 @@ import { InternalFormState } from "@/@types/forms";
 import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { serverAuthSession } from "@/lib/utils/auth";
 
+function timeout(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function postDesertFigureAction(
   formState: InternalFormState,
   formData: FormData,
@@ -17,6 +21,8 @@ export async function postDesertFigureAction(
     const d = Object.fromEntries(formData);
     const parsed = newDesertFigureSchema.safeParse(d);
     const session = await serverAuthSession();
+
+    await timeout(3000);
 
     if (!parsed.success) {
       return {

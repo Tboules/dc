@@ -1,4 +1,5 @@
 "use client";
+import Lottie from "react-lottie-player";
 import {
   NewDesertFigure,
   newDesertFigureSchema,
@@ -32,6 +33,7 @@ import {
   DESERT_FIGURE_TITLE,
   DESERT_FIGURE_TYPE,
 } from "@/lib/enums";
+import lottieLoader from "@/assets/loading.json";
 
 export default function PostFigureForm() {
   const [state, formAction] = useFormState(postDesertFigureAction, {
@@ -49,6 +51,30 @@ export default function PostFigureForm() {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+
+  if (state?.status == INTERNAL_FORM_STATE_STATUS.LOADING) {
+    return (
+      <div className="min-w-72 w-full md:w-3/4 border border-border rounded flex justify-center items-end">
+        <Lottie loop animationData={lottieLoader} play />
+      </div>
+    );
+  }
+
+  if (state?.status == INTERNAL_FORM_STATE_STATUS.SUCCESS) {
+    return (
+      <div className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h1>Thanks You!</h1>
+        <Button
+          onClick={() => {
+            form.reset();
+            state.status = INTERNAL_FORM_STATE_STATUS.PENDING;
+          }}
+        >
+          Add Another Figure
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <>
