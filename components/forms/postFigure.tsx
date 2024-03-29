@@ -34,6 +34,7 @@ import {
   DESERT_FIGURE_TYPE,
 } from "@/lib/enums";
 import lottieLoader from "@/assets/loading.json";
+import S3FileUploadInput from "../S3FileUploadInput";
 
 export default function PostFigureForm() {
   const [state, formAction] = useFormState(postDesertFigureAction, {
@@ -51,26 +52,6 @@ export default function PostFigureForm() {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
-
-  async function uploadFile(e: ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.files);
-    if (!e.target.files) return;
-
-    const res = await fetch(`/api/documents?file=test_file`);
-    const {
-      presignedUrl,
-    }: {
-      presignedUrl: string;
-    } = await res.json();
-    console.log(presignedUrl);
-
-    const fileUpload = await fetch(presignedUrl, {
-      method: "PUT",
-      body: e.target.files[0],
-    });
-
-    console.log(fileUpload);
-  }
 
   if (state?.status == INTERNAL_FORM_STATE_STATUS.LOADING) {
     return (
@@ -118,7 +99,14 @@ export default function PostFigureForm() {
           <h3>{state.message}</h3>
           <Separator className="md:col-span-2 mb-2" />
 
-          <Input type="file" placeholder="thumbnail" onChange={uploadFile} />
+          <S3FileUploadInput
+            type="file"
+            placeholder="thumbnail"
+            setFinalImageUrl={(uri: string) => {
+              form.setValue("thumbnail", uri);
+              console.log(form.getValues());
+            }}
+          />
 
           <FormField
             control={form.control}
