@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button, LoadingButton } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -27,7 +27,7 @@ import {
 import { Separator } from "../ui/separator";
 import { postDesertFigureAction } from "@/app/excerpt/new/action";
 import { useFormState } from "react-dom";
-import { useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 import {
   INTERNAL_FORM_STATE_STATUS,
   DESERT_FIGURE_TITLE,
@@ -51,6 +51,26 @@ export default function PostFigureForm() {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+
+  async function uploadFile(e: ChangeEvent<HTMLInputElement>) {
+    console.log(e.target.files);
+    if (!e.target.files) return;
+
+    const res = await fetch(`/api/documents?file=test_file`);
+    const {
+      presignedUrl,
+    }: {
+      presignedUrl: string;
+    } = await res.json();
+    console.log(presignedUrl);
+
+    const fileUpload = await fetch(presignedUrl, {
+      method: "PUT",
+      body: e.target.files[0],
+    });
+
+    console.log(fileUpload);
+  }
 
   if (state?.status == INTERNAL_FORM_STATE_STATUS.LOADING) {
     return (
@@ -97,6 +117,8 @@ export default function PostFigureForm() {
           </h1>
           <h3>{state.message}</h3>
           <Separator className="md:col-span-2 mb-2" />
+
+          <Input type="file" placeholder="thumbnail" onChange={uploadFile} />
 
           <FormField
             control={form.control}

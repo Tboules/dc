@@ -33,7 +33,7 @@ export async function postDesertFigureAction(
 
     //add user id to created by
     parsed.data.createdBy = session?.user?.id;
-    // await db.insert(desertFigures).values(parsed.data);
+    await db.insert(desertFigures).values(parsed.data);
 
     return {
       ...formState,
