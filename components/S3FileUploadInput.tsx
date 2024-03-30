@@ -17,6 +17,9 @@ interface Props extends InputProps {
   4. save file url with uuid within form -- 
   5. create cool loading animation -- 
   6. image preview
+
+  potential issues with this implementation
+  -- What happens if a user uploads an image but doesn't completely submit the form. Then we have bloat in our S3 bucket.
 */
 
 const S3_FILE_UPLOAD_STATUS = {
