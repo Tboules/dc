@@ -10,6 +10,7 @@ import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { v4 as uuid } from "uuid";
 import { getPresignedUrl } from "@/app/api/documents/get-presigned";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function postDesertFigureAction(
   formState: InternalFormState,
@@ -28,9 +29,6 @@ export async function postDesertFigureAction(
         status: INTERNAL_FORM_STATE_STATUS.FAILURE,
       };
     }
-    console.log(parsed.data.thumbnail);
-
-    return formState;
 
     //upload file to s3
     if (parsed.data.thumbnail) {
@@ -57,6 +55,8 @@ export async function postDesertFigureAction(
       thumbnail: thumbnailUrl,
     });
 
+    revalidatePath("/excerpt/new");
+    revalidateTag("excerpt");
     return {
       ...formState,
       status: INTERNAL_FORM_STATE_STATUS.SUCCESS,

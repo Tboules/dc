@@ -44,7 +44,7 @@ export default function PostFigureForm() {
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
     defaultValues: {
-      title: "",
+      title: null,
       firstName: "",
       lastName: "",
       epithet: "",
@@ -65,8 +65,9 @@ export default function PostFigureForm() {
   if (state?.status == INTERNAL_FORM_STATE_STATUS.SUCCESS) {
     return (
       <div className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <h1>Thanks You!</h1>
+        <h1 className="md:col-span-2">Thank You!</h1>
         <Button
+          className="md:col-span-2"
           onClick={() => {
             form.reset();
             state.status = INTERNAL_FORM_STATE_STATUS.PENDING;
@@ -130,7 +131,7 @@ export default function PostFigureForm() {
                   <FormLabel>Title</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value ?? ""}
+                    value={field.value ?? ""}
                     name={field.name}
                   >
                     <FormControl>
