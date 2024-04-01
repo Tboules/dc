@@ -34,6 +34,8 @@ import {
   DESERT_FIGURE_TYPE,
 } from "@/lib/enums";
 import lottieLoader from "@/assets/loading.json";
+import FileInputWithPreview from "../FileInputWithPreview";
+import { Label } from "../ui/label";
 
 export default function PostFigureForm() {
   const [state, formAction] = useFormState(postDesertFigureAction, {
@@ -42,7 +44,7 @@ export default function PostFigureForm() {
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
     defaultValues: {
-      title: DESERT_FIGURE_TITLE.SAINT,
+      title: "",
       firstName: "",
       lastName: "",
       epithet: "",
@@ -114,89 +116,94 @@ export default function PostFigureForm() {
           <h3>{state.message}</h3>
           <Separator className="md:col-span-2 mb-2" />
 
-          <Input {...form.register("thumbnail")} type="file" accept="image/*" />
+          <div className="md:col-start-1 md:col-end-2 space-y-2">
+            <Label>Desert Figure Image</Label>
+            <FileInputWithPreview {...form.register("thumbnail")} />
+          </div>
 
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value ?? ""}
-                  name={field.name}
-                >
+          <div className="space-y-2">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value ?? ""}
+                    name={field.name}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a Title" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Object.values(DESERT_FIGURE_TITLE).map((v) => (
+                        <SelectItem value={v} key={v}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name *</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a Title" />
-                    </SelectTrigger>
+                    <Input placeholder="First Name" {...field} />
                   </FormControl>
-                  <SelectContent>
-                    {Object.values(DESERT_FIGURE_TITLE).map((v) => (
-                      <SelectItem value={v} key={v}>
-                        {v}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name *</FormLabel>
-                <FormControl>
-                  <Input placeholder="First Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Last Name"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Last Name"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="epithet"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Epithet</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Epithet"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormDescription>
-                  eg. The Great or The Golden Mouth
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="epithet"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Epithet</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Epithet"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    eg. The Great or The Golden Mouth
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <Separator className="md:col-span-2 mb-2" />
           <Button className="md:col-span-2" type="submit">

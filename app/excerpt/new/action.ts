@@ -28,6 +28,9 @@ export async function postDesertFigureAction(
         status: INTERNAL_FORM_STATE_STATUS.FAILURE,
       };
     }
+    console.log(parsed.data.thumbnail);
+
+    return formState;
 
     //upload file to s3
     if (parsed.data.thumbnail) {
