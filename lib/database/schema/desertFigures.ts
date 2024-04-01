@@ -3,6 +3,8 @@ import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
+const IMAGE_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
 export const desertFigures = pgTable("desert_figure", {
   id: uuid("id").defaultRandom().primaryKey(),
   firstName: text("first_name").notNull(),
@@ -19,6 +21,7 @@ export const desertFigures = pgTable("desert_figure", {
 export const desertFigureSchema = createSelectSchema(desertFigures);
 export const newDesertFigureSchema = createInsertSchema(desertFigures, {
   firstName: (s) => s.firstName.min(1, "First Name is required"),
+  thumbnail: () => z.custom<File>(),
 });
 
 export type DesertFigure = z.infer<typeof desertFigureSchema>;

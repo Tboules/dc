@@ -53,9 +53,11 @@ export default function S3FileUploadInput({
         presignedUrl: string;
       } = await res.json();
 
+      const file = e.target.files[0];
+
       const fileUploadResponse = await fetch(presignedUrl, {
         method: "PUT",
-        body: e.target.files[0],
+        body: file,
       });
 
       if (!fileUploadResponse.ok) {

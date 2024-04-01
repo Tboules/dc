@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import PostFigureForm from "@/components/forms/postFigure";
+import PostFigureForm from "@/components/forms/post-figure";
 
 export default async function NewExcerptFormPage() {
   const session = await getServerSession();

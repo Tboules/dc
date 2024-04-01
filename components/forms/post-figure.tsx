@@ -27,14 +27,13 @@ import {
 import { Separator } from "../ui/separator";
 import { postDesertFigureAction } from "@/app/excerpt/new/action";
 import { useFormState } from "react-dom";
-import { ChangeEvent, useRef } from "react";
+import { useRef } from "react";
 import {
   INTERNAL_FORM_STATE_STATUS,
   DESERT_FIGURE_TITLE,
   DESERT_FIGURE_TYPE,
 } from "@/lib/enums";
 import lottieLoader from "@/assets/loading.json";
-import S3FileUploadInput from "../S3FileUploadInput";
 
 export default function PostFigureForm() {
   const [state, formAction] = useFormState(postDesertFigureAction, {
@@ -77,6 +76,22 @@ export default function PostFigureForm() {
     );
   }
 
+  if (state?.status == INTERNAL_FORM_STATE_STATUS.FAILURE) {
+    return (
+      <div className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h1>{state.message}</h1>
+        <Button
+          onClick={() => {
+            form.reset();
+            state.status = INTERNAL_FORM_STATE_STATUS.PENDING;
+          }}
+        >
+          Try Again
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <>
       <Form {...form}>
@@ -99,14 +114,7 @@ export default function PostFigureForm() {
           <h3>{state.message}</h3>
           <Separator className="md:col-span-2 mb-2" />
 
-          <S3FileUploadInput
-            type="file"
-            placeholder="thumbnail"
-            setFinalImageUrl={(uri: string) => {
-              form.setValue("thumbnail", uri);
-              console.log(form.getValues());
-            }}
-          />
+          <Input {...form.register("thumbnail")} type="file" accept="image/*" />
 
           <FormField
             control={form.control}
