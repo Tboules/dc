@@ -1,14 +1,7 @@
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest } from "next/server";
-
-export const s3Client = new S3Client({
-  region: process.env.AWS_S3_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_S3_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_S3_SECRET_KEY,
-  },
-});
+import { S3C } from "./get-presigned";
 
 export async function GET(r: NextRequest) {
   const { searchParams } = r.nextUrl;
@@ -27,7 +20,7 @@ export async function GET(r: NextRequest) {
     Key: file,
   });
 
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 60 });
+  const url = await getSignedUrl(S3C, command, { expiresIn: 60 });
 
   return Response.json({ presignedUrl: url });
 }

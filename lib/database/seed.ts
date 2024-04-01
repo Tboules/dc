@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { NewDesertFigure, desertFigures } from "./schema/desertFigures";
+import {
+  DesertFigureDirectInsert,
+  desertFigures,
+} from "./schema/desertFigures";
 import { DESERT_FIGURE_TITLE } from "../enums";
 import { NewExcerpt, excerpts } from "./schema/excerpts";
 import { NewTag, tags } from "./schema/tags";
@@ -24,7 +27,7 @@ const db = drizzle(sql);
 const main = async () => {
   try {
     console.log("Seed Comencing...");
-    const DESERT_FIGURES_SEED: NewDesertFigure[] = [
+    const DESERT_FIGURES_SEED: DesertFigureDirectInsert[] = [
       {
         title: DESERT_FIGURE_TITLE.SAINT,
         firstName: "Antony",
