@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Input, InputProps } from "./ui/input";
 import { Image as ImageIcon } from "lucide-react";
@@ -21,7 +23,6 @@ const FileInputWithPreview = React.forwardRef<HTMLInputElement, Props>(
               if (imageUrl) URL.revokeObjectURL(imageUrl);
 
               const url = URL.createObjectURL(e.target.files[0]);
-              console.log(url);
               setImageUrl(url);
             }
           }}

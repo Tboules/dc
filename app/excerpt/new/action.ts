@@ -10,7 +10,7 @@ import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { v4 as uuid } from "uuid";
 import { getPresignedUrl } from "@/app/api/documents/get-presigned";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export async function postDesertFigureAction(
   formState: InternalFormState,
@@ -21,7 +21,7 @@ export async function postDesertFigureAction(
     const parsed = newDesertFigureSchema.safeParse(d);
     const session = await serverAuthSession();
     const fileId = uuid();
-    const thumbnailUrl = process.env.NEXT_PUBLIC_AWS_S3_URL + fileId;
+    let thumbnailUrl = null;
 
     if (!parsed.success || !session) {
       return {
@@ -31,7 +31,7 @@ export async function postDesertFigureAction(
     }
 
     //upload file to s3
-    if (parsed.data.thumbnail) {
+    if (parsed.data.thumbnail && parsed.data.thumbnail?.size != 0) {
       const presignedUrl = await getPresignedUrl(fileId);
 
       if (!presignedUrl) {
@@ -46,6 +46,8 @@ export async function postDesertFigureAction(
       if (!fileUploadResponse.ok) {
         throw new Error("Unable to upload to S3");
       }
+
+      thumbnailUrl = process.env.NEXT_PUBLIC_AWS_S3_URL + fileId;
     }
 
     //add user id to created by
@@ -55,8 +57,6 @@ export async function postDesertFigureAction(
       thumbnail: thumbnailUrl,
     });
 
-    revalidatePath("/excerpt/new");
-    revalidateTag("excerpt");
     return {
       ...formState,
       status: INTERNAL_FORM_STATE_STATUS.SUCCESS,
@@ -68,5 +68,7 @@ export async function postDesertFigureAction(
       message: "An error happend on the server",
       status: INTERNAL_FORM_STATE_STATUS.FAILURE,
     };
+  } finally {
+    revalidatePath("/excerpt/new");
   }
 }

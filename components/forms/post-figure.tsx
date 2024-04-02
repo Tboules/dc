@@ -44,7 +44,6 @@ export default function PostFigureForm() {
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
     defaultValues: {
-      title: null,
       firstName: "",
       lastName: "",
       epithet: "",
@@ -131,7 +130,7 @@ export default function PostFigureForm() {
                   <FormLabel>Title</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value ?? ""}
+                    value={field.value ?? undefined}
                     name={field.name}
                   >
                     <FormControl>
