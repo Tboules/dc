@@ -14,15 +14,15 @@ import PostFigureForm from "./post-figure";
 
 export default function FindDesertFigureForm() {
   const [searchValue, setSearchValue] = React.useState<string>("");
-  const [result, setResult] = React.useState<string>("");
+  // const [result, setResult] = React.useState<string>("");
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
   const debounceSearchValue = useDebounce(searchValue, 300);
 
   async function callServerAction(s: string) {
     setFormStatus("loading");
-    const res = await findDesertFigure(s);
-    setResult(res);
+    await findDesertFigure(s);
+    // setResult(res);
     setFormStatus("empty");
   }
 
@@ -78,7 +78,7 @@ function EmptyResultPlaceholder({ cb }: { cb: () => void }) {
   return (
     <div className="border border-border rounded min-h-64 w-full flex flex-col justify-center items-center gap-2">
       <CircleSlash height={50} width={50} strokeWidth={1} />
-      <h4>Unable to find what you're looking for?</h4>
+      <h4>Unable to find what you&apos;re looking for?</h4>
       <Button className="mt-2" onClick={cb}>
         Add a Desert Figure
       </Button>
