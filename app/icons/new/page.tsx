@@ -5,7 +5,7 @@ export default async function NewIconPage() {
   const session = await getServerSession();
   if (!session) {
     redirect(
-      `/api/auth/signin?callbackUrl=${encodeURIComponent("/excerpt/new")}`,
+      `/api/auth/signin?callbackUrl=${encodeURIComponent("/icons/new")}`,
     );
   }
 

@@ -4,8 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import NavMenu from "@/components/nav/NavMenu";
-import SessionProvider from "@/components/providers/session-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import Providers from "@/components/providers";
 
 const fontSans = FontSans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -34,19 +33,12 @@ export default async function RootLayout({
           fontSans.variable,
         )}
       >
-        <SessionProvider session={session}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main>
-              <NavMenu />
-              {children}
-            </main>
-          </ThemeProvider>
-        </SessionProvider>
+        <Providers>
+          <main>
+            <NavMenu />
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
