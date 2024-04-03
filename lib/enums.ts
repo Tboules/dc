@@ -6,6 +6,7 @@ export const FIND_DESERT_FIGURE_FORM_STATUS = {
   SUCCESS: "success",
   EMPTY: "empty",
   ERROR: "error",
+  NEW_FIGURE: "new figure",
 } as const;
 
 export type FindDesertFigureFormStatus = ObjectValues<

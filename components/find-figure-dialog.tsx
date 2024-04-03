@@ -28,7 +28,7 @@ export default function FindFigureDialogue() {
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-xl">
         <DialogHeader>
           <DialogTitle>Find a Desert Figure</DialogTitle>
           <DialogDescription>

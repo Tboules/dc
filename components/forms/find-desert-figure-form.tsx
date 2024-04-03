@@ -1,7 +1,7 @@
 "use client";
 
 import { useDebounce } from "@/hooks/use-debounce";
-import { Search } from "lucide-react";
+import { CircleSlash, Search } from "lucide-react";
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,8 @@ import { findDesertFigure } from "@/app/excerpt/new/action";
 import Lottie from "react-lottie-player";
 import lottieLoader from "@/assets/loading.json";
 import { FindDesertFigureFormStatus } from "@/lib/enums";
+import { Button } from "../ui/button";
+import PostFigureForm from "./post-figure";
 
 export default function FindDesertFigureForm() {
   const [searchValue, setSearchValue] = React.useState<string>("");
@@ -21,12 +23,20 @@ export default function FindDesertFigureForm() {
     setFormStatus("loading");
     const res = await findDesertFigure(s);
     setResult(res);
-    setFormStatus("init");
+    setFormStatus("empty");
   }
 
   React.useEffect(() => {
     if (debounceSearchValue) callServerAction(debounceSearchValue);
   }, [debounceSearchValue]);
+
+  function openNewFigureForm() {
+    setFormStatus("new figure");
+  }
+
+  if (formStatus == "new figure") {
+    return <PostFigureForm />;
+  }
 
   return (
     <div className="space-y-4">
@@ -40,6 +50,9 @@ export default function FindDesertFigureForm() {
       </form>
       {formStatus == "init" && <InitializePlaceHolder />}
       {formStatus == "loading" && <FormLoader />}
+      {formStatus == "empty" && (
+        <EmptyResultPlaceholder cb={openNewFigureForm} />
+      )}
     </div>
   );
 }
@@ -57,6 +70,18 @@ function FormLoader() {
   return (
     <div className="border border-border rounded min-h-64 w-full flex justify-center items-end">
       <Lottie loop animationData={lottieLoader} play />
+    </div>
+  );
+}
+
+function EmptyResultPlaceholder({ cb }: { cb: () => void }) {
+  return (
+    <div className="border border-border rounded min-h-64 w-full flex flex-col justify-center items-center gap-2">
+      <CircleSlash height={50} width={50} strokeWidth={1} />
+      <h4>Unable to find what you're looking for?</h4>
+      <Button className="mt-2" onClick={cb}>
+        Add a Desert Figure
+      </Button>
     </div>
   );
 }
