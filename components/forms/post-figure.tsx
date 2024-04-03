@@ -34,8 +34,8 @@ import {
   DESERT_FIGURE_TYPE,
 } from "@/lib/enums";
 import lottieLoader from "@/assets/loading.json";
-import FileInputWithPreview from "../FileInputWithPreview";
 import { Label } from "../ui/label";
+import FileInputWithPreview from "@/components/FileInputWithPreview";
 
 export default function PostFigureForm() {
   const [state, formAction] = useFormState(postDesertFigureAction, {
