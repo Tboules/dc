@@ -12,6 +12,15 @@ import { v4 as uuid } from "uuid";
 import { getPresignedUrl } from "@/app/api/documents/get-presigned";
 import { revalidatePath } from "next/cache";
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export async function findDesertFigure(val: string) {
+  await sleep(3000);
+  return val;
+}
+
 export async function postDesertFigureAction(
   formState: InternalFormState,
   formData: FormData,

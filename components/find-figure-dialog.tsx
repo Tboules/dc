@@ -1,4 +1,3 @@
-"use client";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +7,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
-import { ChevronsUpDown, Search } from "lucide-react";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { ChevronsUpDown } from "lucide-react";
 import React from "react";
-import { useDebounce } from "@/hooks/use-debounce";
+import FindDesertFigureForm from "./forms/find-desert-figure-form";
 
 /*
   1. Create Dialogue Button that takes dynamic value 
@@ -23,13 +20,6 @@ import { useDebounce } from "@/hooks/use-debounce";
 */
 
 export default function FindFigureDialogue() {
-  const [searchValue, setSearchValue] = React.useState<string>("");
-  const debounceSearchValue = useDebounce(searchValue, 300);
-
-  React.useEffect(() => {
-    console.log(debounceSearchValue);
-  }, [debounceSearchValue]);
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -46,20 +36,7 @@ export default function FindFigureDialogue() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label>Desert Figure</Label>
-            <Input
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              placeholder="Search for a Desert Figure"
-            />
-          </div>
-          <div className="border border-border rounded min-h-64 w-full flex flex-col justify-center items-center gap-2">
-            <Search height={50} width={50} strokeWidth={1} />
-            <h4>Who are you looking for?</h4>
-          </div>
-        </div>
+        <FindDesertFigureForm />
       </DialogContent>
     </Dialog>
   );

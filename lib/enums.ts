@@ -1,5 +1,17 @@
 export type ObjectValues<T> = T[keyof T];
 
+export const FIND_DESERT_FIGURE_FORM_STATUS = {
+  LOADING: "loading",
+  INIT: "init",
+  SUCCESS: "success",
+  EMPTY: "empty",
+  ERROR: "error",
+} as const;
+
+export type FindDesertFigureFormStatus = ObjectValues<
+  typeof FIND_DESERT_FIGURE_FORM_STATUS
+>;
+
 export const INTERNAL_FORM_STATE_STATUS = {
   LOADING: 3,
   PENDING: 2,

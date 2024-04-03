@@ -99,7 +99,7 @@ export default function PostFigureForm() {
       <Form {...form}>
         <form
           ref={formRef}
-          className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="min-w-72 w-full rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4"
           onSubmit={(e) => {
             e.preventDefault();
             form.handleSubmit(() => {
