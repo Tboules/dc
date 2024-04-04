@@ -131,7 +131,10 @@ export default function NavMenu() {
                 <Link href={item.route} key={item.name}>
                   <SheetClose asChild>
                     <Button className="w-full" variant={"outline"}>
-                      <NavIconSwitcher name={item.icon} className="mr-2 p-1" />
+                      <NavIconSwitcher
+                        name={item.icon}
+                        className="mr-1 p-[2px]"
+                      />
                       {item.name}
                     </Button>
                   </SheetClose>
