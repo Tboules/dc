@@ -1,9 +1,9 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Menu, Quote, SquareUser } from "lucide-react";
-import { Separator } from "../ui/separator";
+import { Image, Menu, Quote, SquareUser } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -22,28 +22,29 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Route } from "nextjs-routes";
+import { IconName, NavIconSwitcher } from "@/components/icon";
 
-type TNavMenuItems = {
+interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
   name: string;
-}[];
+}
 
-const NAV_MENU_ITEMS: TNavMenuItems = [
+interface SubMenuItem extends NavMenuItem {
+  icon: IconName;
+}
+
+const NAV_MENU_ITEMS: NavMenuItem[] = [
   { route: "/", name: "Dashboard" },
-  { route: "/desert_figures", name: "Desert Figures" },
+  { route: "/desert-figures", name: "Desert Figures" },
   { route: "/tags", name: "Tags" },
   { route: "/icons", name: "Icons" },
 ];
 
-function AuthButton() {
-  const { data: session } = useSession();
-
-  if (session) {
-    return <Button onClick={() => signOut()}>Sign Out</Button>;
-  }
-
-  return <Button onClick={() => signIn()}>Sign In</Button>;
-}
+const SUB_MENU_ITEMS: SubMenuItem[] = [
+  { route: "/excerpt/new", name: "Excerpt", icon: "quote" },
+  { route: "/desert-figures/new", name: "Desert Figure", icon: "user" },
+  { route: "/icons/new", name: "Icon", icon: "image" },
+];
 
 function AddMenu() {
   return (
@@ -53,22 +54,16 @@ function AddMenu() {
           <NavigationMenuTrigger>Add</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="p-2 min-w-32 space-y-2">
-              <Link href="/excerpt/new" legacyBehavior passHref>
-                <NavigationMenuLink>
-                  <div className="w-full border border-border p-4 rounded hover:bg-secondary transition mb-2">
-                    <Quote className="mb-2" />
-                    <p>Excerpt</p>
-                  </div>
-                </NavigationMenuLink>
-              </Link>
-              <Link href="/icons/new" legacyBehavior passHref>
-                <NavigationMenuLink>
-                  <div className="w-full border border-border p-4 rounded hover:bg-secondary transition">
-                    <SquareUser className="mb-2" />
-                    <p>Icons</p>
-                  </div>
-                </NavigationMenuLink>
-              </Link>
+              {SUB_MENU_ITEMS.map((item) => (
+                <Link key={item.name} href={item.route} legacyBehavior passHref>
+                  <NavigationMenuLink>
+                    <div className="w-full border border-border p-4 rounded hover:bg-secondary transition mb-2">
+                      <NavIconSwitcher name={item.icon} />
+                      <p className="mt-2">{item.name}</p>
+                    </div>
+                  </NavigationMenuLink>
+                </Link>
+              ))}
             </div>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -132,22 +127,16 @@ export default function NavMenu() {
 
               <Separator className="mx-auto !mb-2" />
 
-              <Link href="/excerpt/new">
-                <SheetClose asChild>
-                  <Button className="w-full" variant={"outline"}>
-                    <Quote className="mr-2 p-1" />
-                    Add Excerpt
-                  </Button>
-                </SheetClose>
-              </Link>
-              <Link href="/icons/new">
-                <SheetClose asChild>
-                  <Button className="w-full" variant={"outline"}>
-                    <SquareUser className="mr-2 p-1" />
-                    Add Icons
-                  </Button>
-                </SheetClose>
-              </Link>
+              {SUB_MENU_ITEMS.map((item) => (
+                <Link href={item.route} key={item.name}>
+                  <SheetClose asChild>
+                    <Button className="w-full" variant={"outline"}>
+                      <NavIconSwitcher name={item.icon} className="mr-2 p-1" />
+                      {item.name}
+                    </Button>
+                  </SheetClose>
+                </Link>
+              ))}
 
               <SheetClose asChild>
                 <AuthButton />
@@ -158,4 +147,14 @@ export default function NavMenu() {
       </div>
     </nav>
   );
+}
+
+function AuthButton() {
+  const { data: session } = useSession();
+
+  if (session) {
+    return <Button onClick={() => signOut()}>Sign Out</Button>;
+  }
+
+  return <Button onClick={() => signIn()}>Sign In</Button>;
 }

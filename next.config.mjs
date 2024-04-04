@@ -12,6 +12,7 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: ["lucide-react"],
 };
 
 export default withRoutes(nextConfig);
