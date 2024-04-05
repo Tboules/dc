@@ -1,8 +1,14 @@
+import { NextJsPageProps } from "@/@types";
 import FindFigureDialogue from "@/components/find-figure-dialog";
 import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function NewExcerptFormPage() {
+export default async function NewExcerptFormPage({
+  searchParams,
+}: NextJsPageProps) {
+  console.log(searchParams);
+
   const session = await getServerSession();
   if (!session) {
     redirect(

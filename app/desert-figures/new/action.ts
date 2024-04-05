@@ -7,7 +7,7 @@ import {
   newDesertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
 import { InternalFormState } from "@/@types/forms";
-import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
+import { DESERT_FIGURE_TITLE, INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { v4 as uuid } from "uuid";
 import { getPresignedUrl } from "@/app/api/documents/get-presigned";
@@ -58,6 +58,11 @@ export async function postDesertFigureAction(
     //add user id to created by
     //TODO fix desert figure sql to always calculate the full name
     parsed.data.createdBy = session?.user?.id;
+
+    if (parsed.data.title == DESERT_FIGURE_TITLE.NONE) {
+      parsed.data.title = null;
+    }
+
     figure = await db
       .insert(desertFigures)
       .values({

@@ -32,6 +32,7 @@ export const DESERT_FIGURE_TYPE = {
 export type DesertFigureType = ObjectValues<typeof DESERT_FIGURE_TYPE>;
 
 export const DESERT_FIGURE_TITLE = {
+  NONE: "None",
   SAINT: "Saint",
   DOCTOR: "Doctor",
   FATHER: "Father",
