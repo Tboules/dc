@@ -1,8 +1,9 @@
 "use client";
+
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Image, Menu, Quote, SquareUser } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import {
   NavigationMenu,

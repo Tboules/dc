@@ -25,7 +25,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "../ui/separator";
-import { postDesertFigureAction } from "@/app/excerpt/new/action";
 import { useFormState } from "react-dom";
 import { useRef } from "react";
 import {
@@ -36,6 +35,7 @@ import {
 import lottieLoader from "@/assets/loading.json";
 import { Label } from "../ui/label";
 import FileInputWithPreview from "@/components/FileInputWithPreview";
+import { postDesertFigureAction } from "@/app/desert-figures/new/action";
 
 export default function PostFigureForm() {
   const [state, formAction] = useFormState(postDesertFigureAction, {
@@ -99,7 +99,7 @@ export default function PostFigureForm() {
       <Form {...form}>
         <form
           ref={formRef}
-          className="min-w-72 w-full rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="max-w-screen-lg mt-2 w-full rounded grid grid-cols-1 md:grid-cols-2 gap-4"
           onSubmit={(e) => {
             e.preventDefault();
             form.handleSubmit(() => {
@@ -110,17 +110,15 @@ export default function PostFigureForm() {
           }}
           action={formAction}
         >
-          <h1 className="md:col-span-2 mb-2 text-xl font-bold">
+          <h1 className="md:col-span-2 text-xl font-bold">
             Add a Desert Figure
           </h1>
           <h3>{state.message}</h3>
           <Separator className="md:col-span-2 mb-2" />
-
           <div className="md:col-start-1 md:col-end-2 space-y-2">
             <Label>Desert Figure Image</Label>
             <FileInputWithPreview {...form.register("thumbnail")} />
           </div>
-
           <div className="space-y-2">
             <FormField
               control={form.control}
@@ -204,7 +202,6 @@ export default function PostFigureForm() {
               )}
             />
           </div>
-
           <Separator className="md:col-span-2 mb-2" />
           <Button className="md:col-span-2" type="submit">
             Submit

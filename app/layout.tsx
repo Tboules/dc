@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import NavMenu from "@/components/nav/NavMenu";
 import Providers from "@/components/providers";
 
@@ -23,8 +22,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body

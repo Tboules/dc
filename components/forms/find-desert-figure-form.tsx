@@ -10,7 +10,7 @@ import Lottie from "react-lottie-player";
 import lottieLoader from "@/assets/loading.json";
 import { FindDesertFigureFormStatus } from "@/lib/enums";
 import { Button } from "../ui/button";
-import PostFigureForm from "./post-figure";
+import Link from "next/link";
 
 export default function FindDesertFigureForm() {
   const [searchValue, setSearchValue] = React.useState<string>("");
@@ -30,14 +30,6 @@ export default function FindDesertFigureForm() {
     if (debounceSearchValue) callServerAction(debounceSearchValue);
   }, [debounceSearchValue]);
 
-  function openNewFigureForm() {
-    setFormStatus("new figure");
-  }
-
-  if (formStatus == "new figure") {
-    return <PostFigureForm />;
-  }
-
   return (
     <div className="space-y-4">
       <form className="space-y-2">
@@ -50,9 +42,7 @@ export default function FindDesertFigureForm() {
       </form>
       {formStatus == "init" && <InitializePlaceHolder />}
       {formStatus == "loading" && <FormLoader />}
-      {formStatus == "empty" && (
-        <EmptyResultPlaceholder cb={openNewFigureForm} />
-      )}
+      {formStatus == "empty" && <EmptyResultPlaceholder />}
     </div>
   );
 }
@@ -74,14 +64,19 @@ function FormLoader() {
   );
 }
 
-function EmptyResultPlaceholder({ cb }: { cb: () => void }) {
+function EmptyResultPlaceholder() {
   return (
     <div className="border border-border rounded min-h-64 w-full flex flex-col justify-center items-center gap-2">
       <CircleSlash height={50} width={50} strokeWidth={1} />
       <h4>Unable to find what you&apos;re looking for?</h4>
-      <Button className="mt-2" onClick={cb}>
-        Add a Desert Figure
-      </Button>
+      <Link
+        href={{
+          pathname: "/desert-figures/new",
+          query: { fromExcerpt: "true" },
+        }}
+      >
+        <Button className="mt-2">Add a Desert Figure</Button>
+      </Link>
     </div>
   );
 }
