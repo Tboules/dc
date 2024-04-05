@@ -36,11 +36,18 @@ import lottieLoader from "@/assets/loading.json";
 import { Label } from "../ui/label";
 import FileInputWithPreview from "@/components/FileInputWithPreview";
 import { postDesertFigureAction } from "@/app/desert-figures/new/action";
+import { useSearchParams } from "next/navigation";
+import { getAllParams } from "@/lib/utils";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function PostFigureForm() {
+  const params = useSearchParams();
   const [state, formAction] = useFormState(postDesertFigureAction, {
     status: INTERNAL_FORM_STATE_STATUS.PENDING,
+    params: getAllParams(params.entries()),
   });
+
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
     defaultValues: {
@@ -203,9 +210,19 @@ export default function PostFigureForm() {
             />
           </div>
           <Separator className="md:col-span-2 mb-2" />
-          <Button className="md:col-span-2" type="submit">
-            Submit
-          </Button>
+          <div className="md:col-span-2 flex gap-2 flex-col md:flex-row justify-between items-center">
+            {params.has("fromExcerpt") && (
+              <Link className="w-full" href="/excerpt/new">
+                <Button className="w-full" variant="outline">
+                  <ArrowLeft className="mr-1" />
+                  Back
+                </Button>
+              </Link>
+            )}
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
+          </div>
         </form>
       </Form>
     </>

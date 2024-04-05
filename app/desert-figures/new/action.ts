@@ -2,6 +2,7 @@
 
 import db from "@/lib/database";
 import {
+  DesertFigureDirectInsert,
   desertFigures,
   newDesertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
@@ -11,11 +12,15 @@ import { serverAuthSession } from "@/lib/utils/auth";
 import { v4 as uuid } from "uuid";
 import { getPresignedUrl } from "@/app/api/documents/get-presigned";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { generateDesertFigureFullname } from "@/lib/utils";
 
 export async function postDesertFigureAction(
   formState: InternalFormState,
   formData: FormData,
 ): Promise<InternalFormState> {
+  let figure: DesertFigureDirectInsert[];
+
   try {
     const d = Object.fromEntries(formData);
     const parsed = newDesertFigureSchema.safeParse(d);
@@ -51,16 +56,15 @@ export async function postDesertFigureAction(
     }
 
     //add user id to created by
+    //TODO fix desert figure sql to always calculate the full name
     parsed.data.createdBy = session?.user?.id;
-    await db.insert(desertFigures).values({
-      ...parsed.data,
-      thumbnail: thumbnailUrl,
-    });
-
-    return {
-      ...formState,
-      status: INTERNAL_FORM_STATE_STATUS.SUCCESS,
-    };
+    figure = await db
+      .insert(desertFigures)
+      .values({
+        ...parsed.data,
+        thumbnail: thumbnailUrl,
+      })
+      .returning();
   } catch (error) {
     console.log(error);
     return {
@@ -68,7 +72,17 @@ export async function postDesertFigureAction(
       message: "An error happend on the server",
       status: INTERNAL_FORM_STATE_STATUS.FAILURE,
     };
-  } finally {
-    revalidatePath("/excerpt/new");
   }
+
+  if (formState.params && formState.params["fromExcerpt"] == "true") {
+    redirect(
+      `/excerpt/new?desertFigure=${figure[0].id}&figureName=${generateDesertFigureFullname(figure[0])}`,
+    );
+  }
+
+  revalidatePath("/desert-figures/new");
+  return {
+    ...formState,
+    status: INTERNAL_FORM_STATE_STATUS.SUCCESS,
+  };
 }
