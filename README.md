@@ -28,3 +28,13 @@
 
 3. How will I seed the DB?
    - [example](https://dev.to/anasrin/seeding-database-with-drizzle-orm-fga)
+
+#### Working Todo List
+
+- [ ] New Excerpt Form
+  - [x] Create Relationship between New Figure and New Excerpt Form
+  - [x] Pull desert figure data into new excerpt form
+  - [ ] Create ui for new excerpt form
+  - [ ] Create logic to search for desert figure
+  - [ ] Add wisywig for excerpt
+  - [ ] Add Component to create tags on new excerpt form
