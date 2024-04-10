@@ -40,6 +40,7 @@ import { useSearchParams } from "next/navigation";
 import { getAllParams } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import FormHeader from "./form-header";
 
 export default function PostFigureForm() {
   const params = useSearchParams();
@@ -117,11 +118,12 @@ export default function PostFigureForm() {
           }}
           action={formAction}
         >
-          <h1 className="md:col-span-2 text-xl font-bold">
-            Add a Desert Figure
-          </h1>
-          <h3>{state.message}</h3>
-          <Separator className="md:col-span-2 mb-2" />
+          <FormHeader
+            title="Add a Desert Figure"
+            message={state.message}
+            wrapperClass="md:col-span-2"
+          />
+
           <div className="md:col-start-1 md:col-end-2 space-y-2">
             <Label>Desert Figure Image</Label>
             <FileInputWithPreview {...form.register("thumbnail")} />

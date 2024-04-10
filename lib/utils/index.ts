@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { uuidv4Regex } from "./regex";
 import { Params } from "@/@types/forms";
 import {
+  DesertFigure,
   DesertFigureDirectInsert,
   NewDesertFigure,
 } from "../database/schema/desertFigures";
@@ -30,7 +31,7 @@ export function getAllParams(entries: IterableIterator<[string, string]>) {
 }
 
 export function generateDesertFigureFullname(
-  figure: DesertFigureDirectInsert | NewDesertFigure,
+  figure: DesertFigureDirectInsert | NewDesertFigure | DesertFigure,
 ) {
   let fullname = "";
 

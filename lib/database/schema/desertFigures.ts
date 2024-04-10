@@ -3,13 +3,6 @@ import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const IMAGE_FILE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
 export const desertFigures = pgTable("desert_figure", {
   id: uuid("id").defaultRandom().primaryKey(),
   firstName: text("first_name").notNull(),

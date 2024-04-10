@@ -1,5 +1,7 @@
 import { NextJsPageProps } from "@/@types";
 import FindFigureDialogue from "@/components/find-figure-dialog";
+import FormHeader from "@/components/forms/form-header";
+import NewExcerptForm from "@/components/forms/new-excerpt-form";
 import { selectDesertFigureById } from "@/lib/database/handlers/desert-figures";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -17,11 +19,11 @@ export default async function NewExcerptFormPage({
   const figureId = searchParams["desertFigure"] as string;
   const desertFigure = await selectDesertFigureById(figureId);
 
-  console.log(desertFigure);
-
   return (
-    <div className="max-w-screen-xl flex flex-col items-center m-auto p-4">
-      <FindFigureDialogue />
+    <div className="md:p-4 p-2 max-w-screen-lg mx-auto">
+      <FormHeader title="Add an Excerpt" />
+
+      <NewExcerptForm />
     </div>
   );
 }

@@ -23,7 +23,7 @@ export default function FindFigureDialogue() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-[400px] justify-between" variant="outline">
+        <Button className="w-full justify-between" variant="outline">
           Select Desert Figure
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
