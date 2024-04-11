@@ -1,5 +1,6 @@
 "use client";
 import FindFigureDialogue from "@/components/find-figure-dialog";
+import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
 import {
   Form,
   FormControl,
@@ -13,9 +14,13 @@ import { useForm } from "react-hook-form";
 
 export default function NewExcerptForm() {
   const form = useForm();
+
   return (
     <Form {...form}>
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+      <form
+        onSubmit={form.handleSubmit((d) => console.log(d))}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
+      >
         <div className="space-y-2">
           <Label>Desert Figure</Label>
           <FindFigureDialogue />
@@ -28,6 +33,22 @@ export default function NewExcerptForm() {
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="excerpt title" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+          defaultValue=""
+        />
+
+        <FormField
+          name="body"
+          render={({ field }) => (
+            <FormItem className="md:col-span-2">
+              <FormLabel>Excerpt</FormLabel>
+              <FormControl>
+                <ControlledTipTap
+                  onChange={field.onChange}
+                  value={field.value}
+                />
               </FormControl>
             </FormItem>
           )}
