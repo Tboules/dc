@@ -50,6 +50,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.28.14
     version: 5.28.14(react@18.2.0)
+  '@tiptap/extension-text-align':
+    specifier: ^2.3.0
+    version: 2.3.0(@tiptap/core@2.3.0)
   '@tiptap/pm':
     specifier: ^2.3.0
     version: 2.3.0
@@ -2965,6 +2968,14 @@ packages:
 
   /@tiptap/extension-strike@2.3.0(@tiptap/core@2.3.0):
     resolution: {integrity: sha512-gOW4ALeH8gkJiUGGXVy/AOd5lAPTX0bzoOW1+sCLcTA7t8dluBW7M2ngNYxTEtlKqyv7aLfrgsYSiqucmmfSLw==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.3.0(@tiptap/pm@2.3.0)
+    dev: false
+
+  /@tiptap/extension-text-align@2.3.0(@tiptap/core@2.3.0):
+    resolution: {integrity: sha512-Pj+Yuk8xpYLGxNKGRUwvjlrOQP66ZyzjpJN5xqjJ7anzb2OKrluWMBco3xhjd/h03viA+wYeJKfnEpk/SbzHTQ==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
