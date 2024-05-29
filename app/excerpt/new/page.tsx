@@ -1,5 +1,4 @@
 import { NextJsPageProps } from "@/@types";
-import FindFigureDialogue from "@/components/find-figure-dialog";
 import FormHeader from "@/components/forms/form-header";
 import NewExcerptForm from "@/components/forms/new-excerpt-form";
 import { selectDesertFigureById } from "@/lib/database/handlers/desert-figures";
@@ -18,6 +17,7 @@ export default async function NewExcerptFormPage({
 
   const figureId = searchParams["desertFigure"] as string;
   const desertFigure = await selectDesertFigureById(figureId);
+  console.log(desertFigure);
 
   return (
     <div className="md:p-4 p-2 max-w-screen-lg mx-auto">

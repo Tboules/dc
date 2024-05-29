@@ -31,7 +31,7 @@ export default function ControlledTipTap({ onChange, value }: Props) {
     content: value,
     editorProps: {
       attributes: {
-        class: "p-2 border border-border rounded-md min-h-36",
+        class: "p-2 border border-border rounded-md min-h-64",
       },
     },
   });

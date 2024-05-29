@@ -35,6 +35,11 @@
   - [x] Create Relationship between New Figure and New Excerpt Form
   - [x] Pull desert figure data into new excerpt form
   - [ ] Create ui for new excerpt form
+    - [ ] Search for Desert Figure
+    - [x] place holder for Figure
+    - [x] Title (move it below)
+    - [x] Excerpt Section Tip Tap (make bigger on larger screen)
+    - [ ] Tags section
   - [ ] Create logic to search for desert figure
   - [ ] Add wisywig for excerpt
   - [ ] Add Component to create tags on new excerpt form

@@ -1,6 +1,7 @@
 "use client";
 import FindFigureDialogue from "@/components/find-figure-dialog";
 import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -21,7 +22,7 @@ export default function NewExcerptForm() {
         onSubmit={form.handleSubmit((d) => console.log(d))}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
       >
-        <div className="space-y-2">
+        <div className="space-y-2 md:col-span-2">
           <Label>Desert Figure</Label>
           <FindFigureDialogue />
         </div>
@@ -29,10 +30,10 @@ export default function NewExcerptForm() {
         <FormField
           name="title"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
+            <FormItem className="md:col-span-2">
+              <FormLabel>Excerpt Title</FormLabel>
               <FormControl>
-                <Input placeholder="excerpt title" {...field} />
+                <Input placeholder="Give your excerpt a title" {...field} />
               </FormControl>
             </FormItem>
           )}
