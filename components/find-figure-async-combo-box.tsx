@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Command,
@@ -15,17 +17,25 @@ import { ChevronsUpDown } from "lucide-react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { FindDesertFigureFormStatus } from "@/lib/enums";
 import { findDesertFigure } from "@/app/excerpt/new/action";
+import { DesertFigure } from "@/lib/database/schema/desertFigures";
+import { CommandGroup, CommandItem } from "cmdk";
 
 export default function FindFigureAsyncInput() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [figures, setFigures] = React.useState<DesertFigure[]>([]);
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
   const debounceValue = useDebounce(value, 300);
 
   async function callServerAction(s: string) {
     setFormStatus("loading");
-    await findDesertFigure(s);
+
+    const incomingFigures = await findDesertFigure(s);
+    if (incomingFigures) {
+      setFigures(incomingFigures);
+      return;
+    }
     // setResult(res);
     setFormStatus("empty");
   }
@@ -50,23 +60,41 @@ export default function FindFigureAsyncInput() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="md:w-[38rem]">
-        <Command>
+        <Command shouldFilter={false}>
           <CommandInput
             value={value}
             onValueChange={(v) => setValue(v)}
             placeholder="Type a command or search..."
           />
-          <CommandList>
-            <CommandEmpty>
-              {formStatus == "init" && "Look for a figure."}
-              {formStatus == "loading" && <div>searching...</div>}
-              {formStatus == "empty" && (
-                <div>could not find what you were looking for</div>
-              )}
-            </CommandEmpty>
-          </CommandList>
+          <SearchResults loading={formStatus == "loading"} figures={figures} />
         </Command>
       </PopoverContent>
     </Popover>
+  );
+}
+
+function SearchResults({
+  figures,
+  loading,
+}: {
+  figures: DesertFigure[];
+  loading: boolean;
+}) {
+  if (loading) {
+    return <CommandEmpty>loading...</CommandEmpty>;
+  }
+
+  return (
+    <CommandList>
+      {figures.map((figure) => (
+        <CommandItem
+          key={figure.id}
+          onSelect={(v) => console.log(v)}
+          value={figure.id}
+        >
+          {figure.firstName}
+        </CommandItem>
+      ))}
+    </CommandList>
   );
 }
