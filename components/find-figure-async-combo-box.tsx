@@ -61,7 +61,7 @@ export default function FindFigureAsyncInput() {
               {formStatus == "init" && "Look for a figure."}
               {formStatus == "loading" && <div>searching...</div>}
               {formStatus == "empty" && (
-                <div>couldn't find what you were looking for</div>
+                <div>could not find what you were looking for</div>
               )}
             </CommandEmpty>
           </CommandList>
