@@ -41,5 +41,5 @@
     - [x] Excerpt Section Tip Tap (make bigger on larger screen)
     - [ ] Tags section
   - [ ] Create logic to search for desert figure
-  - [ ] Add wisywig for excerpt
+  - [x] Add wisywig for excerpt
   - [ ] Add Component to create tags on new excerpt form

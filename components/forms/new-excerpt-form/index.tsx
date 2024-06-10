@@ -1,7 +1,7 @@
 "use client";
+import FindFigureAsyncInput from "@/components/find-figure-async-command";
 import FindFigureDialogue from "@/components/find-figure-dialog";
 import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -24,7 +24,7 @@ export default function NewExcerptForm() {
       >
         <div className="space-y-2 md:col-span-2">
           <Label>Desert Figure</Label>
-          <FindFigureDialogue />
+          <FindFigureAsyncInput />
         </div>
 
         <FormField
