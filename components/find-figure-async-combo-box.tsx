@@ -5,7 +5,9 @@ import {
   Command,
   CommandEmpty,
   CommandInput,
+  CommandItem,
   CommandList,
+  CommandGroup,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -18,7 +20,6 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { FindDesertFigureFormStatus } from "@/lib/enums";
 import { findDesertFigure } from "@/app/excerpt/new/action";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
-import { CommandGroup, CommandItem } from "cmdk";
 
 export default function FindFigureAsyncInput() {
   const [open, setOpen] = React.useState(false);
@@ -32,6 +33,7 @@ export default function FindFigureAsyncInput() {
     setFormStatus("loading");
 
     const incomingFigures = await findDesertFigure(s);
+    console.log(incomingFigures);
     if (incomingFigures) {
       setFigures(incomingFigures);
       return;
@@ -80,21 +82,20 @@ function SearchResults({
   figures: DesertFigure[];
   loading: boolean;
 }) {
-  if (loading) {
-    return <CommandEmpty>loading...</CommandEmpty>;
-  }
-
   return (
-    <CommandList>
-      {figures.map((figure) => (
-        <CommandItem
-          key={figure.id}
-          onSelect={(v) => console.log(v)}
-          value={figure.id}
-        >
-          {figure.firstName}
-        </CommandItem>
-      ))}
-    </CommandList>
+    <>
+      <CommandEmpty>{loading && "loading..."}</CommandEmpty>
+      <CommandList>
+        {figures.map((figure) => (
+          <CommandItem
+            key={figure.id}
+            onSelect={(v) => console.log(v)}
+            value={figure.id}
+          >
+            {figure.firstName}
+          </CommandItem>
+        ))}
+      </CommandList>
+    </>
   );
 }
