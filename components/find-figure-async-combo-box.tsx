@@ -45,7 +45,7 @@ export default function FindFigureAsyncInput() {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          Select framework...
+          Select a Desert Figure...
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

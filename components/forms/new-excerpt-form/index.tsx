@@ -1,6 +1,5 @@
 "use client";
-import FindFigureAsyncInput from "@/components/find-figure-async-command";
-import FindFigureDialogue from "@/components/find-figure-dialog";
+import FindFigureAsyncInput from "@/components/find-figure-async-combo-box";
 import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
 import {
   Form,
