@@ -5,7 +5,7 @@ import { z } from "zod";
 
 export const tags = pgTable("tag", {
   id: uuid("id").defaultRandom().primaryKey(),
-  name: text("name").notNull(),
+  name: text("name").notNull().unique(),
   dateAdded: timestamp("date_added").defaultNow(),
   createdBy: text("added_by").references(() => users.id),
 });
