@@ -56,11 +56,25 @@ export async function postDesertFigureAction(
     }
 
     //add user id to created by
-    //TODO fix desert figure sql to always calculate the full name
     parsed.data.createdBy = session?.user?.id;
 
     if (parsed.data.title == DESERT_FIGURE_TITLE.NONE) {
       parsed.data.title = null;
+    }
+
+    //Derive Full Name
+    // TODO Test
+    let fullName = parsed.data.firstName;
+    if (parsed.data.title && parsed.data.title != DESERT_FIGURE_TITLE.NONE) {
+      fullName = parsed.data.title + " " + fullName;
+    }
+
+    if (parsed.data.lastName) {
+      fullName += ` ${parsed.data.lastName}`;
+    }
+
+    if (parsed.data.epithet) {
+      fullName += ` ${parsed.data.epithet}`;
     }
 
     figure = await db
