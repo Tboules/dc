@@ -9,6 +9,7 @@ export const desertFigures = pgTable("desert_figure", {
   lastName: text("last_name"),
   title: text("title"),
   epithet: text("epithet"),
+  fullName: text("full_name").notNull(),
   type: smallint("type").default(1).notNull(),
   thumbnail: text("thumbnail"),
   dateAdded: timestamp("date_added").defaultNow(),

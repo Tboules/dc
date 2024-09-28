@@ -1,0 +1,1 @@
+ALTER TABLE "desert_figure" ALTER COLUMN "full_name" SET NOT NULL;
