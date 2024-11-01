@@ -32,7 +32,6 @@ export default function FindFigureAsyncInput() {
     setFormStatus("loading");
 
     const incomingFigures = await findDesertFigure(s);
-    console.log(incomingFigures);
     if (incomingFigures) {
       setFigures(incomingFigures);
       return;
@@ -62,12 +61,17 @@ export default function FindFigureAsyncInput() {
       </PopoverTrigger>
       <PopoverContent className="md:w-[38rem]">
         <Command shouldFilter={false}>
-          <CommandInput
-            value={value}
-            onValueChange={(v) => setValue(v)}
-            placeholder="Type a command or search..."
-          />
-          <SearchResults loading={formStatus == "loading"} figures={figures} />
+          <CommandList>
+            <CommandInput
+              value={value}
+              onValueChange={(v) => setValue(v)}
+              placeholder="Type a command or search..."
+            />
+            <SearchResults
+              loading={formStatus == "loading"}
+              figures={figures}
+            />
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
@@ -81,20 +85,20 @@ function SearchResults({
   figures: DesertFigure[];
   loading: boolean;
 }) {
+  console.log(figures);
+  // TODO Control for empty search results
   return (
     <>
       <CommandEmpty>{loading && "loading..."}</CommandEmpty>
-      <CommandList>
-        {figures.map((figure) => (
-          <CommandItem
-            key={figure.id}
-            onSelect={(v) => console.log(v)}
-            value={figure.id}
-          >
-            {figure.firstName}
-          </CommandItem>
-        ))}
-      </CommandList>
+      {figures.map((figure) => (
+        <CommandItem
+          key={figure.id}
+          onSelect={(v) => console.log(v)}
+          value={figure.id}
+        >
+          {figure.fullName}
+        </CommandItem>
+      ))}
     </>
   );
 }
