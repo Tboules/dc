@@ -26,17 +26,18 @@ export default function FindFigureAsyncInput() {
   const [figures, setFigures] = React.useState<DesertFigure[]>([]);
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
+
   const debounceValue = useDebounce(value, 300);
 
   async function callServerAction(s: string) {
     setFormStatus("loading");
 
     const incomingFigures = await findDesertFigure(s);
-    if (incomingFigures) {
+    if (incomingFigures && incomingFigures.length > 0) {
+      setFormStatus("success");
       setFigures(incomingFigures);
       return;
     }
-    // setResult(res);
     setFormStatus("empty");
   }
 
@@ -46,8 +47,16 @@ export default function FindFigureAsyncInput() {
     }
   }, [debounceValue]);
 
+  function handleModal(isOpen: boolean) {
+    setFigures([]);
+    setValue("");
+    setFormStatus("init");
+
+    setOpen(isOpen);
+  }
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleModal}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -67,10 +76,7 @@ export default function FindFigureAsyncInput() {
               onValueChange={(v) => setValue(v)}
               placeholder="Type a command or search..."
             />
-            <SearchResults
-              loading={formStatus == "loading"}
-              figures={figures}
-            />
+            <SearchResults formStatus={formStatus} figures={figures} />
           </CommandList>
         </Command>
       </PopoverContent>
@@ -80,16 +86,32 @@ export default function FindFigureAsyncInput() {
 
 function SearchResults({
   figures,
-  loading,
+  formStatus,
 }: {
   figures: DesertFigure[];
-  loading: boolean;
+  formStatus: FindDesertFigureFormStatus;
 }) {
-  console.log(figures);
-  // TODO Control for empty search results
+  if (formStatus == "init") {
+    return <CommandEmpty>Look for your favorite Desert Figure</CommandEmpty>;
+  }
+
+  if (formStatus == "empty") {
+    return (
+      <CommandEmpty>
+        We appologize but we could not find that one :/
+      </CommandEmpty>
+    );
+  }
+
+  if (formStatus == "loading") {
+    return <CommandEmpty>loading...</CommandEmpty>;
+  }
+
+  // TODO handle on select callback. Set the Figure ID in form state
+  // TODO handle unfound desert figure. add figure flow
+
   return (
     <>
-      <CommandEmpty>{loading && "loading..."}</CommandEmpty>
       {figures.map((figure) => (
         <CommandItem
           key={figure.id}
