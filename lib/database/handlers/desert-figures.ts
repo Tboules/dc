@@ -1,6 +1,5 @@
 import db from "@/lib/database";
 import {
-  DbDesertFigure,
   DesertFigure,
   desertFigures,
 } from "@/lib/database/schema/desertFigures";

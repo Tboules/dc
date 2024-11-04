@@ -9,7 +9,7 @@
 - [x] setup routing and page layout
 - [x] create UI for layout
 - [x] Drizzle Schema for application
-- [ ] create UI for forms
+- [x] create UI for forms
 - [ ] add author / quote / tag
 - [ ] ui to display author / quotes / tags
 
