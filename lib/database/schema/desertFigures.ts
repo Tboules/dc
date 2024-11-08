@@ -23,6 +23,7 @@ export const desertFigureSchema = createSelectSchema(desertFigures);
 export const newDesertFigureSchema = createInsertSchema(desertFigures, {
   firstName: (s) => s.firstName.min(1, "First Name is required"),
   thumbnail: () => z.custom<File>(),
+  fullName: (s) => s.fullName.optional(),
 });
 
 export type DesertFigure = z.infer<typeof desertFigureSchema>;

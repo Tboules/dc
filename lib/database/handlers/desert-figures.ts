@@ -5,7 +5,9 @@ import {
 } from "@/lib/database/schema/desertFigures";
 import { eq, sql } from "drizzle-orm";
 
-export async function selectDesertFigureById(figureId: string) {
+export async function selectDesertFigureById(figureId: string | undefined) {
+  if (!figureId) return;
+
   try {
     const figure = await db
       .select()

@@ -19,10 +19,19 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { FindDesertFigureFormStatus } from "@/lib/enums";
 import { findDesertFigure } from "@/app/excerpt/new/action";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
+import { useQueryState } from "nuqs";
 
-export default function FindFigureAsyncInput() {
+type Props = {
+  desertFigure?: DesertFigure;
+};
+
+export default function FindFigureAsyncInput({ desertFigure }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [selectedFigureID, setSelectedFigureID] = useQueryState("desertFigure");
+  const [selectedFigure, setSelectedFigure] = React.useState<
+    DesertFigure | undefined
+  >(desertFigure);
   const [figures, setFigures] = React.useState<DesertFigure[]>([]);
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
@@ -55,6 +64,16 @@ export default function FindFigureAsyncInput() {
     setOpen(isOpen);
   }
 
+  function handleSelectFigure(id: string, figure: DesertFigure) {
+    setSelectedFigureID(id);
+    setSelectedFigure(figure);
+
+    // what should happen on select?
+    // 1. URL should update to reflect selected ID (done)
+    // 2. react hook form should take the figure id (TODO)
+    // 3. UI should update with figure full name (done)
+  }
+
   return (
     <Popover open={open} onOpenChange={handleModal}>
       <PopoverTrigger asChild>
@@ -64,7 +83,9 @@ export default function FindFigureAsyncInput() {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          Select a Desert Figure...
+          {selectedFigure
+            ? selectedFigure.fullName
+            : "Select a Desert Figure..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -76,7 +97,11 @@ export default function FindFigureAsyncInput() {
               onValueChange={(v) => setValue(v)}
               placeholder="Type a command or search..."
             />
-            <SearchResults formStatus={formStatus} figures={figures} />
+            <SearchResults
+              formStatus={formStatus}
+              figures={figures}
+              callback={handleSelectFigure}
+            />
           </CommandList>
         </Command>
       </PopoverContent>
@@ -87,9 +112,11 @@ export default function FindFigureAsyncInput() {
 function SearchResults({
   figures,
   formStatus,
+  callback,
 }: {
   figures: DesertFigure[];
   formStatus: FindDesertFigureFormStatus;
+  callback: (value: string, figure: DesertFigure) => void;
 }) {
   if (formStatus == "init") {
     return <CommandEmpty>Look for your favorite Desert Figure</CommandEmpty>;
@@ -115,7 +142,7 @@ function SearchResults({
       {figures.map((figure) => (
         <CommandItem
           key={figure.id}
-          onSelect={(v) => console.log(v)}
+          onSelect={(v) => callback(v, figure)}
           value={figure.id}
         >
           {figure.fullName}

@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import MultipleSelector, { Option } from "@/components/ui/multi-select";
+import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { useForm } from "react-hook-form";
 
 const OPTIONS: Option[] = [
@@ -27,7 +28,12 @@ const OPTIONS: Option[] = [
   { label: "Astro", value: "astro" },
 ];
 
-export default function NewExcerptForm() {
+type Props = {
+  desertFigure?: DesertFigure;
+};
+
+export default function NewExcerptForm({ desertFigure }: Props) {
+  // TODO : setup the form with a schema, context form, url params
   const form = useForm();
 
   return (
@@ -38,7 +44,7 @@ export default function NewExcerptForm() {
       >
         <div className="space-y-2 md:col-span-2">
           <Label>Desert Figure</Label>
-          <FindFigureAsyncInput />
+          <FindFigureAsyncInput desertFigure={desertFigure} />
         </div>
 
         <FormField

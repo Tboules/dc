@@ -2,6 +2,7 @@ import SessionProvider from "./session-provider";
 import { ThemeProvider } from "./theme-provider";
 import { getServerSession } from "next-auth";
 import { QueryProvider } from "./query-provider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export default async function Providers({ children }: React.PropsWithChildren) {
   const session = await getServerSession();
@@ -15,7 +16,7 @@ export default async function Providers({ children }: React.PropsWithChildren) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <NuqsAdapter>{children}</NuqsAdapter>
         </ThemeProvider>
       </SessionProvider>
     </QueryProvider>

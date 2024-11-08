@@ -29,6 +29,7 @@ export default function ControlledTipTap({ onChange, value }: Props) {
     ],
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     content: value,
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: "p-2 border border-border rounded-md min-h-64",

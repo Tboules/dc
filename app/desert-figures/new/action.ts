@@ -81,6 +81,7 @@ export async function postDesertFigureAction(
       .insert(desertFigures)
       .values({
         ...parsed.data,
+        fullName,
         thumbnail: thumbnailUrl,
       })
       .returning();
