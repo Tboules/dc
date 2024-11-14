@@ -44,18 +44,6 @@ export default function FindFigureAsyncInput({
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
 
-  //init form with url value
-  React.useEffect(() => {
-    console.log(desertFigure);
-    if (desertFigure) {
-      setFigures([desertFigure]);
-      form.setValue("desertFigureID", desertFigure.id);
-      field.value = desertFigure.id;
-    }
-
-    console.log(figures);
-  }, []);
-
   const debounceValue = useDebounce(value, 300);
 
   async function callServerAction(s: string) {
@@ -77,24 +65,14 @@ export default function FindFigureAsyncInput({
   }, [debounceValue]);
 
   function handleModal(isOpen: boolean) {
-    // setFigures([]);
     setValue("");
     setFormStatus("init");
-
     setOpen(isOpen);
   }
 
   function handleSelectFigure(id: string) {
     setSelectedFigureID(id);
-
     form.setValue("desertFigureID", id);
-
-    // what should happen on select?
-    // 1. URL should update to reflect selected ID (done)
-    // 2. react hook form should take the figure id (TODO)
-    // 3. UI should update with figure full name (done)
-
-    // close the modal
     handleModal(false);
   }
 
@@ -160,7 +138,6 @@ function SearchResults({
     return <CommandEmpty>loading...</CommandEmpty>;
   }
 
-  // TODO handle on select callback. Set the Figure ID in form state
   // TODO handle unfound desert figure. add figure flow
 
   return (

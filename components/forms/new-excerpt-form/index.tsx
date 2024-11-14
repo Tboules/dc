@@ -38,6 +38,9 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   // TODO : setup the form with a schema, context form, url params
   const form = useForm<NewExcerpt>({
     resolver: zodResolver(newExcerptSchema),
+    defaultValues: {
+      desertFigureID: desertFigure?.id,
+    },
   });
 
   return (
