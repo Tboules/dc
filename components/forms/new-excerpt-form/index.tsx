@@ -1,6 +1,7 @@
 "use client";
 import FindFigureAsyncInput from "@/components/find-figure-async-combo-box";
 import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -9,9 +10,10 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import MultipleSelector, { Option } from "@/components/ui/multi-select";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
+import { NewExcerpt, newExcerptSchema } from "@/lib/database/schema/excerpts";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 const OPTIONS: Option[] = [
@@ -34,7 +36,9 @@ type Props = {
 
 export default function NewExcerptForm({ desertFigure }: Props) {
   // TODO : setup the form with a schema, context form, url params
-  const form = useForm();
+  const form = useForm<NewExcerpt>({
+    resolver: zodResolver(newExcerptSchema),
+  });
 
   return (
     <Form {...form}>
@@ -42,13 +46,29 @@ export default function NewExcerptForm({ desertFigure }: Props) {
         onSubmit={form.handleSubmit((d) => console.log(d))}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
       >
-        <div className="space-y-2 md:col-span-2">
-          <Label>Desert Figure</Label>
-          <FindFigureAsyncInput desertFigure={desertFigure} />
-        </div>
+        {/* <div className="space-y-2 md:col-span-2"> */}
+        {/*   <Label>Desert Figure</Label> */}
+        {/*   <FindFigureAsyncInput desertFigure={desertFigure} /> */}
+        {/* </div> */}
+
+        <FormField
+          control={form.control}
+          name="desertFigureID"
+          render={({ field }) => (
+            <FormItem className="md:col-span-2">
+              <FormLabel>DesertFigure</FormLabel>
+              <FindFigureAsyncInput
+                field={field}
+                desertFigure={desertFigure}
+                form={form}
+              />
+            </FormItem>
+          )}
+        />
 
         <FormField
           name="title"
+          control={form.control}
           render={({ field }) => (
             <FormItem className="md:col-span-2">
               <FormLabel>Excerpt Title</FormLabel>
@@ -60,6 +80,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           defaultValue=""
         />
 
+        {/*TODO send error*/}
         <FormField
           name="body"
           render={({ field }) => (
@@ -86,6 +107,10 @@ export default function NewExcerptForm({ desertFigure }: Props) {
             }
           />
         </div>
+
+        {/*TODO navigate back to dashboard*/}
+        <Button variant="outline"> Back </Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );

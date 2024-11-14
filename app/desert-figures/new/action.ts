@@ -63,7 +63,6 @@ export async function postDesertFigureAction(
     }
 
     //Derive Full Name
-    // TODO Test
     let fullName = parsed.data.firstName;
     if (parsed.data.title && parsed.data.title != DESERT_FIGURE_TITLE.NONE) {
       fullName = parsed.data.title + " " + fullName;
