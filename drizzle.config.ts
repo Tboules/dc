@@ -6,8 +6,8 @@ dotenv.config({ path: ".env.local" });
 export default defineConfig({
   schema: "./lib/database/schema/*",
   out: "./lib/database/drizzle",
-  driver: "mysql2",
+  dialect: "postgresql",
   dbCredentials: {
-    uri: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL,
   },
 });
