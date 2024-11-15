@@ -9,6 +9,7 @@ export default async function NewExcerptFormPage({
   searchParams,
 }: NextPageProps) {
   const { desertFigure } = await searchParams;
+
   const session = await getServerSession();
   if (!session) {
     redirect(

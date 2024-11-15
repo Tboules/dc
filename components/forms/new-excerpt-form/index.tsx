@@ -49,17 +49,12 @@ export default function NewExcerptForm({ desertFigure }: Props) {
         onSubmit={form.handleSubmit((d) => console.log(d))}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
       >
-        {/* <div className="space-y-2 md:col-span-2"> */}
-        {/*   <Label>Desert Figure</Label> */}
-        {/*   <FindFigureAsyncInput desertFigure={desertFigure} /> */}
-        {/* </div> */}
-
         <FormField
           control={form.control}
           name="desertFigureID"
           render={({ field }) => (
             <FormItem className="md:col-span-2">
-              <FormLabel>DesertFigure</FormLabel>
+              <FormLabel>Desert Figure</FormLabel>
               <FindFigureAsyncInput
                 field={field}
                 desertFigure={desertFigure}

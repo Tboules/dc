@@ -93,10 +93,8 @@ export async function postDesertFigureAction(
     };
   }
 
-  if (formState.params && formState.params["fromExcerpt"] == "true") {
-    redirect(
-      `/excerpt/new?desertFigure=${figure[0].id}&figureName=${generateDesertFigureFullname(figure[0])}`,
-    );
+  if (formState.params && formState.params["fromExcerpt"] == "1") {
+    redirect(`/excerpt/new?desertFigure=${figure[0].id}`);
   }
 
   revalidatePath("/desert-figures/new");

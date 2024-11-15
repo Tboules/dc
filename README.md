@@ -1,18 +1,5 @@
 ## Desert Collections
 
-- [x] devops backend workflow
-  - [x] Vercel Deploy Dev and Prod
-- [x] setup shadcn
-- [x] drizzle init and auth schema
-  - [x] reconfigure auth schema for next-auth
-- [x] setup auth and protected routes
-- [x] setup routing and page layout
-- [x] create UI for layout
-- [x] Drizzle Schema for application
-- [x] create UI for forms
-- [ ] add author / quote / tag
-- [ ] ui to display author / quotes / tags
-
 ## Notes
 
 1. How will I handle the actions in the folder structure.
@@ -41,8 +28,8 @@
     - [x] Excerpt Section Tip Tap (make bigger on larger screen)
     - [x] Tags section
   - [x] Add wisywig for excerpt
-  - [ ] create use-form context and add to comps (desert figure search, tags comp)
+  - [x] create use-form context and add to comps (desert figure search, tags comp)
 - [ ] New Excert Form Logic
-  - [ ] Create logic to search for desert figure
+  - [x] Create logic to search for desert figure
   - [ ] Add Component to create tags on new excerpt form
   - [ ] Parse and escape all fields, especially wisywig

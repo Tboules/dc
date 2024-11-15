@@ -23,6 +23,8 @@ import { useQueryState } from "nuqs";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { NewExcerpt } from "@/lib/database/schema/excerpts";
 import { FormControl } from "./ui/form";
+import Link from "next/link";
+import { RouteLiteral } from "nextjs-routes";
 
 type Props = {
   desertFigure?: DesertFigure;
@@ -129,7 +131,14 @@ function SearchResults({
   if (formStatus == "empty") {
     return (
       <CommandEmpty>
-        We appologize but we could not find that one :/
+        We appologize but we could not find that one. Would you like to add a
+        Desert Figure?
+        <Link
+          className="w-full"
+          href={`/desert-figures/new?fromExcerpt=1` as RouteLiteral}
+        >
+          <Button className="mt-4">Add a Desert Figure</Button>
+        </Link>
       </CommandEmpty>
     );
   }
@@ -137,8 +146,6 @@ function SearchResults({
   if (formStatus == "loading") {
     return <CommandEmpty>loading...</CommandEmpty>;
   }
-
-  // TODO handle unfound desert figure. add figure flow
 
   return (
     <>
