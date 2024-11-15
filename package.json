@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -39,13 +39,13 @@
     "drizzle-orm": "^0.36.1",
     "drizzle-zod": "^0.5.1",
     "lucide-react": "^0.454.0",
-    "next": "15.0.3",
+    "next": "14.1.0",
     "next-auth": "^4.24.10",
     "next-themes": "^0.4.3",
     "nextjs-routes": "^2.2.3",
     "nuqs": "^2.1.1",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react": "^18",
+    "react-dom": "^18",
     "react-hook-form": "^7.53.1",
     "react-lottie-player": "^2.1.0",
     "react-select": "^5.8.2",
@@ -56,8 +56,8 @@
   },
   "devDependencies": {
     "@types/node": "^22",
-    "@types/react": "npm:types-react@19.0.0-alpha.3",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-alpha.3",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "@types/uuid": "^10.0.0",
     "autoprefixer": "^10.4.20",
     "drizzle-kit": "^0.28.0",
@@ -69,11 +69,5 @@
     "tailwindcss": "^3.4.14",
     "tsx": "^4.19.2",
     "typescript": "^5"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "npm:types-react@19.0.0-alpha.3",
-      "@types/react-dom": "npm:types-react-dom@19.0.0-alpha.3"
-    }
   }
 }
