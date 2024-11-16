@@ -13,13 +13,13 @@ import {
   Undo,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ControllerRenderProps } from "react-hook-form";
 
 interface Props {
-  onChange: (v: string) => void;
-  value: string;
+  field: ControllerRenderProps<any, string>;
 }
 
-export default function ControlledTipTap({ onChange, value }: Props) {
+export default function ControlledTipTap({ field }: Props) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -27,8 +27,8 @@ export default function ControlledTipTap({ onChange, value }: Props) {
         types: ["paragraph"],
       }),
     ],
-    onUpdate: ({ editor }) => onChange(editor.getHTML()),
-    content: value,
+    onUpdate: ({ editor }) => field.onChange(editor.getHTML()),
+    content: field.value,
     immediatelyRender: false,
     editorProps: {
       attributes: {
