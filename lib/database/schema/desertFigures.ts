@@ -2,6 +2,7 @@ import { pgTable, text, timestamp, uuid, smallint } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
+import { normalizeStringToNull } from "@/lib/utils";
 
 export const desertFigures = pgTable("desert_figure", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -24,6 +25,9 @@ export const newDesertFigureSchema = createInsertSchema(desertFigures, {
   firstName: (s) => s.firstName.min(1, "First Name is required"),
   thumbnail: () => z.custom<File>(),
   fullName: (s) => s.fullName.optional(),
+  lastName: (s) => s.lastName.transform(normalizeStringToNull),
+  epithet: (s) => s.epithet.transform(normalizeStringToNull),
+  title: (s) => s.title.transform(normalizeStringToNull),
 });
 
 export type DesertFigure = z.infer<typeof desertFigureSchema>;

@@ -51,3 +51,10 @@ export function generateDesertFigureFullname(
 
   return fullname;
 }
+
+// make sure values come through as null in the DB rather than empty string
+export function normalizeStringToNull(s: string) {
+  if (s === "") return null;
+
+  return s;
+}
