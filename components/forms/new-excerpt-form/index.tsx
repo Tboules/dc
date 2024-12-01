@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import MultipleSelector, { Option } from "@/components/ui/multi-select";
+import { searchForTagHandler } from "@/lib/database/handlers/tags";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { NewExcerpt, newExcerptSchema } from "@/lib/database/schema/excerpts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,26 +20,11 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-const OPTIONS: Option[] = [
-  { label: "nextjs", value: "nextjs" },
-  { label: "React", value: "react" },
-  { label: "Remix", value: "remix" },
-  { label: "Vite", value: "vite" },
-  { label: "Nuxt", value: "nuxt" },
-  { label: "Vue", value: "vue" },
-  { label: "Svelte", value: "svelte" },
-  { label: "Angular", value: "angular" },
-  { label: "Ember", value: "ember", disable: true },
-  { label: "Gatsby", value: "gatsby", disable: true },
-  { label: "Astro", value: "astro" },
-];
-
 type Props = {
   desertFigure?: DesertFigure;
 };
 
 export default function NewExcerptForm({ desertFigure }: Props) {
-  // TODO : setup the form with a schema, context form, url params
   const form = useForm<NewExcerpt>({
     resolver: zodResolver(newExcerptSchema),
     defaultValues: {
@@ -58,11 +44,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           render={({ field }) => (
             <FormItem className="md:col-span-2">
               <FormLabel>Desert Figure</FormLabel>
-              <FindFigureAsyncInput
-                field={field}
-                desertFigure={desertFigure}
-                form={form}
-              />
+              <FindFigureAsyncInput field={field} desertFigure={desertFigure} />
             </FormItem>
           )}
         />
@@ -96,14 +78,30 @@ export default function NewExcerptForm({ desertFigure }: Props) {
         />
 
         {/*
-          TODO add functionality for tag selection
+          TODO add on create function for new tag
+          TODO incorporate tag selections into excerpt form
+          TODO test on submit with tags
           TODO add type selector (story or quote)
           TODO add reference http link
+          TODO bulk update excerpttags table on submit of excerpt
         */}
         <div className="md:col-span-2">
           <MultipleSelector
-            defaultOptions={OPTIONS}
-            placeholder="Select frameworks you like..."
+            defaultOptions={[]}
+            onChange={(v) => console.log(v)}
+            onSearch={async (v) => {
+              let res: Option[] = [];
+              try {
+                res = await searchForTagHandler(v);
+                return res;
+              } catch (error) {
+                console.error(error);
+              }
+
+              return res;
+            }}
+            creatable
+            placeholder="Select three labels to describe this excerpt..."
             emptyIndicator={
               <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
                 no results found.

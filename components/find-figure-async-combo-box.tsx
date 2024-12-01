@@ -20,7 +20,7 @@ import { FindDesertFigureFormStatus } from "@/lib/enums";
 import { findDesertFigure } from "@/app/excerpt/new/action";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { useQueryState } from "nuqs";
-import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
+import { ControllerRenderProps, useFormContext } from "react-hook-form";
 import { NewExcerpt } from "@/lib/database/schema/excerpts";
 import { FormControl } from "./ui/form";
 import Link from "next/link";
@@ -29,16 +29,11 @@ import { RouteLiteral } from "nextjs-routes";
 type Props = {
   desertFigure?: DesertFigure;
   field: ControllerRenderProps<NewExcerpt, "desertFigureID">;
-  form: UseFormReturn<NewExcerpt>;
 };
 
-export default function FindFigureAsyncInput({
-  desertFigure,
-  field,
-  form,
-}: Props) {
+export default function FindFigureAsyncInput({ desertFigure, field }: Props) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState("");
   const [selectedFigureID, setSelectedFigureID] = useQueryState("desertFigure");
   const [figures, setFigures] = React.useState<DesertFigure[]>(
     desertFigure ? [desertFigure] : [],
@@ -46,7 +41,9 @@ export default function FindFigureAsyncInput({
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
 
-  const debounceValue = useDebounce(value, 300);
+  const { setValue } = useFormContext<NewExcerpt>();
+
+  const debounceValue = useDebounce(inputValue, 300);
 
   async function callServerAction(s: string) {
     setFormStatus("loading");
@@ -67,14 +64,14 @@ export default function FindFigureAsyncInput({
   }, [debounceValue]);
 
   function handleModal(isOpen: boolean) {
-    setValue("");
+    setInputValue("");
     setFormStatus("init");
     setOpen(isOpen);
   }
 
   function handleSelectFigure(id: string) {
     setSelectedFigureID(id);
-    form.setValue("desertFigureID", id);
+    setValue("desertFigureID", id);
     handleModal(false);
   }
 
@@ -99,8 +96,8 @@ export default function FindFigureAsyncInput({
         <Command shouldFilter={false}>
           <CommandList>
             <CommandInput
-              value={value}
-              onValueChange={(v) => setValue(v)}
+              value={inputValue}
+              onValueChange={(v) => setInputValue(v)}
               placeholder="Type a command or search..."
             />
             <SearchResults
