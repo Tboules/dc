@@ -7,6 +7,7 @@ import {
   DesertFigureDirectInsert,
   NewDesertFigure,
 } from "../database/schema/desertFigures";
+import { DESERT_FIGURE_TITLE } from "../enums";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -33,20 +34,18 @@ export function getAllParams(entries: IterableIterator<[string, string]>) {
 export function generateDesertFigureFullname(
   figure: DesertFigureDirectInsert | NewDesertFigure | DesertFigure,
 ) {
-  let fullname = "";
+  let fullname = figure.firstName;
 
-  if (figure.title) {
-    fullname = figure.title + " " + figure.firstName + " ";
-  } else {
-    fullname = figure.firstName + " ";
+  if (figure.title && figure.title != DESERT_FIGURE_TITLE.NONE) {
+    fullname = figure.title + " " + fullname;
   }
 
   if (figure.lastName) {
-    fullname = fullname + figure.lastName + " ";
+    fullname += ` ${figure.lastName}`;
   }
 
   if (figure.epithet) {
-    fullname = fullname + figure.epithet;
+    fullname += ` ${figure.epithet}`;
   }
 
   return fullname;

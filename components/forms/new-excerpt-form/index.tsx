@@ -18,7 +18,7 @@ import { NewExcerpt, newExcerptSchema } from "@/lib/database/schema/excerpts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 
 type Props = {
   desertFigure?: DesertFigure;
@@ -29,6 +29,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
     resolver: zodResolver(newExcerptSchema),
     defaultValues: {
       desertFigureID: desertFigure?.id,
+      title: "",
     },
   });
 
@@ -85,30 +86,19 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           TODO add reference http link
           TODO bulk update excerpttags table on submit of excerpt
         */}
-        <div className="md:col-span-2">
-          <MultipleSelector
-            defaultOptions={[]}
-            onChange={(v) => console.log(v)}
-            onSearch={async (v) => {
-              let res: Option[] = [];
-              try {
-                res = await searchForTagHandler(v);
-                return res;
-              } catch (error) {
-                console.error(error);
-              }
-
-              return res;
-            }}
-            creatable
-            placeholder="Select three labels to describe this excerpt..."
-            emptyIndicator={
-              <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                no results found.
-              </p>
-            }
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="tags"
+          render={() => (
+            <FormItem className="md:col-span-2">
+              <FormLabel>Excerpt Tags</FormLabel>
+              <FormControl>
+                <TagSelector />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Link href="/">
           <Button className="w-full" variant="outline">
@@ -119,5 +109,36 @@ export default function NewExcerptForm({ desertFigure }: Props) {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
+  );
+}
+
+function TagSelector() {
+  const { setValue } = useFormContext<NewExcerpt>();
+
+  async function handleTagSearch(value: string) {
+    let res: Option[] = [];
+    try {
+      res = await searchForTagHandler(value);
+      return res;
+    } catch (error) {
+      console.error(error);
+    }
+
+    return res;
+  }
+
+  return (
+    <MultipleSelector
+      defaultOptions={[]}
+      onChange={(v) => setValue("tags", v)}
+      onSearch={handleTagSearch}
+      creatable
+      placeholder="Select three labels to describe this excerpt..."
+      emptyIndicator={
+        <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+          no results found.
+        </p>
+      }
+    />
   );
 }

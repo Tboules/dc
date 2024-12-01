@@ -9,6 +9,11 @@ export enum ExcerptType {
   QUOTE = 1,
 }
 
+const OptionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
 export const excerpts = pgTable("excerpt", {
   id: uuid("id").defaultRandom().primaryKey(),
   body: text("body").notNull(),
@@ -22,7 +27,9 @@ export const excerpts = pgTable("excerpt", {
 });
 
 export const excerptSchema = createSelectSchema(excerpts);
-export const newExcerptSchema = createInsertSchema(excerpts);
+export const newExcerptSchema = createInsertSchema(excerpts).extend({
+  tags: z.array(OptionSchema),
+});
 
 export type Excerpt = z.infer<typeof excerptSchema>;
 export type NewExcerpt = z.infer<typeof newExcerptSchema>;

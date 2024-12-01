@@ -63,18 +63,7 @@ export async function postDesertFigureAction(
     }
 
     //Derive Full Name
-    let fullName = parsed.data.firstName;
-    if (parsed.data.title && parsed.data.title != DESERT_FIGURE_TITLE.NONE) {
-      fullName = parsed.data.title + " " + fullName;
-    }
-
-    if (parsed.data.lastName) {
-      fullName += ` ${parsed.data.lastName}`;
-    }
-
-    if (parsed.data.epithet) {
-      fullName += ` ${parsed.data.epithet}`;
-    }
+    let fullName = generateDesertFigureFullname(parsed.data);
 
     figure = await db
       .insert(desertFigures)
