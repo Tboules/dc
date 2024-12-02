@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import MultipleSelector, { Option } from "@/components/ui/multi-select";
 import { searchForTagHandler } from "@/lib/database/handlers/tags";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
-import { NewExcerpt, newExcerptSchema } from "@/lib/database/schema/excerpts";
+import { FormExcerpt, formExcerptSchema } from "@/lib/database/schema/excerpts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -25,8 +25,10 @@ type Props = {
 };
 
 export default function NewExcerptForm({ desertFigure }: Props) {
-  const form = useForm<NewExcerpt>({
-    resolver: zodResolver(newExcerptSchema),
+  //TODO -- Integrate with server action to submit excerpt
+
+  const form = useForm<FormExcerpt>({
+    resolver: zodResolver(formExcerptSchema),
     defaultValues: {
       desertFigureID: desertFigure?.id,
       title: "",
@@ -80,11 +82,9 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 
         {/*
           TODO add on create function for new tag
-          TODO incorporate tag selections into excerpt form
-          TODO test on submit with tags
+          TODO bulk update excerpttags table on submit of excerpt
           TODO add type selector (story or quote)
           TODO add reference http link
-          TODO bulk update excerpttags table on submit of excerpt
         */}
         <FormField
           control={form.control}
@@ -113,7 +113,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 }
 
 function TagSelector() {
-  const { setValue } = useFormContext<NewExcerpt>();
+  const { setValue } = useFormContext<FormExcerpt>();
 
   async function handleTagSearch(value: string) {
     let res: Option[] = [];

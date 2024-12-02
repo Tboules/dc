@@ -21,14 +21,14 @@ import { findDesertFigure } from "@/app/excerpt/new/action";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { useQueryState } from "nuqs";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
-import { NewExcerpt } from "@/lib/database/schema/excerpts";
+import { FormExcerpt } from "@/lib/database/schema/excerpts";
 import { FormControl } from "./ui/form";
 import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
 
 type Props = {
   desertFigure?: DesertFigure;
-  field: ControllerRenderProps<NewExcerpt, "desertFigureID">;
+  field: ControllerRenderProps<FormExcerpt, "desertFigureID">;
 };
 
 export default function FindFigureAsyncInput({ desertFigure, field }: Props) {
@@ -41,7 +41,7 @@ export default function FindFigureAsyncInput({ desertFigure, field }: Props) {
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
 
-  const { setValue } = useFormContext<NewExcerpt>();
+  const { setValue } = useFormContext<FormExcerpt>();
 
   const debounceValue = useDebounce(inputValue, 300);
 
