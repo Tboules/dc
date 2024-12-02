@@ -25,11 +25,15 @@ export async function selectDesertFigureById(figureId: string | undefined) {
 export async function searchForDesertFigure(searchValue: string) {
   const results = await db.execute(
     sql`
-      SELECT * FROM ${desertFigures}
-      WHERE SIMILARITY( ${desertFigures.fullName}, ${searchValue}) > 0.1
-      ORDER BY SIMILARITY(${desertFigures.fullName}, ${searchValue}) DESC
+       WITH similarity_figure_score as (
+          select similarity(${desertFigures.fullName}, ${searchValue}) as sim_score, *
+          from desert_figure
+      ) select *
+      from similarity_figure_score
+      where sim_score > 0
+      order by sim_score desc
       LIMIT 5
-    `,
+   `,
   );
 
   return results.rows.map((row: any) => ({
