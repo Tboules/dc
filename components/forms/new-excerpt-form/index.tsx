@@ -1,4 +1,5 @@
 "use client";
+import { postExcerptAction } from "@/app/excerpt/new/action";
 import FindFigureAsyncInput from "@/components/find-figure-async-combo-box";
 import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
 import { Button } from "@/components/ui/button";
@@ -15,9 +16,12 @@ import MultipleSelector, { Option } from "@/components/ui/multi-select";
 import { searchForTagHandler } from "@/lib/database/handlers/tags";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { FormExcerpt, formExcerptSchema } from "@/lib/database/schema/excerpts";
+import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useRef } from "react";
+import { useFormState } from "react-dom";
 import { useForm, useFormContext } from "react-hook-form";
 
 type Props = {
@@ -26,6 +30,9 @@ type Props = {
 
 export default function NewExcerptForm({ desertFigure }: Props) {
   //TODO -- Integrate with server action to submit excerpt
+  const [state, formAction] = useFormState(postExcerptAction, {
+    status: INTERNAL_FORM_STATE_STATUS.PENDING,
+  });
 
   const form = useForm<FormExcerpt>({
     resolver: zodResolver(formExcerptSchema),
@@ -35,10 +42,30 @@ export default function NewExcerptForm({ desertFigure }: Props) {
     },
   });
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((d) => console.log(d))}
+        ref={formRef}
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit((v) => {
+            const d = new FormData(formRef.current!);
+
+            // Mapping non input values into form
+            if (v.desertFigureID) {
+              d.append("desertFigureID", v.desertFigureID?.toString());
+            }
+            if (v.tags.length > 0) {
+              d.append("tags", JSON.stringify(v.tags));
+            }
+            d.append("body", v.body);
+
+            formAction(d);
+          })(e);
+        }}
+        action={formAction}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
       >
         <FormField
@@ -72,9 +99,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           render={({ field }) => (
             <FormItem className="md:col-span-2">
               <FormLabel>Excerpt</FormLabel>
-              <FormControl>
-                <ControlledTipTap field={field} />
-              </FormControl>
+              <ControlledTipTap field={field} />
               <FormMessage />
             </FormItem>
           )}
