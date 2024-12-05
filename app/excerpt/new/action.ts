@@ -21,6 +21,7 @@ export async function postExcerptAction(
     const data = Object.fromEntries(formData);
     const excerpt = formExcerptSchema.parse({
       ...data,
+      type: Number(data.type),
       tags: JSON.parse(data.tags as string),
     });
 

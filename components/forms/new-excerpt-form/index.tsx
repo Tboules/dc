@@ -13,14 +13,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import MultipleSelector, { Option } from "@/components/ui/multi-select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { searchForTagHandler } from "@/lib/database/handlers/tags";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { FormExcerpt, formExcerptSchema } from "@/lib/database/schema/excerpts";
-import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
+import { EXCERPT_TYPE, INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useRef } from "react";
+import { FormEvent, useRef } from "react";
 import { useFormState } from "react-dom";
 import { useForm, useFormContext } from "react-hook-form";
 
@@ -39,32 +46,36 @@ export default function NewExcerptForm({ desertFigure }: Props) {
     defaultValues: {
       desertFigureID: desertFigure?.id,
       title: "",
+      reference: "",
     },
   });
 
   const formRef = useRef<HTMLFormElement>(null);
 
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    form.handleSubmit((v) => {
+      const d = new FormData(formRef.current!);
+
+      // Mapping non input values into form
+      if (v.desertFigureID) {
+        d.append("desertFigureID", v.desertFigureID?.toString());
+      }
+      if (v.tags.length > 0) {
+        d.append("tags", JSON.stringify(v.tags));
+      }
+      d.append("body", v.body);
+
+      console.log(d);
+      formAction(d);
+    })(e);
+  }
+
   return (
     <Form {...form}>
       <form
         ref={formRef}
-        onSubmit={(e) => {
-          e.preventDefault();
-          form.handleSubmit((v) => {
-            const d = new FormData(formRef.current!);
-
-            // Mapping non input values into form
-            if (v.desertFigureID) {
-              d.append("desertFigureID", v.desertFigureID?.toString());
-            }
-            if (v.tags.length > 0) {
-              d.append("tags", JSON.stringify(v.tags));
-            }
-            d.append("body", v.body);
-
-            formAction(d);
-          })(e);
-        }}
+        onSubmit={handleSubmit}
         action={formAction}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
       >
@@ -108,8 +119,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
         {/*
           TODO add on create function for new tag
           TODO bulk update excerpttags table on submit of excerpt
-          TODO add type selector (story or quote)
-          TODO add reference http link
         */}
         <FormField
           control={form.control}
@@ -120,6 +129,50 @@ export default function NewExcerptForm({ desertFigure }: Props) {
               <FormControl>
                 <TagSelector />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="reference"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Reference</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Provide a link to the site or text..."
+                  {...field}
+                  value={field.value ?? undefined}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Excerpt Type</FormLabel>
+              <Select name={field.name}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Story or Quote?" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value={JSON.stringify(EXCERPT_TYPE.QUOTE)}>
+                    Quote
+                  </SelectItem>
+                  <SelectItem value={JSON.stringify(EXCERPT_TYPE.STORY)}>
+                    Story
+                  </SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

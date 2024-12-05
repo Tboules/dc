@@ -27,7 +27,9 @@ export const excerpts = pgTable("excerpt", {
 });
 
 export const excerptSchema = createSelectSchema(excerpts);
-export const newExcerptSchema = createInsertSchema(excerpts);
+export const newExcerptSchema = createInsertSchema(excerpts, {
+  reference: (z) => z.reference.url(),
+});
 
 export const formExcerptSchema = newExcerptSchema.extend({
   tags: z.array(OptionSchema),

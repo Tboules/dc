@@ -40,3 +40,10 @@ export const DESERT_FIGURE_TITLE = {
 } as const;
 
 export type DesertFigureTitle = ObjectValues<typeof DESERT_FIGURE_TITLE>;
+
+export const EXCERPT_TYPE = {
+  STORY: 2,
+  QUOTE: 1,
+} as const;
+
+export type ExcerptType = ObjectValues<typeof EXCERPT_TYPE>;
