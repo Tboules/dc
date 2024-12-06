@@ -53,6 +53,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    console.log(form.getValues());
     e.preventDefault();
     form.handleSubmit((v) => {
       const d = new FormData(formRef.current!);
