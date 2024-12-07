@@ -27,7 +27,7 @@ import { EXCERPT_TYPE, INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useRef, useActionState } from "react";
+import { FormEvent, useRef, useActionState, startTransition } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 
 type Props = {
@@ -51,32 +51,30 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    console.log(form.getValues());
-    e.preventDefault();
-    form.handleSubmit((v) => {
-      const d = new FormData(formRef.current!);
+  function handleSubmit(data: FormExcerpt) {
+    // TODO figure out how to handle form submittion properly with useActionState and react hook form
+    const d = new FormData(formRef.current!);
 
-      // Mapping non input values into form
-      if (v.desertFigureID) {
-        d.append("desertFigureID", v.desertFigureID?.toString());
-      }
-      if (v.tags.length > 0) {
-        d.append("tags", JSON.stringify(v.tags));
-      }
-      d.append("body", v.body);
+    // Mapping non input values into form
+    if (data.desertFigureID) {
+      d.append("desertFigureID", data.desertFigureID?.toString());
+    }
+    if (data.tags.length > 0) {
+      d.append("tags", JSON.stringify(data.tags));
+    }
+    d.append("body", data.body);
 
-      console.log(d);
+    console.log(d);
+    startTransition(() => {
       formAction(d);
-    })(e);
+    });
   }
 
   return (
     <Form {...form}>
       <form
         ref={formRef}
-        onSubmit={handleSubmit}
-        action={formAction}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
       >
         <FormField
@@ -179,7 +177,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
         />
 
         <Link href="/">
-          <Button className="w-full" variant="outline">
+          <Button className="w-full" variant="outline" type="button">
             <ArrowLeft className="mr-1" />
             Back
           </Button>
