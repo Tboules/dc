@@ -27,8 +27,7 @@ import { EXCERPT_TYPE, INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useRef } from "react";
-import { useFormState } from "react-dom";
+import { FormEvent, useRef, useActionState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 
 type Props = {
@@ -37,7 +36,7 @@ type Props = {
 
 export default function NewExcerptForm({ desertFigure }: Props) {
   //TODO -- Integrate with server action to submit excerpt
-  const [state, formAction] = useFormState(postExcerptAction, {
+  const [state, formAction] = useActionState(postExcerptAction, {
     status: INTERNAL_FORM_STATE_STATUS.PENDING,
   });
 

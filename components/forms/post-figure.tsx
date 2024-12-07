@@ -25,8 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "../ui/separator";
-import { useFormState } from "react-dom";
-import { useRef } from "react";
+import { useRef, useActionState } from "react";
 import {
   INTERNAL_FORM_STATE_STATUS,
   DESERT_FIGURE_TITLE,
@@ -44,7 +43,7 @@ import FormHeader from "./form-header";
 
 export default function PostFigureForm() {
   const params = useSearchParams();
-  const [state, formAction] = useFormState(postDesertFigureAction, {
+  const [state, formAction] = useActionState(postDesertFigureAction, {
     status: INTERNAL_FORM_STATE_STATUS.PENDING,
     params: getAllParams(params.entries()),
   });
