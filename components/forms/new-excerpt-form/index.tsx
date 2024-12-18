@@ -27,7 +27,7 @@ import { EXCERPT_TYPE, INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useRef, useActionState, startTransition } from "react";
+import { useRef, useActionState, startTransition } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 
 type Props = {
@@ -132,6 +132,10 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           )}
         />
 
+        {/*
+          TODO integrate open library api
+          https://openlibrary.org/developers/api
+        */}
         <FormField
           control={form.control}
           name="reference"
