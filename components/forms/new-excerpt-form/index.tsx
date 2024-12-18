@@ -35,7 +35,8 @@ type Props = {
 };
 
 export default function NewExcerptForm({ desertFigure }: Props) {
-  //TODO -- Integrate with server action to submit excerpt
+  // TODO -- Integrate with server action to submit excerpt
+  // TODO -- handle form state
   const [state, formAction] = useActionState(postExcerptAction, {
     status: INTERNAL_FORM_STATE_STATUS.PENDING,
   });
@@ -53,6 +54,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 
   function handleSubmit(data: FormExcerpt) {
     // TODO figure out how to handle form submittion properly with useActionState and react hook form
+    // https://zsa.vercel.app/docs/forms -- FOund a good example of typesafe forms for front end and backend
     const d = new FormData(formRef.current!);
 
     // Mapping non input values into form
