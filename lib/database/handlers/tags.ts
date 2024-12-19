@@ -1,5 +1,3 @@
-"use server";
-
 import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
 import { sql } from "drizzle-orm";

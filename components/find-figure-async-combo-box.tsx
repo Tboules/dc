@@ -19,7 +19,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { FindDesertFigureFormStatus } from "@/lib/enums";
 import { findDesertFigure } from "@/app/excerpt/new/action";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
-import { useQueryState } from "nuqs";
+import { Options } from "nuqs";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
 import { FormExcerpt } from "@/lib/database/schema/excerpts";
 import { FormControl } from "./ui/form";
@@ -29,12 +29,19 @@ import { RouteLiteral } from "nextjs-routes";
 type Props = {
   desertFigure?: DesertFigure;
   field: ControllerRenderProps<FormExcerpt, "desertFigureID">;
+  setSelectedFigureID: (
+    value: string | ((old: string | null) => string | null) | null,
+    options?: Options,
+  ) => Promise<URLSearchParams>;
 };
 
-export default function FindFigureAsyncInput({ desertFigure, field }: Props) {
+export default function FindFigureAsyncInput({
+  desertFigure,
+  field,
+  setSelectedFigureID,
+}: Props) {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
-  const [selectedFigureID, setSelectedFigureID] = useQueryState("desertFigure");
   const [figures, setFigures] = React.useState<DesertFigure[]>(
     desertFigure ? [desertFigure] : [],
   );

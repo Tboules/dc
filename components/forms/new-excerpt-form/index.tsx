@@ -1,5 +1,9 @@
 "use client";
-import { postExcerptAction } from "@/app/excerpt/new/action";
+
+import {
+  postExcerptZsaAction,
+  handleTagSearch,
+} from "@/app/excerpt/new/action";
 import FindFigureAsyncInput from "@/components/find-figure-async-combo-box";
 import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
 import { Button } from "@/components/ui/button";
@@ -20,56 +24,77 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { searchForTagHandler } from "@/lib/database/handlers/tags";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { FormExcerpt, formExcerptSchema } from "@/lib/database/schema/excerpts";
-import { EXCERPT_TYPE, INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
+import { EXCERPT_TYPE } from "@/lib/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useRef, useActionState, startTransition } from "react";
+import { useQueryState } from "nuqs";
+import React from "react";
+import { useRef } from "react";
 import { useForm, useFormContext } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 type Props = {
   desertFigure?: DesertFigure;
 };
 
 export default function NewExcerptForm({ desertFigure }: Props) {
-  // TODO -- Integrate with server action to submit excerpt
-  // TODO -- handle form state
-  const [state, formAction] = useActionState(postExcerptAction, {
-    status: INTERNAL_FORM_STATE_STATUS.PENDING,
-  });
+  const [selectedFigureID, setSelectedFigureID] = useQueryState("desertFigure");
+
+  const { reset, execute, data, error, isError, status } =
+    useServerAction(postExcerptZsaAction);
 
   const form = useForm<FormExcerpt>({
     resolver: zodResolver(formExcerptSchema),
     defaultValues: {
-      desertFigureID: desertFigure?.id,
+      desertFigureID: selectedFigureID,
       title: "",
       reference: "",
     },
   });
 
+  React.useEffect(() => {
+    console.log("form status", status);
+  }, [status]);
+
   const formRef = useRef<HTMLFormElement>(null);
 
-  function handleSubmit(data: FormExcerpt) {
-    // TODO figure out how to handle form submittion properly with useActionState and react hook form
-    // https://zsa.vercel.app/docs/forms -- FOund a good example of typesafe forms for front end and backend
-    const d = new FormData(formRef.current!);
-
-    // Mapping non input values into form
-    if (data.desertFigureID) {
-      d.append("desertFigureID", data.desertFigureID?.toString());
+  async function handleSubmit(formData: FormExcerpt) {
+    const [data, err] = await execute(formData);
+    if (err) {
+      console.log({ err });
+      return;
     }
-    if (data.tags.length > 0) {
-      d.append("tags", JSON.stringify(data.tags));
-    }
-    d.append("body", data.body);
 
-    console.log(d);
-    startTransition(() => {
-      formAction(d);
-    });
+    console.log(data);
+    console.log(form.formState);
+  }
+
+  function resetForm(withoutFigure: boolean) {
+    if (withoutFigure) {
+      setSelectedFigureID(null);
+      form.reset({ desertFigureID: "" });
+    } else {
+      form.reset();
+    }
+
+    reset();
+  }
+
+  if (status == "success") {
+    return (
+      <div>
+        <h1>Wow great job</h1>
+        <Button onClick={() => resetForm(true)}>START FRESH</Button>
+        {desertFigure && (
+          <Button onClick={() => resetForm(false)}>
+            Add Another for {desertFigure?.fullName}
+          </Button>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -85,7 +110,11 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           render={({ field }) => (
             <FormItem className="md:col-span-2">
               <FormLabel>Desert Figure</FormLabel>
-              <FindFigureAsyncInput field={field} desertFigure={desertFigure} />
+              <FindFigureAsyncInput
+                setSelectedFigureID={setSelectedFigureID}
+                field={field}
+                desertFigure={desertFigure}
+              />
             </FormItem>
           )}
         />
@@ -196,18 +225,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 
 function TagSelector() {
   const { setValue } = useFormContext<FormExcerpt>();
-
-  async function handleTagSearch(value: string) {
-    let res: Option[] = [];
-    try {
-      res = await searchForTagHandler(value);
-      return res;
-    } catch (error) {
-      console.error(error);
-    }
-
-    return res;
-  }
 
   return (
     <MultipleSelector

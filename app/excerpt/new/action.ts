@@ -1,9 +1,10 @@
 "use server";
 
-import { InternalFormState } from "@/@types/forms";
+import { searchForTagHandler } from "@/lib/database/handlers/tags";
 import { searchForDesertFigure } from "@/lib/database/handlers/desert-figures";
 import { formExcerptSchema } from "@/lib/database/schema/excerpts";
-import { INTERNAL_FORM_STATE_STATUS } from "@/lib/enums";
+import { createServerAction } from "zsa";
+import { Option } from "@/components/ui/multi-select";
 
 export async function findDesertFigure(val: string) {
   try {
@@ -13,30 +14,23 @@ export async function findDesertFigure(val: string) {
   }
 }
 
-export async function postExcerptAction(
-  formState: InternalFormState,
-  formData: FormData,
-): Promise<InternalFormState> {
+export async function handleTagSearch(value: string) {
+  let res: Option[] = [];
   try {
-    const data = Object.fromEntries(formData);
-    const excerpt = formExcerptSchema.parse({
-      ...data,
-      type: Number(data.type),
-      tags: JSON.parse(data.tags as string),
-    });
-
-    console.log({ excerpt });
-    console.log(excerpt.tags);
-
-    return {
-      ...formState,
-    };
+    res = await searchForTagHandler(value);
+    return res;
   } catch (error) {
-    console.log(error);
-    return {
-      ...formState,
-      message: "An error occored",
-      status: INTERNAL_FORM_STATE_STATUS.FAILURE,
-    };
+    console.error(error);
   }
+
+  return res;
 }
+
+// TODO upload excerpt functionality
+export const postExcerptZsaAction = createServerAction()
+  .input(formExcerptSchema)
+  .handler(async ({ input }) => {
+    console.log(input);
+
+    return input;
+  });
