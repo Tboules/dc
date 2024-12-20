@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import MultipleSelector, { Option } from "@/components/ui/multi-select";
+import MultipleSelector from "@/components/ui/multi-select";
 import {
   Select,
   SelectContent,
@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { DesertFigure } from "@/lib/database/schema/desertFigures";
 import { FormExcerpt, formExcerptSchema } from "@/lib/database/schema/excerpts";
 import { EXCERPT_TYPE } from "@/lib/enums";
@@ -49,15 +50,11 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   const form = useForm<FormExcerpt>({
     resolver: zodResolver(formExcerptSchema),
     defaultValues: {
-      desertFigureID: selectedFigureID,
+      desertFigureID: selectedFigureID ?? undefined,
       title: "",
-      reference: "",
+      articleUrl: "",
     },
   });
-
-  React.useEffect(() => {
-    console.log("form status", status);
-  }, [status]);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -115,6 +112,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
                 field={field}
                 desertFigure={desertFigure}
               />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -149,6 +147,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           TODO add on create function for new tag
           TODO bulk update excerpttags table on submit of excerpt
         */}
+
         <FormField
           control={form.control}
           name="tags"
@@ -165,31 +164,59 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 
         {/*
           TODO integrate open library api
+          TODO what about online articles?
           https://openlibrary.org/developers/api
         */}
-        <FormField
-          control={form.control}
-          name="reference"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Reference</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Provide a link to the site or text..."
-                  {...field}
-                  value={field.value ?? undefined}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Tabs defaultValue="book" className="md:col-span-2">
+          <TabsList>
+            <TabsTrigger value="book">Book</TabsTrigger>
+            <TabsTrigger value="article">Article</TabsTrigger>
+          </TabsList>
+          <TabsContent value="book">
+            <FormField
+              control={form.control}
+              name="referenceId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Reference Text</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Look up your book here."
+                      {...field}
+                      value={field.value ?? undefined}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+          <TabsContent value="article">
+            <FormField
+              control={form.control}
+              name="articleUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Article Link</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Provide a link to the article site."
+                      {...field}
+                      value={field.value ?? undefined}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+        </Tabs>
 
         <FormField
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="md:col-span-2">
               <FormLabel>Excerpt Type</FormLabel>
               <Select name={field.name}>
                 <FormControl>
@@ -232,7 +259,8 @@ function TagSelector() {
       onChange={(v) => setValue("tags", v)}
       onSearch={handleTagSearch}
       creatable
-      placeholder="Select three labels to describe this excerpt..."
+      maxSelected={3}
+      placeholder="Select up to three labels to describe this excerpt..."
       emptyIndicator={
         <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
           no results found.

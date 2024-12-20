@@ -19,8 +19,11 @@ export const excerpts = pgTable("excerpt", {
   body: text("body").notNull(),
   type: smallint("type").default(1).notNull(),
   title: text("title").notNull(),
-  reference: text("reference"),
-  desertFigureID: uuid("desert_figure_id").references(() => desertFigures.id),
+  referenceId: text("reference"),
+  articleUrl: text("article_url"),
+  desertFigureID: uuid("desert_figure_id")
+    .references(() => desertFigures.id)
+    .notNull(),
   dateAdded: timestamp("date_added").defaultNow(),
   lastUpdated: timestamp("last_updated").defaultNow(),
   createdBy: text("added_by").references(() => users.id),
@@ -28,7 +31,7 @@ export const excerpts = pgTable("excerpt", {
 
 export const excerptSchema = createSelectSchema(excerpts);
 export const newExcerptSchema = createInsertSchema(excerpts, {
-  reference: (s) => s.reference.url().optional().or(z.literal("")),
+  articleUrl: (s) => s.articleUrl.url().optional().or(z.literal("")),
   title: (s) => s.title.min(1, "Title Required"),
 });
 

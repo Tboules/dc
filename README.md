@@ -18,17 +18,6 @@
 
 #### Working Todo List
 
-- [x] New Excerpt Form UI
-  - [x] Create Relationship between New Figure and New Excerpt Form
-  - [x] Pull desert figure data into new excerpt form
-  - [x] Create ui for new excerpt form
-    - [x] Search for Desert Figure
-    - [x] place holder for Figure
-    - [x] Title (move it below)
-    - [x] Excerpt Section Tip Tap (make bigger on larger screen)
-    - [x] Tags section
-  - [x] Add wisywig for excerpt
-  - [x] create use-form context and add to comps (desert figure search, tags comp)
 - [ ] New Excert Form Logic
   - [x] Create logic to search for desert figure
   - [ ] Add Component to create tags on new excerpt form
