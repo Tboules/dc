@@ -1,1 +1,0 @@
-ALTER TABLE "desert_figure" ADD COLUMN "full_name" text;

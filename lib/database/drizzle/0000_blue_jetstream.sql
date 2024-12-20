@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS "desert_figure" (
 	"last_name" text,
 	"title" text,
 	"epithet" text,
+	"full_name" text NOT NULL,
 	"type" smallint DEFAULT 1 NOT NULL,
 	"thumbnail" text,
 	"date_added" timestamp DEFAULT now(),
@@ -31,8 +32,9 @@ CREATE TABLE IF NOT EXISTS "excerpt" (
 	"body" text NOT NULL,
 	"type" smallint DEFAULT 1 NOT NULL,
 	"title" text NOT NULL,
-	"reference" text,
-	"desert_figure_id" uuid,
+	"reference_id" uuid,
+	"article_url" text,
+	"desert_figure_id" uuid NOT NULL,
 	"date_added" timestamp DEFAULT now(),
 	"last_updated" timestamp DEFAULT now(),
 	"added_by" text
@@ -55,6 +57,16 @@ CREATE TABLE IF NOT EXISTS "icon" (
 	"added_by" text
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "reference" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"external_id" text NOT NULL,
+	"source" text DEFAULT 'open_library' NOT NULL,
+	"title" text NOT NULL,
+	"sub_title" text,
+	"author" text NOT NULL,
+	"cover" text
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
 	"sessionToken" text PRIMARY KEY NOT NULL,
 	"userId" text NOT NULL,
@@ -65,7 +77,8 @@ CREATE TABLE IF NOT EXISTS "tag" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	"date_added" timestamp DEFAULT now(),
-	"added_by" text
+	"added_by" text,
+	CONSTRAINT "tag_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
@@ -84,61 +97,67 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "desert_figure" ADD CONSTRAINT "desert_figure_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "desert_figure" ADD CONSTRAINT "desert_figure_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "excerpt" ADD CONSTRAINT "excerpt_desert_figure_id_desert_figure_id_fk" FOREIGN KEY ("desert_figure_id") REFERENCES "desert_figure"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "excerpt" ADD CONSTRAINT "excerpt_reference_id_reference_id_fk" FOREIGN KEY ("reference_id") REFERENCES "public"."reference"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "excerpt" ADD CONSTRAINT "excerpt_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "excerpt" ADD CONSTRAINT "excerpt_desert_figure_id_desert_figure_id_fk" FOREIGN KEY ("desert_figure_id") REFERENCES "public"."desert_figure"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "excerpt_tag" ADD CONSTRAINT "excerpt_tag_excerpt_id_excerpt_id_fk" FOREIGN KEY ("excerpt_id") REFERENCES "excerpt"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "excerpt" ADD CONSTRAINT "excerpt_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "excerpt_tag" ADD CONSTRAINT "excerpt_tag_tag_id_tag_id_fk" FOREIGN KEY ("tag_id") REFERENCES "tag"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "excerpt_tag" ADD CONSTRAINT "excerpt_tag_excerpt_id_excerpt_id_fk" FOREIGN KEY ("excerpt_id") REFERENCES "public"."excerpt"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "icon" ADD CONSTRAINT "icon_desert_figure_id_desert_figure_id_fk" FOREIGN KEY ("desert_figure_id") REFERENCES "desert_figure"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "excerpt_tag" ADD CONSTRAINT "excerpt_tag_tag_id_tag_id_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "icon" ADD CONSTRAINT "icon_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "icon" ADD CONSTRAINT "icon_desert_figure_id_desert_figure_id_fk" FOREIGN KEY ("desert_figure_id") REFERENCES "public"."desert_figure"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "icon" ADD CONSTRAINT "icon_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "tag" ADD CONSTRAINT "tag_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "tag" ADD CONSTRAINT "tag_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

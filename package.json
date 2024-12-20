@@ -10,7 +10,7 @@
     "add_comp": "pnpm dlx shadcn@latest add",
     "db_push": "npx tsx ./lib/database/migration.ts",
     "db_seed": "npx tsx ./lib/database/seed.ts",
-    "gen_migration": "pnpm drizzle-kit generate:pg",
+    "gen_migration": "pnpm drizzle-kit generate",
     "db:studio": "pnpm drizzle-kit studio"
   },
   "dependencies": {

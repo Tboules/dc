@@ -3,6 +3,7 @@ import { desertFigures } from "./desertFigures";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
+import { references } from "./references";
 
 export enum ExcerptType {
   STORY = 2,
@@ -19,7 +20,7 @@ export const excerpts = pgTable("excerpt", {
   body: text("body").notNull(),
   type: smallint("type").default(1).notNull(),
   title: text("title").notNull(),
-  referenceId: text("reference"),
+  referenceId: uuid("reference_id").references(() => references.id),
   articleUrl: text("article_url"),
   desertFigureID: uuid("desert_figure_id")
     .references(() => desertFigures.id)

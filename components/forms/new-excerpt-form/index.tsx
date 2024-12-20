@@ -166,6 +166,9 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           TODO integrate open library api
           TODO what about online articles?
           https://openlibrary.org/developers/api
+
+          TODO run migration for reference table
+          TODO extend formExcerptsSchema to accept reference schema
         */}
         <Tabs defaultValue="book" className="md:col-span-2">
           <TabsList>
