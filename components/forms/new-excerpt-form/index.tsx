@@ -143,11 +143,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           )}
         />
 
-        {/*
-          TODO add on create function for new tag
-          TODO bulk update excerpttags table on submit of excerpt
-        */}
-
         <FormField
           control={form.control}
           name="tags"
@@ -162,14 +157,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           )}
         />
 
-        {/*
-          TODO integrate open library api
-          TODO what about online articles?
-          https://openlibrary.org/developers/api
-
-          TODO run migration for reference table
-          TODO extend formExcerptsSchema to accept reference schema
-        */}
         <Tabs defaultValue="book" className="md:col-span-2">
           <TabsList>
             <TabsTrigger value="book">Book</TabsTrigger>

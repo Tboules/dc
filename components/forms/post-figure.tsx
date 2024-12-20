@@ -42,7 +42,6 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import FormHeader from "./form-header";
 
-// TODO -- refactor form using ZSA
 export default function PostFigureForm() {
   const params = useSearchParams();
   const [state, formAction] = useActionState(postDesertFigureAction, {

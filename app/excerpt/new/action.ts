@@ -26,7 +26,6 @@ export async function handleTagSearch(value: string) {
   return res;
 }
 
-// TODO upload excerpt functionality
 export const postExcerptZsaAction = createServerAction()
   .input(formExcerptSchema)
   .handler(async ({ input }) => {
