@@ -1,3 +1,4 @@
+import BookSearchAutoComplete from "@/components/book-search-autocomplete";
 import {
   AutoComplete,
   AutoCompleteOption,
@@ -31,6 +32,8 @@ export default function Home() {
         emptyMessage="Please choose a book"
         options={OPTIONS}
       />
+
+      <BookSearchAutoComplete />
     </div>
   );
 }
