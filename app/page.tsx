@@ -5,20 +5,20 @@ import {
 
 interface Book extends AutoCompleteOption {
   imageUrl: string;
-  id: string;
+  id: number;
 }
 
 const OPTIONS: Book[] = [
   {
     label: "hello",
     value: "goodbye",
-    id: "1",
+    id: 1,
     imageUrl: "hdijf",
   },
   {
     label: "world",
     value: "earth",
-    id: "2",
+    id: 2,
     imageUrl: "hdijf",
   },
 ];

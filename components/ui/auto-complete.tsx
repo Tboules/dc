@@ -14,7 +14,7 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type AutoCompleteOption = Record<"value" | "label", string> &
-  Record<string, string>;
+  Record<string, any>;
 
 type AutoCompleteProps = {
   options: AutoCompleteOption[];
