@@ -2,6 +2,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest } from "next/server";
 import { S3C } from "./get-presigned";
+import apiError from "@/lib/utils/error";
 
 export async function GET(r: NextRequest) {
   const { searchParams } = r.nextUrl;
@@ -9,10 +10,7 @@ export async function GET(r: NextRequest) {
   const file = searchParams.get("file");
 
   if (!file) {
-    return Response.json(
-      { error: "File query parameter is required" },
-      { status: 400 },
-    );
+    return apiError("File query parameter is required", 400);
   }
 
   const command = new PutObjectCommand({

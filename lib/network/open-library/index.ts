@@ -1,3 +1,5 @@
+"use server";
+
 import {
   NewReference,
   newReferenceSchema,
@@ -30,8 +32,6 @@ export async function searchForBooks(value: string): Promise<NewReference[]> {
         }) as NewReference,
     ),
   );
-
-  console.log(safeResponse);
 
   if (safeResponse.error) throw new Error("Zod was unable to parse data");
 

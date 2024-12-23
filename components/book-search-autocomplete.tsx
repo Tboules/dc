@@ -18,8 +18,8 @@ export default function BookSearchAutoComplete() {
   });
 
   React.useEffect(() => {
-    console.log(debounceValue);
-  }, [debounceValue]);
+    console.log(books.data);
+  }, [books.data]);
 
   return (
     <div>
