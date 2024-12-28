@@ -11,7 +11,6 @@ const refArraySchema = z.array(newReferenceSchema);
 
 export async function searchForBooks(value: string): Promise<NewReference[]> {
   const res = await openLibraryInstance.get(`/search.json?q=${value}&limit=15`);
-  console.log(res);
   const rawBookData = res.data?.docs;
 
   if (!Array.isArray(rawBookData)) {
