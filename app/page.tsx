@@ -1,10 +1,7 @@
 "use client";
 import BookSearchAutoComplete from "@/components/book-search-autocomplete";
 import { AsyncAutoComplete } from "@/components/ui/async-auto-complete";
-import {
-  AutoComplete,
-  AutoCompleteOption,
-} from "@/components/ui/auto-complete";
+import { AutoCompleteOption } from "@/components/ui/auto-complete";
 import { useState } from "react";
 
 interface Book extends AutoCompleteOption {
@@ -29,6 +26,7 @@ const OPTIONS: Book[] = [
 
 export default function Home() {
   const [value, setValue] = useState("");
+
   return (
     <div className="p-4">
       <AsyncAutoComplete
