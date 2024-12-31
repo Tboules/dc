@@ -33,7 +33,7 @@ type AutoCompleteProps = {
   disabled?: boolean;
   placeholder?: string;
   inputValue: string;
-  setInputValue: Dispatch<SetStateAction<string>>;
+  setInputValue: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export const AsyncAutoComplete = ({
