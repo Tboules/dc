@@ -10,13 +10,17 @@ import { z } from "zod";
 const refArraySchema = z.array(newReferenceSchema);
 
 export async function searchForBooks(value: string): Promise<NewReference[]> {
-  const res = await openLibraryInstance.get(`/search.json?q=${value}&limit=15`);
+  const res = await openLibraryInstance.get(
+    `/search.json?q=${value}&limit=10&fields=key,title,author_name,cover_i`,
+  );
   const rawBookData = res.data?.docs;
 
   if (!Array.isArray(rawBookData)) {
     console.log("error");
     throw new Error("Docs was not an arrray");
   }
+
+  console.log(rawBookData);
 
   const safeResponse = refArraySchema.safeParse(
     rawBookData.map(

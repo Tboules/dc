@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { searchForBooks } from "@/lib/network/open-library";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -24,15 +23,14 @@ export default function BookSearchAutoComplete() {
       })),
   });
 
-  React.useEffect(() => {
-    console.log(books.data);
-  }, [books.data]);
-
   return (
     <div>
       <AsyncAutoComplete
         inputValue={value ?? ""}
         setInputValue={setValue}
+        onValueChange={(v) => {
+          console.log("on value change", v);
+        }}
         placeholder="async search"
         options={books.data ?? []}
         emptyMessage="No search results at the moment"

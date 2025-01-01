@@ -105,12 +105,8 @@ export const AsyncAutoComplete = ({
     [onValueChange],
   );
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
-
   return (
-    <CommandPrimitive onKeyDown={handleKeyDown}>
+    <CommandPrimitive shouldFilter={false} onKeyDown={handleKeyDown}>
       <div className="border border-input rounded-md">
         <CommandInput
           ref={inputRef}
@@ -147,7 +143,7 @@ export const AsyncAutoComplete = ({
                   return (
                     <CommandItem
                       key={option.value}
-                      value={option.label}
+                      value={option.value}
                       onMouseDown={(event) => {
                         event.preventDefault();
                         event.stopPropagation();
