@@ -20,8 +20,6 @@ export async function searchForBooks(value: string): Promise<NewReference[]> {
     throw new Error("Docs was not an arrray");
   }
 
-  console.log(rawBookData);
-
   const safeResponse = refArraySchema.safeParse(
     rawBookData.map(
       (b) =>
