@@ -13,22 +13,20 @@ import {
   type KeyboardEvent,
   SetStateAction,
   Dispatch,
-  useEffect,
 } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-export type AutoCompleteOption = Record<"value" | "label", string> &
-  Record<string, any>;
+import { NewReference } from "@/lib/database/schema/references";
+import BookThumbnailHandler from "../book-thumbnail-handler";
 
 type AutoCompleteProps = {
-  options: AutoCompleteOption[];
+  options: NewReference[];
   emptyMessage: string;
-  value?: AutoCompleteOption;
-  onValueChange?: (value: AutoCompleteOption) => void;
+  value?: NewReference;
+  onValueChange?: (value: NewReference) => void;
   isLoading?: boolean;
   disabled?: boolean;
   placeholder?: string;
@@ -36,7 +34,7 @@ type AutoCompleteProps = {
   setInputValue: Dispatch<SetStateAction<string | undefined>>;
 };
 
-export const AsyncAutoComplete = ({
+export const BookAsyncAutoComp = ({
   options,
   placeholder,
   emptyMessage,
@@ -50,9 +48,7 @@ export const AsyncAutoComplete = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isOpen, setOpen] = useState(false);
-  const [selected, setSelected] = useState<AutoCompleteOption>(
-    value as AutoCompleteOption,
-  );
+  const [selected, setSelected] = useState<NewReference>(value as NewReference);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
@@ -69,7 +65,7 @@ export const AsyncAutoComplete = ({
       // This is not a default behaviour of the <input /> field
       if (event.key === "Enter" && input.value !== "") {
         const optionToSelect = options.find(
-          (option) => option.label === input.value,
+          (option) => option.title === input.value,
         );
         if (optionToSelect) {
           setSelected(optionToSelect);
@@ -86,12 +82,12 @@ export const AsyncAutoComplete = ({
 
   const handleBlur = useCallback(() => {
     setOpen(false);
-    setInputValue(selected?.label);
+    setInputValue(selected?.title);
   }, [selected]);
 
   const handleSelectOption = useCallback(
-    (selectedOption: AutoCompleteOption) => {
-      setInputValue(selectedOption.label);
+    (selectedOption: NewReference) => {
+      setInputValue(selectedOption.title);
 
       setSelected(selectedOption);
       onValueChange?.(selectedOption);
@@ -139,23 +135,27 @@ export const AsyncAutoComplete = ({
             {options.length > 0 && !isLoading ? (
               <CommandGroup>
                 {options.map((option) => {
-                  const isSelected = selected?.value === option.value;
+                  const isSelected = selected?.externalId === option.externalId;
                   return (
                     <CommandItem
-                      key={option.value}
-                      value={option.value}
+                      key={option.externalId}
+                      value={option.externalId}
                       onMouseDown={(event) => {
                         event.preventDefault();
                         event.stopPropagation();
                       }}
                       onSelect={() => handleSelectOption(option)}
                       className={cn(
-                        "flex w-full items-center gap-2",
+                        "w-full flex items-center",
                         !isSelected ? "pl-8" : null,
                       )}
                     >
-                      {isSelected ? <Check className="w-4" /> : null}
-                      {option.label}
+                      {isSelected ? <Check className="flex-none w-4" /> : null}
+                      <BookThumbnailHandler url={option.cover} />
+                      <div className="flex-1 flex flex-col w-full gap-2 items-start">
+                        <h4 className="text-lg">{option.title}</h4>
+                        <p>- {option.author}</p>
+                      </div>
                     </CommandItem>
                   );
                 })}
