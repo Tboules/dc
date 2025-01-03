@@ -4,7 +4,7 @@ import { searchForBooks } from "@/lib/network/open-library";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useDebounce } from "./ui/multi-select";
-import { BookAsyncAutoComp } from "./ui/async-auto-complete";
+import { BookAsyncAutoComp } from "./ui/book-async-auto-complete";
 
 export default function BookSearchAutoComplete() {
   const [value, setValue] = React.useState<string | undefined>("");
