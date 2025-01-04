@@ -122,7 +122,7 @@ export const BookAsyncAutoComp = ({
             isOpen ? "block" : "hidden",
           )}
         >
-          <CommandList className="rounded-lg ring-1 ring-secondary">
+          <CommandList className="bg-background rounded-lg ring-1 ring-secondary">
             {isLoading ? (
               <CommandPrimitive.Loading>
                 <div className="p-1 flex flex-col bg-background gap-2">

@@ -3,7 +3,7 @@ import { desertFigures } from "./desertFigures";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
-import { references } from "./references";
+import { newReferenceSchema, references } from "./references";
 
 export enum ExcerptType {
   STORY = 2,
@@ -38,6 +38,7 @@ export const newExcerptSchema = createInsertSchema(excerpts, {
 
 export const formExcerptSchema = newExcerptSchema.extend({
   tags: z.array(OptionSchema),
+  reference: newReferenceSchema.optional(),
 });
 
 export type Excerpt = z.infer<typeof excerptSchema>;

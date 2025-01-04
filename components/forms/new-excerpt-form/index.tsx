@@ -36,6 +36,7 @@ import React from "react";
 import { useRef } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useServerAction } from "zsa-react";
+import BookSearchAutoComplete from "./book-search-autocomplete";
 
 type Props = {
   desertFigure?: DesertFigure;
@@ -165,16 +166,12 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           <TabsContent value="book">
             <FormField
               control={form.control}
-              name="referenceId"
-              render={({ field }) => (
+              name="reference"
+              render={() => (
                 <FormItem>
                   <FormLabel>Reference Text</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Look up your book here."
-                      {...field}
-                      value={field.value ?? undefined}
-                    />
+                    <BookSearchAutoComplete />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -208,7 +205,11 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           render={({ field }) => (
             <FormItem className="md:col-span-2">
               <FormLabel>Excerpt Type</FormLabel>
-              <Select name={field.name}>
+              <Select
+                name={field.name}
+                value={field.value ? JSON.stringify(field.value) : undefined}
+                onValueChange={(v) => field.onChange(JSON.parse(v))}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Story or Quote?" />
