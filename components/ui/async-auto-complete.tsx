@@ -41,7 +41,7 @@ type AutoCompleteProps<T> = {
   SelectComponent: (props: AutoCompleteSelectProps<T>) => JSX.Element;
 };
 
-function BookAsyncAutoComp<T>({
+function AsyncAutoComplete<T>({
   options,
   placeholder,
   emptyMessage,
@@ -169,4 +169,4 @@ function BookAsyncAutoComp<T>({
   );
 }
 
-export default BookAsyncAutoComp;
+export default AsyncAutoComplete;
