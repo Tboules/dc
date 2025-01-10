@@ -13,28 +13,35 @@ import {
   type KeyboardEvent,
   SetStateAction,
   Dispatch,
+  JSX,
 } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { NewReference } from "@/lib/database/schema/references";
-import BookThumbnailHandler from "../book-thumbnail-handler";
 
-type AutoCompleteProps = {
-  options: NewReference[];
+export type AutoCompleteSelectProps<T> = {
+  option: T;
+  isSelected: boolean;
+  onSelect: (option: T) => void;
+};
+
+type AutoCompleteProps<T> = {
+  options: T[];
   emptyMessage: string;
-  value?: NewReference;
-  onValueChange?: (value: NewReference) => void;
+  value?: T;
+  onValueChange?: (value: T) => void;
   isLoading?: boolean;
   disabled?: boolean;
   placeholder?: string;
   inputValue: string;
   setInputValue: Dispatch<SetStateAction<string | undefined>>;
+  labelKey: keyof T;
+  valueKey: keyof T;
+  SelectComponent: (props: AutoCompleteSelectProps<T>) => JSX.Element;
 };
 
-export const BookAsyncAutoComp = ({
+function BookAsyncAutoComp<T>({
   options,
   placeholder,
   emptyMessage,
@@ -44,11 +51,14 @@ export const BookAsyncAutoComp = ({
   isLoading = false,
   inputValue,
   setInputValue,
-}: AutoCompleteProps) => {
+  labelKey,
+  valueKey,
+  SelectComponent,
+}: AutoCompleteProps<T>) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isOpen, setOpen] = useState(false);
-  const [selected, setSelected] = useState<NewReference>(value as NewReference);
+  const [selected, setSelected] = useState<T>(value as T);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
@@ -65,7 +75,7 @@ export const BookAsyncAutoComp = ({
       // This is not a default behaviour of the <input /> field
       if (event.key === "Enter" && input.value !== "") {
         const optionToSelect = options.find(
-          (option) => option.title === input.value,
+          (option) => option[labelKey] === input.value,
         );
         if (optionToSelect) {
           setSelected(optionToSelect);
@@ -82,12 +92,12 @@ export const BookAsyncAutoComp = ({
 
   const handleBlur = useCallback(() => {
     setOpen(false);
-    setInputValue(selected?.title);
+    setInputValue(selected[labelKey] as string);
   }, [selected]);
 
   const handleSelectOption = useCallback(
-    (selectedOption: NewReference) => {
-      setInputValue(selectedOption.title);
+    (selectedOption: T) => {
+      setInputValue(selectedOption[labelKey] as string);
 
       setSelected(selectedOption);
       onValueChange?.(selectedOption);
@@ -135,28 +145,14 @@ export const BookAsyncAutoComp = ({
             {options.length > 0 && !isLoading ? (
               <CommandGroup>
                 {options.map((option) => {
-                  const isSelected = selected?.externalId === option.externalId;
+                  const isSelected = selected?.[valueKey] === option[valueKey];
                   return (
-                    <CommandItem
-                      key={option.externalId}
-                      value={option.externalId}
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                      }}
-                      onSelect={() => handleSelectOption(option)}
-                      className={cn(
-                        "w-full flex items-center",
-                        !isSelected ? "pl-8" : null,
-                      )}
-                    >
-                      {isSelected ? <Check className="flex-none w-4" /> : null}
-                      <BookThumbnailHandler url={option.cover} />
-                      <div className="flex-1 flex flex-col w-full gap-2 items-start">
-                        <h4 className="text-lg">{option.title}</h4>
-                        <p>- {option.author}</p>
-                      </div>
-                    </CommandItem>
+                    <SelectComponent
+                      key={option[valueKey] as string}
+                      option={option}
+                      onSelect={handleSelectOption}
+                      isSelected={isSelected}
+                    />
                   );
                 })}
               </CommandGroup>
@@ -171,4 +167,6 @@ export const BookAsyncAutoComp = ({
       </div>
     </CommandPrimitive>
   );
-};
+}
+
+export default BookAsyncAutoComp;

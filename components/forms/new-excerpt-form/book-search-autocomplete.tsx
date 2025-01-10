@@ -4,9 +4,16 @@ import { searchForBooks } from "@/lib/network/open-library";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useDebounce } from "@/components/ui/multi-select";
-import { BookAsyncAutoComp } from "@/components/ui/book-async-auto-complete";
+import BookAsyncAutoComp, {
+  AutoCompleteSelectProps,
+} from "@/components/ui/book-async-auto-complete";
 import { useFormContext } from "react-hook-form";
 import { FormExcerpt } from "@/lib/database/schema/excerpts";
+import { NewReference } from "@/lib/database/schema/references";
+import { CommandItem } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
+import BookThumbnailHandler from "@/components/book-thumbnail-handler";
 
 export default function BookSearchAutoComplete() {
   const { setValue: setFormValue } = useFormContext<FormExcerpt>();
@@ -22,7 +29,7 @@ export default function BookSearchAutoComplete() {
 
   return (
     <div>
-      <BookAsyncAutoComp
+      <BookAsyncAutoComp<NewReference>
         inputValue={value ?? ""}
         setInputValue={setValue}
         onValueChange={(v) => {
@@ -32,7 +39,36 @@ export default function BookSearchAutoComplete() {
         options={books.data ?? []}
         emptyMessage="No search results at the moment"
         isLoading={books.isLoading}
+        labelKey="title"
+        valueKey="externalId"
+        SelectComponent={BookSelectOption}
       />
     </div>
+  );
+}
+
+function BookSelectOption({
+  option,
+  onSelect,
+  isSelected,
+}: AutoCompleteSelectProps<NewReference>) {
+  return (
+    <CommandItem
+      key={option.externalId}
+      value={option.externalId}
+      onMouseDown={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
+      onSelect={() => onSelect(option)}
+      className={cn("w-full flex items-center", !isSelected ? "pl-8" : null)}
+    >
+      {isSelected ? <Check className="flex-none w-4" /> : null}
+      <BookThumbnailHandler url={option.cover} />
+      <div className="flex-1 flex flex-col w-full gap-2 items-start">
+        <h4 className="text-lg">{option.title}</h4>
+        <p>- {option.author}</p>
+      </div>
+    </CommandItem>
   );
 }
