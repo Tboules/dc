@@ -19,6 +19,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 
 export type AutoCompleteSelectProps<T> = {
   option: T;
@@ -38,7 +39,7 @@ type AutoCompleteProps<T> = {
   setInputValue: Dispatch<SetStateAction<string | undefined>>;
   labelKey: keyof T;
   valueKey: keyof T;
-  SelectComponent: (props: AutoCompleteSelectProps<T>) => JSX.Element;
+  SelectComponent?: (props: AutoCompleteSelectProps<T>) => JSX.Element;
 };
 
 function AsyncAutoComplete<T>({
@@ -146,13 +147,35 @@ function AsyncAutoComplete<T>({
               <CommandGroup>
                 {options.map((option) => {
                   const isSelected = selected?.[valueKey] === option[valueKey];
+
+                  if (SelectComponent) {
+                    return (
+                      <SelectComponent
+                        key={option[valueKey] as string}
+                        option={option}
+                        onSelect={handleSelectOption}
+                        isSelected={isSelected}
+                      />
+                    );
+                  }
+
                   return (
-                    <SelectComponent
+                    <CommandItem
                       key={option[valueKey] as string}
-                      option={option}
-                      onSelect={handleSelectOption}
-                      isSelected={isSelected}
-                    />
+                      value={option[valueKey] as string}
+                      onMouseDown={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                      }}
+                      onSelect={() => handleSelectOption(option)}
+                      className={cn(
+                        "flex w-full items-center gap-2",
+                        !isSelected ? "pl-8" : null,
+                      )}
+                    >
+                      {isSelected ? <Check className="w-4" /> : null}
+                      {option[labelKey] as string}
+                    </CommandItem>
                   );
                 })}
               </CommandGroup>
