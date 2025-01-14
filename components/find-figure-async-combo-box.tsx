@@ -27,28 +27,20 @@ import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
 
 type Props = {
-  desertFigure?: DesertFigure;
-  field: ControllerRenderProps<FormExcerpt, "desertFigureID">;
   setSelectedFigureID: (
     value: string | ((old: string | null) => string | null) | null,
     options?: Options,
   ) => Promise<URLSearchParams>;
 };
 
-export default function FindFigureAsyncInput({
-  desertFigure,
-  field,
-  setSelectedFigureID,
-}: Props) {
+export default function FindFigureAsyncInput({ setSelectedFigureID }: Props) {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
-  const [figures, setFigures] = React.useState<DesertFigure[]>(
-    desertFigure ? [desertFigure] : [],
-  );
+  const { setValue, watch } = useFormContext<FormExcerpt>();
+  const selectedFigure = watch("desertFigure");
+  const [figures, setFigures] = React.useState<DesertFigure[]>([]);
   const [formStatus, setFormStatus] =
     React.useState<FindDesertFigureFormStatus>("init");
-
-  const { setValue } = useFormContext<FormExcerpt>();
 
   const debounceValue = useDebounce(inputValue, 300);
 
@@ -76,9 +68,10 @@ export default function FindFigureAsyncInput({
     setOpen(isOpen);
   }
 
-  function handleSelectFigure(id: string) {
-    setSelectedFigureID(id);
-    setValue("desertFigureID", id);
+  function handleSelectFigure(figure: DesertFigure) {
+    setSelectedFigureID(figure.id);
+    setValue("desertFigure", figure);
+    setValue("desertFigureID", figure.id);
     handleModal(false);
   }
 
@@ -92,8 +85,8 @@ export default function FindFigureAsyncInput({
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {field.value
-              ? figures.find((f) => f.id == field.value)?.fullName
+            {selectedFigure
+              ? selectedFigure.fullName
               : "Select a Desert Figure..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -126,7 +119,7 @@ function SearchResults({
 }: {
   figures: DesertFigure[];
   formStatus: FindDesertFigureFormStatus;
-  callback: (value: string) => void;
+  callback: (value: DesertFigure) => void;
 }) {
   if (formStatus == "init") {
     return <CommandEmpty>Look for your favorite Desert Figure</CommandEmpty>;
@@ -156,7 +149,7 @@ function SearchResults({
       {figures.map((figure) => (
         <CommandItem
           key={figure.id}
-          onSelect={(v) => callback(v)}
+          onSelect={() => callback(figure)}
           value={figure.id}
         >
           {figure.fullName}

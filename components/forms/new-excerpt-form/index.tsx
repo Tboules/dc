@@ -51,13 +51,18 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   const form = useForm<FormExcerpt>({
     resolver: zodResolver(formExcerptSchema),
     defaultValues: {
-      desertFigureID: selectedFigureID ?? undefined,
       title: "",
       articleUrl: "",
+      desertFigure: desertFigure,
+      desertFigureID: desertFigure?.id ?? undefined,
     },
   });
 
   const formRef = useRef<HTMLFormElement>(null);
+
+  React.useEffect(() => {
+    console.log(form.formState.errors);
+  }, [form.formState.errors]);
 
   async function handleSubmit(formData: FormExcerpt) {
     const [data, err] = await execute(formData);
@@ -86,9 +91,9 @@ export default function NewExcerptForm({ desertFigure }: Props) {
       <div>
         <h1>Wow great job</h1>
         <Button onClick={() => resetForm(true)}>START FRESH</Button>
-        {desertFigure && (
+        {form.getValues("desertFigure") && (
           <Button onClick={() => resetForm(false)}>
-            Add Another for {desertFigure?.fullName}
+            Add Another for {form.getValues("desertFigure")?.fullName}
           </Button>
         )}
       </div>
@@ -104,15 +109,11 @@ export default function NewExcerptForm({ desertFigure }: Props) {
       >
         <FormField
           control={form.control}
-          name="desertFigureID"
-          render={({ field }) => (
+          name="desertFigure"
+          render={() => (
             <FormItem className="md:col-span-2">
               <FormLabel>Desert Figure</FormLabel>
-              <FindFigureAsyncInput
-                setSelectedFigureID={setSelectedFigureID}
-                field={field}
-                desertFigure={desertFigure}
-              />
+              <FindFigureAsyncInput setSelectedFigureID={setSelectedFigureID} />
               <FormMessage />
             </FormItem>
           )}
