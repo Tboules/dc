@@ -36,17 +36,3 @@ export const newDesertFigureSchema = createInsertSchema(desertFigures, {
 
 export type DesertFigure = z.infer<typeof desertFigureSchema>;
 export type NewDesertFigure = z.infer<typeof newDesertFigureSchema>;
-
-export type DbDesertFigure = {
-  id: string;
-  first_name: string;
-  last_name: string | null;
-  title: string | null;
-  epithet: string | null;
-  type: number;
-  thumbnail: string | null;
-  date_added: Date | null;
-  last_updated: Date | null;
-  added_by: string | null;
-  full_name: string;
-};
