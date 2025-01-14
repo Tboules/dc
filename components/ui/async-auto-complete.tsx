@@ -93,7 +93,9 @@ function AsyncAutoComplete<T>({
 
   const handleBlur = useCallback(() => {
     setOpen(false);
-    setInputValue(selected[labelKey] as string);
+    if (selected) {
+      setInputValue(selected[labelKey] as string);
+    }
   }, [selected]);
 
   const handleSelectOption = useCallback(

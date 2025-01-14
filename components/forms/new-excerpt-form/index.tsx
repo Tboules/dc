@@ -37,6 +37,7 @@ import { useRef } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import BookSearchAutoComplete from "./book-search-autocomplete";
+import DesertFigureAutoComplete from "./desert-figure-autocomplete";
 
 type Props = {
   desertFigure?: DesertFigure;
@@ -113,7 +114,9 @@ export default function NewExcerptForm({ desertFigure }: Props) {
           render={() => (
             <FormItem className="md:col-span-2">
               <FormLabel>Desert Figure</FormLabel>
-              <FindFigureAsyncInput setSelectedFigureID={setSelectedFigureID} />
+              <DesertFigureAutoComplete
+                setSelectedFigureIDAction={setSelectedFigureID}
+              />
               <FormMessage />
             </FormItem>
           )}

@@ -3,7 +3,6 @@
 import { searchForBooks } from "@/lib/network/open-library";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useDebounce } from "@/components/ui/multi-select";
 import { useFormContext } from "react-hook-form";
 import { FormExcerpt } from "@/lib/database/schema/excerpts";
 import { NewReference } from "@/lib/database/schema/references";
@@ -14,6 +13,7 @@ import BookThumbnailHandler from "@/components/book-thumbnail-handler";
 import AsyncAutoComplete, {
   AutoCompleteSelectProps,
 } from "@/components/ui/async-auto-complete";
+import { useDebounce } from "@/hooks/use-debounce";
 
 export default function BookSearchAutoComplete() {
   const { setValue: setFormValue } = useFormContext<FormExcerpt>();
