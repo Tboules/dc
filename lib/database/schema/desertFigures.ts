@@ -20,7 +20,11 @@ export const desertFigures = pgTable("desert_figure", {
 
 export type DesertFigureDirectInsert = typeof desertFigures.$inferInsert;
 
-export const desertFigureSchema = createSelectSchema(desertFigures);
+export const desertFigureSchema = createSelectSchema(desertFigures, {
+  dateAdded: z.coerce.date(),
+  lastUpdated: z.coerce.date(),
+});
+
 export const newDesertFigureSchema = createInsertSchema(desertFigures, {
   firstName: (s) => s.firstName.min(1, "First Name is required"),
   thumbnail: () => z.custom<File>(),

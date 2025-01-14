@@ -1,5 +1,5 @@
 import { pgTable, smallint, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { desertFigures, newDesertFigureSchema } from "./desertFigures";
+import { desertFigures, desertFigureSchema } from "./desertFigures";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -39,7 +39,7 @@ export const newExcerptSchema = createInsertSchema(excerpts, {
 export const formExcerptSchema = newExcerptSchema.extend({
   tags: z.array(OptionSchema),
   reference: newReferenceSchema.optional(),
-  desertFigure: newDesertFigureSchema,
+  desertFigure: desertFigureSchema,
 });
 
 export type Excerpt = z.infer<typeof excerptSchema>;

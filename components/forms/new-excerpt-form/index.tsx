@@ -61,10 +61,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  React.useEffect(() => {
-    console.log(form.formState.errors);
-  }, [form.formState.errors]);
-
   async function handleSubmit(formData: FormExcerpt) {
     const [data, err] = await execute(formData);
     if (err) {

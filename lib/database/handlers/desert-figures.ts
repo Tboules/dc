@@ -2,8 +2,8 @@
 
 import db from "@/lib/database";
 import {
-  DesertFigure,
   desertFigures,
+  desertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
 import { eq, sql } from "drizzle-orm";
 
@@ -36,17 +36,23 @@ export async function searchForDesertFigure(searchValue: string) {
    `,
   );
 
-  return results.rows.map((row: any) => ({
-    id: row.id,
-    firstName: row.first_name,
-    lastName: row.last_name,
-    title: row.title,
-    epithet: row.epithet,
-    type: row.type,
-    thumbnail: row.thumbnail,
-    dateAdded: row.date_added,
-    lastUpdated: row.last_updated,
-    createdBy: row.added_by,
-    fullName: row.full_name,
-  })) as DesertFigure[];
+  return results.rows.map((row: any) => {
+    const figure = {
+      id: row.id,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      title: row.title,
+      epithet: row.epithet,
+      type: row.type,
+      thumbnail: row.thumbnail,
+      dateAdded: row.date_added,
+      lastUpdated: row.last_updated,
+      createdBy: row.added_by,
+      fullName: row.full_name,
+    };
+
+    const validFigure = desertFigureSchema.parse(figure);
+
+    return validFigure;
+  });
 }
