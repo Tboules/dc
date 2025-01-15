@@ -11,6 +11,7 @@ export async function findDesertFigure(val: string) {
     return await searchForDesertFigure(val);
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
