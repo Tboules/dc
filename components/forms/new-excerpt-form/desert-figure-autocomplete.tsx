@@ -31,7 +31,7 @@ export default function DesertFigureAutoComplete({
   const desertFigures = useQuery({
     queryKey: ["desertFigures", debounceValue],
     queryFn: () => findDesertFigure(debounceValue ?? ""),
-    enabled: debounceValue ? debounceValue.length > 3 : true,
+    enabled: debounceValue != undefined ? debounceValue.length > 3 : true,
   });
 
   function handleSelectFigure(figure: DesertFigure) {
