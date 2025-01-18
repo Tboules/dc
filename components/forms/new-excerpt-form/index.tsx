@@ -4,7 +4,6 @@ import {
   postExcerptZsaAction,
   handleTagSearch,
 } from "@/app/excerpt/new/action";
-import FindFigureAsyncInput from "@/components/find-figure-async-combo-box";
 import ControlledTipTap from "@/components/tiptap/controlled-tiptap";
 import { Button } from "@/components/ui/button";
 import {
@@ -68,8 +67,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
       return;
     }
 
-    console.log(data);
-    console.log(form.formState);
+    console.log("data from server", data);
   }
 
   function resetForm(withoutFigure: boolean) {
