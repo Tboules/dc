@@ -7,7 +7,7 @@ import { createServerAction } from "zsa";
 import { Option } from "@/components/ui/multi-select";
 import db from "@/lib/database";
 import { uuidv4Regex } from "@/lib/utils/regex";
-import { tags } from "@/lib/database/schema/tags";
+import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
 
 export async function findDesertFigure(val: string) {
@@ -46,30 +46,44 @@ export const postExcerptZsaAction = createServerAction()
   .input(formExcerptSchema)
   .handler(async ({ input }) => {
     // test some business logic beforhand
-    const tagsToUpload = input.tags.filter(
-      (tag) => !tag.value.match(uuidv4Regex),
-    );
+    // instead of doing it this way, we will create a placeholder for the tags
+    // const tagsToUpload = input.tags.filter(
+    //   (tag) => !tag.value.match(uuidv4Regex),
+    // );
 
     try {
       const session = await serverAuthSession();
       console.log(session);
-      if (!session) {
+      if (!session || !session.user.id) {
         throw new Error("No user session found!");
       }
 
       await db.transaction(async (tx) => {
-        for (let tag of tagsToUpload) {
-          const insertedTag = await tx
-            .insert(tags)
-            .values({
-              name: tag.label,
-              createdBy: session?.user.id,
-            })
-            .returning();
+        // for (let tag of tagsToUpload) {
+        //   const insertedTag = await tx
+        //     .insert(tags)
+        //     .values({
+        //       name: tag.label,
+        //       createdBy: session?.user.id,
+        //     })
+        //     .returning();
+        //
+        //   console.log(insertedTag);
+        //   // need to get the new id and update the original tags array so I can create excerpt tags
+        // }
 
-          console.log(insertedTag);
-          // need to get the new id and update the original tags array so I can create excerpt tags
-        }
+        const tagsToUpload = input.tags.map<NewTag>((tag) => ({
+          name: tag.label,
+          createdBy: session.user.id,
+        }));
+
+        const uploadedTags = await tx
+          .insert(tags)
+          .values(tagsToUpload)
+          .returning();
+
+        console.log("tags to upload", tagsToUpload);
+        console.log("uploaded tags", uploadedTags);
 
         //during testing run the following to rollback the transaction
         throw new Error("roll back transaction during testing");
