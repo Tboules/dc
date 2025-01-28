@@ -8,5 +8,7 @@ declare namespace NodeJS {
     AWS_S3_BUCKET_NAME: string;
     AWS_S3_REGION: string;
     NEXT_PUBLIC_AWS_S3_URL: string;
+    NEXTAUTH_SECRET: string;
+    NEXTAUTH_URL: string;
   }
 }

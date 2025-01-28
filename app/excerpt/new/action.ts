@@ -2,13 +2,14 @@
 
 import { searchForTagHandler } from "@/lib/database/handlers/tags";
 import { searchForDesertFigure } from "@/lib/database/handlers/desert-figures";
-import { formExcerptSchema } from "@/lib/database/schema/excerpts";
+import { excerpts, formExcerptSchema } from "@/lib/database/schema/excerpts";
 import { createServerAction } from "zsa";
 import { Option } from "@/components/ui/multi-select";
 import db from "@/lib/database";
 import { uuidv4Regex } from "@/lib/utils/regex";
-import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
+import { NewTag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
+import { Reference, references } from "@/lib/database/schema/references";
 
 export async function findDesertFigure(val: string) {
   try {
@@ -51,14 +52,14 @@ export const postExcerptZsaAction = createServerAction()
       }
 
       await db.transaction(async (tx) => {
-        /* Tag Upload Section */
+        /* Tag Insert Section */
         const tagsToUpload = input.tags.map<NewTag>((tag) => ({
           id: tag.value.match(uuidv4Regex) ? tag.value : undefined,
           name: tag.label,
           createdBy: session.user.id,
         }));
 
-        const uploadedTags = await tx
+        const insertedTags = await tx
           .insert(tags)
           .values(tagsToUpload)
           .onConflictDoNothing()
@@ -66,14 +67,44 @@ export const postExcerptZsaAction = createServerAction()
 
         const finalTags = [
           ...tagsToUpload.filter((t) => t.id),
-          ...uploadedTags,
+          ...insertedTags,
         ];
 
-        console.log("tags to upload", tagsToUpload);
-        console.log("uploaded tags", uploadedTags);
         console.log("final", finalTags);
 
-        /* Reference Upload Section, if url add on record, if book add to table*/
+        /* Reference Insert Section, if url add on record, if book add to table*/
+        let insertedReference: Reference[] | undefined;
+
+        if (!input.articleUrl && input.reference) {
+          console.log("this baby has a book attached");
+
+          insertedReference = await tx
+            .insert(references)
+            .values(input.reference)
+            .returning();
+        }
+
+        console.log("inserted reference", insertedReference);
+
+        /* Excerpt Insert Section */
+        const insertedExcerpt = await tx
+          .insert(excerpts)
+          .values({
+            body: input.body,
+            title: input.title,
+            type: input.type,
+            desertFigureID: input.desertFigureID,
+            createdBy: session.user.id,
+            referenceId:
+              insertedReference && insertedReference.length > 0
+                ? insertedReference[0].id
+                : undefined,
+          })
+          .returning();
+
+        console.log("inserted excerpt", insertedExcerpt);
+
+        /* Excert Tag Insert Section */
 
         //during testing run the following to rollback the transaction
         throw new Error("roll back transaction during testing");
