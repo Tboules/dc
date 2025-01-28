@@ -32,8 +32,6 @@ export async function handleTagSearch(value: string) {
 }
 /*
     write a transaction db query that does the following
-x   1. Determine if there are any tags without a UUID and add those to the tags table
-      a. update the new tag with the proper UUID that came back from the server
     2. Determine if it is an article / URL reference or an actual book reference
       a. if it's a book reference add it into our ref table if the book id does not already exist with out table
       b. save the book ref id for later use
@@ -45,12 +43,6 @@ x   1. Determine if there are any tags without a UUID and add those to the tags 
 export const postExcerptZsaAction = createServerAction()
   .input(formExcerptSchema)
   .handler(async ({ input }) => {
-    // test some business logic beforhand
-    // instead of doing it this way, we will create a placeholder for the tags
-    // const tagsToUpload = input.tags.filter(
-    //   (tag) => !tag.value.match(uuidv4Regex),
-    // );
-
     try {
       const session = await serverAuthSession();
       console.log(session);
@@ -59,20 +51,9 @@ export const postExcerptZsaAction = createServerAction()
       }
 
       await db.transaction(async (tx) => {
-        // for (let tag of tagsToUpload) {
-        //   const insertedTag = await tx
-        //     .insert(tags)
-        //     .values({
-        //       name: tag.label,
-        //       createdBy: session?.user.id,
-        //     })
-        //     .returning();
-        //
-        //   console.log(insertedTag);
-        //   // need to get the new id and update the original tags array so I can create excerpt tags
-        // }
-
+        /* Tag Upload Section */
         const tagsToUpload = input.tags.map<NewTag>((tag) => ({
+          id: tag.value.match(uuidv4Regex) ? tag.value : undefined,
           name: tag.label,
           createdBy: session.user.id,
         }));
@@ -80,10 +61,19 @@ export const postExcerptZsaAction = createServerAction()
         const uploadedTags = await tx
           .insert(tags)
           .values(tagsToUpload)
+          .onConflictDoNothing()
           .returning();
+
+        const finalTags = [
+          ...tagsToUpload.filter((t) => t.id),
+          ...uploadedTags,
+        ];
 
         console.log("tags to upload", tagsToUpload);
         console.log("uploaded tags", uploadedTags);
+        console.log("final", finalTags);
+
+        /* Reference Upload Section, if url add on record, if book add to table*/
 
         //during testing run the following to rollback the transaction
         throw new Error("roll back transaction during testing");
