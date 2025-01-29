@@ -7,9 +7,10 @@ import { createServerAction } from "zsa";
 import { Option } from "@/components/ui/multi-select";
 import db from "@/lib/database";
 import { uuidv4Regex } from "@/lib/utils/regex";
-import { NewTag, tags } from "@/lib/database/schema/tags";
+import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { Reference, references } from "@/lib/database/schema/references";
+import { excerptTags } from "@/lib/database/schema/excerptTags";
 
 export async function findDesertFigure(val: string) {
   try {
@@ -66,7 +67,7 @@ export const postExcerptZsaAction = createServerAction()
           .returning();
 
         const finalTags = [
-          ...tagsToUpload.filter((t) => t.id),
+          ...(tagsToUpload.filter((t) => t.id) as Tag[]),
           ...insertedTags,
         ];
 
@@ -106,6 +107,16 @@ export const postExcerptZsaAction = createServerAction()
         console.log("inserted excerpt", insertedExcerpt);
 
         /* Excert Tag Insert Section */
+        const excerptTagsToInsert = finalTags.map((t) => ({
+          excerptId: insertedExcerpt[0].id,
+          tagId: t.id,
+        }));
+        const insertedExcerptTags = await tx
+          .insert(excerptTags)
+          .values(excerptTagsToInsert)
+          .returning();
+
+        console.log("inserted excerpt tags", insertedExcerptTags);
 
         //during testing run the following to rollback the transaction
         throw new Error("roll back transaction during testing");
