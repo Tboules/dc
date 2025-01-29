@@ -95,6 +95,7 @@ export const postExcerptZsaAction = createServerAction()
             type: input.type,
             desertFigureID: input.desertFigureID,
             createdBy: session.user.id,
+            articleUrl: input.articleUrl || null,
             referenceId:
               insertedReference && insertedReference.length > 0
                 ? insertedReference[0].id
