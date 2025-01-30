@@ -11,6 +11,7 @@ import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { Reference, references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
+import { eq } from "drizzle-orm";
 
 export async function findDesertFigure(val: string) {
   try {
@@ -101,9 +102,17 @@ export const postExcerptZsaAction = createServerAction()
         }));
         await tx.insert(excerptTags).values(excerptTagsToInsert).returning();
 
-        const excerpt = await db.query.excerpts.findFirst({
+        const excerpt = await tx.query.excerpts.findFirst({
+          where: eq(excerpts.id, insertedExcerpt[0].id),
           with: {
             desertFigure: true,
+            createdBy: true,
+            excerptToTags: {
+              with: {
+                tag: true,
+              },
+            },
+            reference: true,
           },
         });
 
