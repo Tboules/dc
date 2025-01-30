@@ -32,22 +32,12 @@ export async function handleTagSearch(value: string) {
 
   return res;
 }
-/*
-    write a transaction db query that does the following
-    2. Determine if it is an article / URL reference or an actual book reference
-      a. if it's a book reference add it into our ref table if the book id does not already exist with out table
-      b. save the book ref id for later use
-    3. Create the excerpt with the refid and the desert figure id
-      a. save the new exerpt id
-    4. Once we have the exerpt ID add the exerpt tags
-*/
 
 export const postExcerptZsaAction = createServerAction()
   .input(formExcerptSchema)
   .handler(async ({ input }) => {
     try {
       const session = await serverAuthSession();
-      console.log(session);
       if (!session || !session.user.id) {
         throw new Error("No user session found!");
       }
@@ -73,7 +63,7 @@ export const postExcerptZsaAction = createServerAction()
 
         console.log("final", finalTags);
 
-        /* Reference Insert Section, if url add on record, if book add to table*/
+        /* Reference Insert Section */
         let insertedReference: Reference[] | undefined;
 
         if (!input.articleUrl && input.reference) {
@@ -104,19 +94,20 @@ export const postExcerptZsaAction = createServerAction()
           })
           .returning();
 
-        console.log("inserted excerpt", insertedExcerpt);
-
         /* Excert Tag Insert Section */
         const excerptTagsToInsert = finalTags.map((t) => ({
           excerptId: insertedExcerpt[0].id,
           tagId: t.id,
         }));
-        const insertedExcerptTags = await tx
-          .insert(excerptTags)
-          .values(excerptTagsToInsert)
-          .returning();
+        await tx.insert(excerptTags).values(excerptTagsToInsert).returning();
 
-        console.log("inserted excerpt tags", insertedExcerptTags);
+        const excerpt = await db.query.excerpts.findFirst({
+          with: {
+            desertFigure: true,
+          },
+        });
+
+        console.log(excerpt);
 
         //during testing run the following to rollback the transaction
         throw new Error("roll back transaction during testing");

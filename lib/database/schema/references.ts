@@ -1,4 +1,4 @@
-import { uuid, pgTable, text } from "drizzle-orm/pg-core";
+import { uuid, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -10,6 +10,7 @@ export const references = pgTable("reference", {
   subTitle: text("sub_title"),
   author: text("author").notNull(),
   cover: text("cover"),
+  dateAdded: timestamp("date_added").defaultNow(),
 });
 
 export const referenceSchema = createSelectSchema(references);

@@ -205,7 +205,11 @@ export default function NewExcerptForm({ desertFigure }: Props) {
               <FormLabel>Excerpt Type</FormLabel>
               <Select
                 name={field.name}
-                value={field.value ? JSON.stringify(field.value) : undefined}
+                value={
+                  field.value
+                    ? JSON.stringify(field.value)
+                    : EXCERPT_TYPE.QUOTE.toString()
+                }
                 onValueChange={(v) => field.onChange(JSON.parse(v))}
               >
                 <FormControl>

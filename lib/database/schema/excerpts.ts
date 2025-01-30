@@ -4,6 +4,7 @@ import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { newReferenceSchema, references } from "./references";
+import { relations } from "drizzle-orm";
 
 export enum ExcerptType {
   STORY = 2,
@@ -29,6 +30,13 @@ export const excerpts = pgTable("excerpt", {
   lastUpdated: timestamp("last_updated").defaultNow(),
   createdBy: text("added_by").references(() => users.id),
 });
+
+export const excerptRelations = relations(excerpts, ({ one }) => ({
+  desertFigure: one(desertFigures, {
+    fields: [excerpts.desertFigureID],
+    references: [desertFigures.id],
+  }),
+}));
 
 export const excerptSchema = createSelectSchema(excerpts);
 export const newExcerptSchema = createInsertSchema(excerpts, {
