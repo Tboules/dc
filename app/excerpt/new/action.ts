@@ -11,7 +11,6 @@ import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { Reference, references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
-import { eq } from "drizzle-orm";
 
 export async function findDesertFigure(val: string) {
   try {
@@ -62,8 +61,6 @@ export const postExcerptZsaAction = createServerAction()
           ...insertedTags,
         ];
 
-        console.log("final", finalTags);
-
         /* Reference Insert Section */
         let insertedReference: Reference[] | undefined;
 
@@ -75,8 +72,6 @@ export const postExcerptZsaAction = createServerAction()
             .values(input.reference)
             .returning();
         }
-
-        console.log("inserted reference", insertedReference);
 
         /* Excerpt Insert Section */
         const insertedExcerpt = await tx
@@ -101,15 +96,8 @@ export const postExcerptZsaAction = createServerAction()
           tagId: t.id,
         }));
         await tx.insert(excerptTags).values(excerptTagsToInsert).returning();
-
-        //during testing run the following to rollback the transaction
-        throw new Error("roll back transaction during testing");
       });
     } catch (error: any) {
-      console.error(error);
-
       return { error: error.message };
     }
-
-    console.log(input);
   });

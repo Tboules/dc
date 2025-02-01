@@ -45,8 +45,7 @@ type Props = {
 export default function NewExcerptForm({ desertFigure }: Props) {
   const [selectedFigureID, setSelectedFigureID] = useQueryState("desertFigure");
 
-  const { reset, execute, data, error, isError, status } =
-    useServerAction(postExcerptZsaAction);
+  const { reset, execute, status } = useServerAction(postExcerptZsaAction);
 
   const form = useForm<FormExcerpt>({
     resolver: zodResolver(formExcerptSchema),
@@ -61,13 +60,11 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
 
   async function handleSubmit(formData: FormExcerpt) {
-    const [data, err] = await execute(formData);
+    const [, err] = await execute(formData);
     if (err) {
       console.log({ err });
       return;
     }
-
-    console.log("data from server", data);
   }
 
   function resetForm(withoutFigure: boolean) {
