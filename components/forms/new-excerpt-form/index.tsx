@@ -75,7 +75,16 @@ export default function NewExcerptForm({ desertFigure }: Props) {
       setSelectedFigureID(null);
       form.reset({ desertFigureID: "" });
     } else {
-      form.reset();
+      const tempFigure = desertFigure
+        ? desertFigure
+        : form.getValues("desertFigure");
+
+      form.reset({
+        desertFigure: tempFigure,
+        desertFigureID: tempFigure.id,
+        title: "",
+        articleUrl: "",
+      });
     }
 
     reset();

@@ -102,22 +102,6 @@ export const postExcerptZsaAction = createServerAction()
         }));
         await tx.insert(excerptTags).values(excerptTagsToInsert).returning();
 
-        const excerpt = await tx.query.excerpts.findFirst({
-          where: eq(excerpts.id, insertedExcerpt[0].id),
-          with: {
-            desertFigure: true,
-            createdBy: true,
-            excerptToTags: {
-              with: {
-                tag: true,
-              },
-            },
-            reference: true,
-          },
-        });
-
-        console.log(excerpt);
-
         //during testing run the following to rollback the transaction
         throw new Error("roll back transaction during testing");
       });
