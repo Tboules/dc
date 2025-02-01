@@ -60,11 +60,12 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
 
   async function handleSubmit(formData: FormExcerpt) {
-    const [, err] = await execute(formData);
+    const [data, err] = await execute(formData);
     if (err) {
       console.log({ err });
       return;
     }
+    console.log(data);
   }
 
   function resetForm(withoutFigure: boolean) {
@@ -85,6 +86,15 @@ export default function NewExcerptForm({ desertFigure }: Props) {
     }
 
     reset();
+  }
+
+  if (status == "error") {
+    return (
+      <div>
+        <h1>Something seems to have gone wrong...</h1>
+        <Button onClick={() => resetForm(true)}>Try Again</Button>
+      </div>
+    );
   }
 
   if (status == "success") {
