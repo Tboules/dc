@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const references = pgTable("reference", {
   id: uuid("id").defaultRandom().primaryKey(),
-  externalId: text("external_id").notNull(),
+  externalId: text("external_id").unique().notNull(),
   source: text("source").notNull().default("open_library"),
   title: text("title").notNull(),
   subTitle: text("sub_title"),

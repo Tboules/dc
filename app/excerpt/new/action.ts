@@ -11,6 +11,7 @@ import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { Reference, references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
+import { eq, and, ilike } from "drizzle-orm";
 
 export async function findDesertFigure(val: string) {
   try {
@@ -64,12 +65,26 @@ export const postExcerptZsaAction = createServerAction()
       let insertedReference: Reference[] | undefined;
 
       if (!input.articleUrl && input.reference) {
-        console.log("this baby has a book attached");
-
+        // Check if book exists in our DB
         insertedReference = await tx
-          .insert(references)
-          .values(input.reference)
-          .returning();
+          .select()
+          .from(references)
+          .where(
+            and(
+              ilike(references.title, input.reference.title),
+              ilike(references.author, input.reference.author),
+            ),
+          );
+
+        if (!insertedReference || insertedReference.length === 0) {
+          // Book doesnt exist in our DB so adding it
+          console.log("Book not found so we are adding it");
+          insertedReference = await tx
+            .insert(references)
+            .values(input.reference)
+            .onConflictDoNothing()
+            .returning();
+        }
       }
 
       /* Excerpt Insert Section */

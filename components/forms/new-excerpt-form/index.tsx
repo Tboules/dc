@@ -43,7 +43,7 @@ type Props = {
 };
 
 export default function NewExcerptForm({ desertFigure }: Props) {
-  const [selectedFigureID, setSelectedFigureID] = useQueryState("desertFigure");
+  const [, setSelectedFigureID] = useQueryState("desertFigure");
 
   const { reset, execute, status } = useServerAction(postExcerptZsaAction);
 
@@ -65,7 +65,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
       console.log({ err });
       return;
     }
-    console.log(data);
   }
 
   function resetForm(withoutFigure: boolean) {

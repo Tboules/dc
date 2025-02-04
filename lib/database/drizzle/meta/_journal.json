@@ -15,6 +15,13 @@
       "when": 1738274767128,
       "tag": "0001_abnormal_kinsey_walden",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1738706481886,
+      "tag": "0002_striped_cardiac",
+      "breakpoints": true
     }
   ]
 }
