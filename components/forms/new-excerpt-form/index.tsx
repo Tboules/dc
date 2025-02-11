@@ -263,6 +263,9 @@ function TagSelector() {
 
   return (
     <MultipleSelector
+      inputProps={{
+        maxLength: 20,
+      }}
       defaultOptions={[]}
       onChange={(v) => setValue("tags", v)}
       onSearch={handleTagSearch}

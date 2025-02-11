@@ -11,7 +11,7 @@ import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { Reference, references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
-import { eq, and, ilike } from "drizzle-orm";
+import { and, ilike } from "drizzle-orm";
 
 export async function findDesertFigure(val: string) {
   try {
