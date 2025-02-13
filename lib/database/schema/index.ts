@@ -8,4 +8,5 @@ export * from "./accounts";
 export * from "./users";
 export * from "./sessions";
 export * from "./verificationTokens";
+export * from "./content_status";
 export * from "./relations";

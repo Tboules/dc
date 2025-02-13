@@ -22,6 +22,13 @@
       "when": 1738706481886,
       "tag": "0002_striped_cardiac",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1739487805632,
+      "tag": "0003_early_moonstone",
+      "breakpoints": true
     }
   ]
 }
