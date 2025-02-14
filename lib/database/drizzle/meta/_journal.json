@@ -29,6 +29,13 @@
       "when": 1739487805632,
       "tag": "0003_early_moonstone",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1739492250301,
+      "tag": "0004_thin_mordo",
+      "breakpoints": true
     }
   ]
 }

@@ -4,6 +4,7 @@ import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { newReferenceSchema, references } from "./references";
+import { contentStatus } from "./content_status";
 
 export enum ExcerptType {
   STORY = 2,
@@ -28,6 +29,11 @@ export const excerpts = pgTable("excerpt", {
   dateAdded: timestamp("date_added").defaultNow(),
   lastUpdated: timestamp("last_updated").defaultNow(),
   createdBy: text("added_by").references(() => users.id),
+  statusId: uuid("status_id")
+    .references(() => contentStatus.id)
+    .notNull()
+    //pull the uuid for draft
+    .default("e3884d7e-2b30-40b0-bc77-c075ae4739cb"),
 });
 
 export const excerptSchema = createSelectSchema(excerpts);

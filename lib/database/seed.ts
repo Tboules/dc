@@ -63,10 +63,10 @@ const main = async () => {
         },
       ];
 
-      await tx
+      const statuses = await tx
         .insert(contentStatus)
         .values(CONTENT_STATUS)
-        .onConflictDoNothing();
+        .returning();
 
       const DESERT_FIGURES_SEED: DesertFigureDirectInsert[] = [
         {
@@ -75,6 +75,7 @@ const main = async () => {
           epithet: "the Great",
           createdBy: CREATED_BY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Antony the Great",
+          statusId: statuses[2].id,
         },
         {
           title: DESERT_FIGURE_TITLE.SAINT,
@@ -82,6 +83,7 @@ const main = async () => {
           epithet: "the Great",
           createdBy: CREATED_BY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Macarius the Great",
+          statusId: statuses[2].id,
         },
         {
           title: DESERT_FIGURE_TITLE.SAINT,
@@ -89,6 +91,7 @@ const main = async () => {
           epithet: "the Strong",
           createdBy: CREATED_BY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Moses the Strong",
+          statusId: statuses[2].id,
         },
         {
           title: DESERT_FIGURE_TITLE.SAINT,
@@ -96,6 +99,7 @@ const main = async () => {
           epithet: "the Short",
           createdBy: CREATED_BY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " John the Short",
+          statusId: statuses[2].id,
         },
         {
           title: DESERT_FIGURE_TITLE.SAINT,
@@ -103,6 +107,7 @@ const main = async () => {
           epithet: "the Theologian",
           createdBy: CREATED_BY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Gregory the Theologian",
+          statusId: statuses[2].id,
         },
         {
           title: DESERT_FIGURE_TITLE.FATHER,
@@ -110,6 +115,7 @@ const main = async () => {
           lastName: "Schmemann",
           createdBy: CREATED_BY_ID,
           fullName: DESERT_FIGURE_TITLE.FATHER + " Alexander Schmemann",
+          statusId: statuses[2].id,
         },
         {
           title: DESERT_FIGURE_TITLE.FATHER,
@@ -117,6 +123,7 @@ const main = async () => {
           lastName: "Freeman",
           createdBy: CREATED_BY_ID,
           fullName: DESERT_FIGURE_TITLE.FATHER + " Stephen Freeman",
+          statusId: statuses[2].id,
         },
       ];
 
@@ -133,6 +140,7 @@ const main = async () => {
           title: "St. Antony Learns to Live in the Desert",
           desertFigureID: authorIds[0].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         //1 tags -- trust, humility, doubt
         {
@@ -140,6 +148,7 @@ const main = async () => {
           title: "Trusting in the Judgements of God",
           desertFigureID: authorIds[0].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         //2 tags -- pleasing God, presence of God, watchfullness
         {
@@ -147,6 +156,7 @@ const main = async () => {
           title: "Pleasing God",
           desertFigureID: authorIds[0].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         //St. Macarius the Great
         // 3 tags -- vulnerability, confession, shame
@@ -155,6 +165,7 @@ const main = async () => {
           title: "St. Macarius Helps One of the Brothers",
           desertFigureID: authorIds[1].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         //4 tags -- 12 warfare, 13 deception
         {
@@ -162,6 +173,7 @@ const main = async () => {
           title: "The Devil Wants To Turn Us Away",
           desertFigureID: authorIds[1].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         //5 tags -- 14 love, 15 selfless, 16 gifts
         {
@@ -169,6 +181,7 @@ const main = async () => {
           title: "Abba Macarius loves the Brethren",
           desertFigureID: authorIds[1].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // St. Moses the Strong
         // 6 tags -- 17 don't judge, 43 meekness, 4 humility
@@ -176,6 +189,7 @@ const main = async () => {
           body: "A brother at Scetis commited a fault. A council was called which Abba Moses was invited, but he refused to go to it. Then the priest sent someone to say to him, 'Come, for everyone is waiting for you.' So he got up and went. He took a leaking jug, filled it with water and carried it with him. The others came out to meet him and said to him, 'What is this, Father?' The old man said to them, 'My sins run out behind me, and I do not see them, and today I am coming to judge the errors of another.' When they heard that they said no more to the brother but forgave him.",
           title: "Abba Moses Teaches Non-Judgement",
           desertFigureID: authorIds[2].id,
+          statusId: statuses[2].id,
           createdBy: CREATED_BY_ID,
         },
         // 7 tags -- 18 priorities, 28 fasting, 19 hospitality
@@ -184,6 +198,7 @@ const main = async () => {
           title: "Abba Moses Puts Love First",
           desertFigureID: authorIds[2].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 8 tags -- 20 wisdom, 21 stillness, 22 patience
         {
@@ -191,6 +206,7 @@ const main = async () => {
           title: "Your Cell Will Teach You Everything",
           desertFigureID: authorIds[2].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // St. John the Short
         // 9 tags -- 23 obedience, 24 persistence, 25 discipleship
@@ -198,6 +214,7 @@ const main = async () => {
           body: "It was said of Abba John the Dwarf that he withdrew and lived in the desert at Scetis with an old man of Thebes. His abba, taking a piece of dry wood, planted it and said to him, 'Water it every day with a bottle of water, until it bears fruit.' Now the water was so far away that he had to leave in the evening and return the following morning. At the end of three years the wood came to life and bore fruit. Then the old man took some of the fruit and arried it to the church saying to the brethren, 'Take and eat the fruit of obedience.'",
           title: "The Fruit of Obedience",
           desertFigureID: authorIds[3].id,
+          statusId: statuses[2].id,
           createdBy: CREATED_BY_ID,
         },
         // 10 tags -- 4 humility, 26 zeal, 27 pride
@@ -205,6 +222,7 @@ const main = async () => {
           body: "It was said of Abba John the Dwarf, that one day he said to his elder brother, 'I should like to be free of all care, like the angels, who do not work, but ceaselessly offer worship to God.' So he took off his cloak and went away into the desert. After a week he came back to his brother. When he knocked on the door, he heard his brother say, before he opened it 'Who are you?' He said, 'I am John, your brother.' But he replied, 'John has become an angel, and henceforth he is no longer among men.' Then the other begged him saying, 'It is I.' However, his brother did not let him in, but left him there in distress until morning. Then, pening the door, he said to him, 'You are a man and you must once again work in order to eat.' Then John made a prostration before him, saying, 'Forgive me.'",
           title: "Abba John Learns Humility",
           desertFigureID: authorIds[3].id,
+          statusId: statuses[2].id,
           createdBy: CREATED_BY_ID,
         },
         // 11 tags -- 28 fasting, 29 passions, 2 struggle
@@ -212,6 +230,7 @@ const main = async () => {
           body: "Abba John the Dwarf said, 'If a king wanted to take possession of his enemy's city, he would begin by cutting off the water and the food and so his enemies, dying of hunger, would submit to him. It is the same with the passions of the flesh: if a man goes about fasting and hungry the enemies of his soul grow weak.'",
           title: "Fasting Weakens The Passions",
           desertFigureID: authorIds[3].id,
+          statusId: statuses[2].id,
           createdBy: CREATED_BY_ID,
         },
         // St. Gregory the Theologian
@@ -219,6 +238,7 @@ const main = async () => {
         {
           body: "Abba Gregory said, 'These three things God requires of all the baptized: right faith in the heart, truth on the tongue, temperance in the body.'",
           title: "Three Requirements",
+          statusId: statuses[2].id,
           desertFigureID: authorIds[4].id,
           createdBy: CREATED_BY_ID,
         },
@@ -226,6 +246,7 @@ const main = async () => {
         {
           body: "Abba Gregory said, 'The whole life of a man is but one single day for those who are working hard with longing.'",
           title: "Life as One Day",
+          statusId: statuses[2].id,
           desertFigureID: authorIds[4].id,
           createdBy: CREATED_BY_ID,
         },
@@ -233,6 +254,7 @@ const main = async () => {
         // 14 tags -- 34 eucharist, 35 priest, 36 communion
         {
           body: "The first, the basic definition of man is that he is the priest. He stands in the center of the world and unifies it in his act of blessing God, of both receiving the world from God and offering it to God--and by filling the world with this eucharist, he tranforms his life, the one that he receives from the world into life in God, into communion with him. The world was created as the 'matter,' the material of on all-embracing eucharist, and man was created as the priest of this cosmic sacrament.",
+          statusId: statuses[2].id,
           title: "Man as Priest",
           desertFigureID: authorIds[5].id,
           createdBy: CREATED_BY_ID,
@@ -240,6 +262,7 @@ const main = async () => {
         // 15 tags -- 37 the fall, 36 communion, 38 meaning
         {
           body: "It is not accidental, therefore, that the biblical story of the Fall is centered again on food. Man ate the forbidden fruit. The fruit of that one tree, whatever else it may signify, was unlike every other fruit in the Garden: it was not offered as a gift to man. Not given, not blessed by God, it was food whose eating was condemned to be communion with itself alone, and not with God. It is the image of the world loved for itself, and eating it is the image of life understood as an end in itself...He[man] forgets that the world, its air or its food cannot by themselves bring life, but only as they are received and accepted for God's sake, in God, and as bearers of the divine gift of life. By themselves they can produce only the appearance of life. When we see the world as an end in itself, everything becomes itself a value and consequently loses all value, because only in God is found the meaning(value) of everything, and the world is meaningful only when it is the 'sacrament' of God's presence. Things treated merely as things in themselves destroy themselves because only in God have they any life. The world of nature, cut off from the source of life is a dying world.",
+          statusId: statuses[2].id,
           title: "The Fall as Living Life as an End In Itself",
           desertFigureID: authorIds[5].id,
           createdBy: CREATED_BY_ID,
@@ -247,6 +270,7 @@ const main = async () => {
         // 16 tags -- 39 liturgy, 34 eucharist, 40 church
         {
           body: "The Eucharist is a liturgy. And he who says liturgy today is likely to get involved in a controversy. For to some--the 'liturgically minded'--of all the activities of the Church, liturgy is the most important, if not the only one. To others, liturgy is aesthetic, and a spiritual deviation from the real task of the Church. There exists today 'liturgical' and 'non-liturgical' churches and Christians. But this controversy is unnecessary, for it has its roots in one basic misunderstanding--the 'liturgical' understanding of liturgy. This is the reduction of the liturgy to 'cultic' categories, its definition as a sacred act of worship, different as such not only from the 'profane' area of life, but even from all other activies of the Church itself. But this is not the original meaning of the Greek word leitourgia. It meant an action by which a group of people become something corporately which they had not been as a mere collection of individuals--a whole greater than the sum of its parts...The Eucharist is the enterance of the Church into the joy of its Lord. And to enter into that joy, so as to be a witness to it in the world, is indeed the very calling of the Church, its essential leitourgia, the sacrament by which it 'becomes what it is.'",
+          statusId: statuses[2].id,
           title: "A Proper Understanding of Liturgy",
           desertFigureID: authorIds[5].id,
           createdBy: CREATED_BY_ID,
@@ -257,6 +281,7 @@ const main = async () => {
           body: "There is within us the very image of God: 'life and the kingdom...the treasures of grace.' If shame is part of our answer to the question, 'How do I feel about who I am?' this path reminds us that the truth of who I am is not found on the surface. Who I am is not to be mistaken for the 'garments of skin'-- the various strategies, identities, and designs with which we seek to clothe ourselves. The deepest mode of the spiritual life is one that searches for God, that asks, seeks, and knocks, in order to find the Kingdom. That is a search that takes us beneath layers of shame, beneath our false identities, into the very place where the image of God and the true self reside. This is a difficult journey.",
           title: "Who I Am Beyond Shame",
           desertFigureID: authorIds[6].id,
+          statusId: statuses[2].id,
           createdBy: CREATED_BY_ID,
         },
         // 18 tags -- 11 shame, 41 identity, 42 healthy sexuality
@@ -265,6 +290,7 @@ const main = async () => {
           title: "The Human as a Temple",
           desertFigureID: authorIds[6].id,
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
       ];
 
@@ -278,221 +304,265 @@ const main = async () => {
         {
           name: "boredom",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 1
         {
           name: "dryness",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 2
         {
           name: "spiritual struggle",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 3
         {
           name: "trust",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 4
         {
           name: "humility",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 5
         {
           name: "doubt",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 6
         {
           name: "pleasing God",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 7
         {
           name: "presence of God",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 8
         {
           name: "watchfullness",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 9
         {
           name: "vulnerability",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 10
         {
           name: "confession",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 11
         {
           name: "shame",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 12
         {
           name: "warfare",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 13
         {
           name: "deception",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 14
         {
           name: "love",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 15
         {
           name: "selfless",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 16
         {
           name: "gifts",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 17
         {
           name: "do not judge",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 18
         {
           name: "priorities",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 19
         {
           name: "hospitality",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 20
         {
           name: "wisdom",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 21
         {
           name: "stillness",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 22
         {
           name: "patience",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 23
         {
           name: "obedience",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 24
         {
           name: "persistence",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 25
         {
           name: "discipleship",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 26
         {
           name: "zeal",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 27
         {
           name: "pride",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 28
         {
           name: "fasting",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 29
         {
           name: "passions",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 30
         {
           name: "faith",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 31
         {
           name: "speak truth",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 32
         {
           name: "temperance",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 33
         {
           name: "longing",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 34
         {
           name: "eucharist",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 35
         {
           name: "priest",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 36
         {
           name: "communion",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 37
         {
           name: "the fall",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 38
         {
           name: "meaning",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 39
         {
           name: "liturgy",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 40
         {
           name: "church",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 41
         {
           name: "identity",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 42
         {
           name: "healthy sexuality",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
         // 43
         {
           name: "meekness",
           createdBy: CREATED_BY_ID,
+          statusId: statuses[2].id,
         },
       ];
 

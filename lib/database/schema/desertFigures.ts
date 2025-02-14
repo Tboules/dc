@@ -3,6 +3,7 @@ import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { normalizeStringToNull } from "@/lib/utils";
+import { contentStatus } from "./content_status";
 
 export const desertFigures = pgTable("desert_figure", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -16,6 +17,11 @@ export const desertFigures = pgTable("desert_figure", {
   dateAdded: timestamp("date_added").defaultNow(),
   lastUpdated: timestamp("last_updated").defaultNow(),
   createdBy: text("added_by").references(() => users.id),
+  statusId: uuid("status_id")
+    .references(() => contentStatus.id)
+    .notNull()
+    //pull the uuid for draft
+    .default("e3884d7e-2b30-40b0-bc77-c075ae4739cb"),
 });
 
 export type DesertFigureDirectInsert = typeof desertFigures.$inferInsert;
