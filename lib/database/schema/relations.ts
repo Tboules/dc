@@ -5,6 +5,13 @@ import { users } from "@/lib/database/schema/users";
 import { references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
 import { tags } from "@/lib/database/schema/tags";
+import { contentStatus } from "./content_status";
+
+export const contentStatusRelations = relations(contentStatus, ({ many }) => ({
+  excerpts: many(excerpts),
+  desertFigures: many(desertFigures),
+  tags: many(tags),
+}));
 
 export const excerptRelations = relations(excerpts, ({ many, one }) => ({
   desertFigure: one(desertFigures, {
@@ -19,6 +26,10 @@ export const excerptRelations = relations(excerpts, ({ many, one }) => ({
     fields: [excerpts.referenceId],
     references: [references.id],
   }),
+  status: one(contentStatus, {
+    fields: [excerpts.statusId],
+    references: [contentStatus.id],
+  }),
   excerptToTags: many(excerptTags),
 }));
 
@@ -29,6 +40,10 @@ export const desertFigureRelations = relations(
     createdBy: one(users, {
       fields: [desertFigures.createdBy],
       references: [users.id],
+    }),
+    status: one(contentStatus, {
+      fields: [desertFigures.statusId],
+      references: [contentStatus.id],
     }),
   }),
 );
@@ -43,6 +58,10 @@ export const tagRelations = relations(tags, ({ many, one }) => ({
     references: [users.id],
   }),
   excertsToTags: many(excerptTags),
+  status: one(contentStatus, {
+    fields: [tags.statusId],
+    references: [contentStatus.id],
+  }),
 }));
 
 export const excerptTagRelations = relations(excerptTags, ({ one }) => ({
