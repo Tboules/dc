@@ -11,7 +11,8 @@ import { NewTag, Tag, tags } from "@/lib/database/schema/tags";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { Reference, references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
-import { and, ilike } from "drizzle-orm";
+import { and, eq, ilike } from "drizzle-orm";
+import { contentStatus } from "@/lib/database/schema/content_status";
 
 export async function findDesertFigure(val: string) {
   try {
@@ -42,12 +43,21 @@ export const postExcerptZsaAction = createServerAction()
       throw new Error("No user session found!");
     }
 
+    const draftStatus = await db.query.contentStatus.findFirst({
+      where: eq(contentStatus.name, "Draft"),
+    });
+
+    if (!draftStatus || !draftStatus.id) {
+      throw new Error("Status was not found");
+    }
+
     await db.transaction(async (tx) => {
       /* Tag Insert Section */
       const tagsToUpload = input.tags.map<NewTag>((tag) => ({
         id: tag.value.match(uuidv4Regex) ? tag.value : undefined,
         name: tag.label,
         createdBy: session.user.id,
+        statusId: draftStatus.id,
       }));
 
       const insertedTags = await tx
@@ -97,6 +107,7 @@ export const postExcerptZsaAction = createServerAction()
           desertFigureID: input.desertFigureID,
           createdBy: session.user.id,
           articleUrl: input.articleUrl || null,
+          statusId: draftStatus.id,
           referenceId:
             insertedReference && insertedReference.length > 0
               ? insertedReference[0].id

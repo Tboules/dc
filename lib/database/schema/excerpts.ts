@@ -31,15 +31,14 @@ export const excerpts = pgTable("excerpt", {
   createdBy: text("added_by").references(() => users.id),
   statusId: uuid("status_id")
     .references(() => contentStatus.id)
-    .notNull()
-    //pull the uuid for draft
-    .default("e3884d7e-2b30-40b0-bc77-c075ae4739cb"),
+    .notNull(),
 });
 
 export const excerptSchema = createSelectSchema(excerpts);
 export const newExcerptSchema = createInsertSchema(excerpts, {
   articleUrl: (s) => s.articleUrl.url().optional().or(z.literal("")),
   title: (s) => s.title.min(1, "Title Required"),
+  statusId: (s) => s.statusId.optional(),
 });
 
 export const formExcerptSchema = newExcerptSchema.extend({

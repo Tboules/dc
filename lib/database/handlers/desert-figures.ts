@@ -49,6 +49,7 @@ export async function searchForDesertFigure(searchValue: string) {
       lastUpdated: row.last_updated,
       createdBy: row.added_by,
       fullName: row.full_name,
+      statusId: row.status_id,
     };
 
     const validFigure = desertFigureSchema.parse(figure);

@@ -19,9 +19,7 @@ export const desertFigures = pgTable("desert_figure", {
   createdBy: text("added_by").references(() => users.id),
   statusId: uuid("status_id")
     .references(() => contentStatus.id)
-    .notNull()
-    //pull the uuid for draft
-    .default("e3884d7e-2b30-40b0-bc77-c075ae4739cb"),
+    .notNull(),
 });
 
 export type DesertFigureDirectInsert = typeof desertFigures.$inferInsert;
@@ -35,6 +33,7 @@ export const newDesertFigureSchema = createInsertSchema(desertFigures, {
   firstName: (s) => s.firstName.min(1, "First Name is required"),
   thumbnail: () => z.custom<File>(),
   fullName: (s) => s.fullName.optional(),
+  statusId: (s) => s.statusId.optional(),
   lastName: (s) => s.lastName.transform(normalizeStringToNull),
   epithet: (s) => s.epithet.transform(normalizeStringToNull),
   title: (s) => s.title.transform(normalizeStringToNull),

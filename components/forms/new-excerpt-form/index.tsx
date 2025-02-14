@@ -60,7 +60,7 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
 
   async function handleSubmit(formData: FormExcerpt) {
-    const [data, err] = await execute(formData);
+    const [, err] = await execute(formData);
     if (err) {
       console.log({ err });
       return;

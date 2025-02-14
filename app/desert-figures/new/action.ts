@@ -14,6 +14,8 @@ import { getPresignedUrl } from "@/app/api/documents/get-presigned";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { generateDesertFigureFullname } from "@/lib/utils";
+import { contentStatus } from "@/lib/database/schema";
+import { eq } from "drizzle-orm";
 
 export async function postDesertFigureAction(
   formState: InternalFormState,
@@ -23,12 +25,21 @@ export async function postDesertFigureAction(
 
   try {
     const d = Object.fromEntries(formData);
-    const parsed = newDesertFigureSchema.safeParse(d);
+
+    // inject draft status
+    const draftStatus = await db.query.contentStatus.findFirst({
+      where: eq(contentStatus.name, "Draft"),
+    });
+    const parsedFigure = newDesertFigureSchema.safeParse({
+      ...d,
+      statusId: draftStatus?.id,
+    });
+
     const session = await serverAuthSession();
     const fileId = uuid();
     let thumbnailUrl = null;
 
-    if (!parsed.success || !session) {
+    if (!parsedFigure.success || !session) {
       return {
         ...formState,
         status: INTERNAL_FORM_STATE_STATUS.FAILURE,
@@ -36,7 +47,7 @@ export async function postDesertFigureAction(
     }
 
     //upload file to s3
-    if (parsed.data.thumbnail && parsed.data.thumbnail?.size != 0) {
+    if (parsedFigure.data.thumbnail && parsedFigure.data.thumbnail?.size != 0) {
       const presignedUrl = await getPresignedUrl(fileId);
 
       if (!presignedUrl) {
@@ -45,7 +56,7 @@ export async function postDesertFigureAction(
 
       const fileUploadResponse = await fetch(presignedUrl, {
         method: "PUT",
-        body: parsed.data.thumbnail,
+        body: parsedFigure.data.thumbnail,
       });
 
       if (!fileUploadResponse.ok) {
@@ -56,19 +67,19 @@ export async function postDesertFigureAction(
     }
 
     //add user id to created by
-    parsed.data.createdBy = session?.user?.id;
+    parsedFigure.data.createdBy = session?.user?.id;
 
-    if (parsed.data.title == DESERT_FIGURE_TITLE.NONE) {
-      parsed.data.title = null;
+    if (parsedFigure.data.title == DESERT_FIGURE_TITLE.NONE) {
+      parsedFigure.data.title = null;
     }
 
     //Derive Full Name
-    let fullName = generateDesertFigureFullname(parsed.data);
+    let fullName = generateDesertFigureFullname(parsedFigure.data);
 
     figure = await db
       .insert(desertFigures)
       .values({
-        ...parsed.data,
+        ...parsedFigure.data,
         fullName,
         thumbnail: thumbnailUrl,
       })

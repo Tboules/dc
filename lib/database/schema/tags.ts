@@ -11,9 +11,7 @@ export const tags = pgTable("tag", {
   createdBy: text("added_by").references(() => users.id),
   statusId: uuid("status_id")
     .references(() => contentStatus.id)
-    .notNull()
-    //pull the uuid for draft
-    .default("e3884d7e-2b30-40b0-bc77-c075ae4739cb"),
+    .notNull(),
 });
 
 export const tagSchema = createSelectSchema(tags);
