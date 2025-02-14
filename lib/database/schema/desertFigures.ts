@@ -39,5 +39,9 @@ export const newDesertFigureSchema = createInsertSchema(desertFigures, {
   title: (s) => s.title.transform(normalizeStringToNull),
 });
 
+export const desertFigureInsertSchema = createInsertSchema(desertFigures, {
+  thumbnail: () => z.custom<File>(),
+});
+
 export type DesertFigure = z.infer<typeof desertFigureSchema>;
 export type NewDesertFigure = z.infer<typeof newDesertFigureSchema>;

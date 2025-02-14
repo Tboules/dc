@@ -3,6 +3,7 @@
 import db from "@/lib/database";
 import {
   DesertFigureDirectInsert,
+  desertFigureInsertSchema,
   desertFigures,
   newDesertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
@@ -30,7 +31,7 @@ export async function postDesertFigureAction(
     const draftStatus = await db.query.contentStatus.findFirst({
       where: eq(contentStatus.name, "Draft"),
     });
-    const parsedFigure = newDesertFigureSchema.safeParse({
+    const parsedFigure = desertFigureInsertSchema.safeParse({
       ...d,
       statusId: draftStatus?.id,
     });
