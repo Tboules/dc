@@ -40,6 +40,7 @@ export const newExcerptSchema = createInsertSchema(excerpts, {
   title: (s) => s.title.min(1, "Title Required"),
   statusId: (s) => s.statusId.optional(),
 });
+export const excerptInsertSchema = createInsertSchema(excerpts);
 
 export const formExcerptSchema = newExcerptSchema.extend({
   tags: z.array(OptionSchema),
@@ -48,5 +49,5 @@ export const formExcerptSchema = newExcerptSchema.extend({
 });
 
 export type Excerpt = z.infer<typeof excerptSchema>;
-export type NewExcerpt = z.infer<typeof newExcerptSchema>;
+export type NewExcerpt = z.infer<typeof excerptInsertSchema>;
 export type FormExcerpt = z.infer<typeof formExcerptSchema>;
