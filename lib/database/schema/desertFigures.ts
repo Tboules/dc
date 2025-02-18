@@ -45,3 +45,4 @@ export const desertFigureInsertSchema = createInsertSchema(desertFigures, {
 
 export type DesertFigure = z.infer<typeof desertFigureSchema>;
 export type NewDesertFigure = z.infer<typeof newDesertFigureSchema>;
+export type InsertDesertFigure = z.infer<typeof desertFigureInsertSchema>;

@@ -35,20 +35,25 @@ import {
 import lottieLoader from "@/assets/loading.json";
 import { Label } from "../ui/label";
 import FileInputWithPreview from "@/components/FileInputWithPreview";
-import { postDesertFigureAction } from "@/app/desert-figures/new/action";
+import {
+  postDesertFigureAction,
+  postDesertFigureZsaAction,
+} from "@/app/desert-figures/new/action";
 import { useSearchParams } from "next/navigation";
 import { getAllParams } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import FormHeader from "./form-header";
+import { useServerAction } from "zsa-react";
 
 export default function PostFigureForm() {
   const params = useSearchParams();
+
   const [state, formAction] = useActionState(postDesertFigureAction, {
     status: INTERNAL_FORM_STATE_STATUS.PENDING,
     params: getAllParams(params.entries()),
   });
-
+  const { reset, execute, status } = useServerAction(postDesertFigureZsaAction);
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
     defaultValues: {
@@ -60,6 +65,15 @@ export default function PostFigureForm() {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+
+  // Finish implementation of new form submission process
+  async function handleFormSubmission(formData: NewDesertFigure) {
+    const [, err] = await execute(formData);
+    if (err) {
+      console.log(err);
+      return;
+    }
+  }
 
   if (state?.status == INTERNAL_FORM_STATE_STATUS.LOADING) {
     return (
