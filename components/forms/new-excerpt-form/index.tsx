@@ -32,7 +32,6 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useQueryState } from "nuqs";
 import React from "react";
-import { useRef } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import BookSearchAutoComplete from "./book-search-autocomplete";
@@ -56,8 +55,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
       desertFigureID: desertFigure?.id ?? undefined,
     },
   });
-
-  const formRef = useRef<HTMLFormElement>(null);
 
   async function handleSubmit(formData: FormExcerpt) {
     const [, err] = await execute(formData);
@@ -113,7 +110,6 @@ export default function NewExcerptForm({ desertFigure }: Props) {
   return (
     <Form {...form}>
       <form
-        ref={formRef}
         onSubmit={form.handleSubmit(handleSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4"
       >

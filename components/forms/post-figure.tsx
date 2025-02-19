@@ -26,21 +26,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "../ui/separator";
-import { useRef, useActionState } from "react";
-import {
-  INTERNAL_FORM_STATE_STATUS,
-  DESERT_FIGURE_TITLE,
-  DESERT_FIGURE_TYPE,
-} from "@/lib/enums";
+import { DESERT_FIGURE_TITLE, DESERT_FIGURE_TYPE } from "@/lib/enums";
 import lottieLoader from "@/assets/loading.json";
 import { Label } from "../ui/label";
 import FileInputWithPreview from "@/components/FileInputWithPreview";
-import {
-  postDesertFigureAction,
-  postDesertFigureZsaAction,
-} from "@/app/desert-figures/new/action";
+import { postDesertFigureZsaAction } from "@/app/desert-figures/new/action";
 import { useSearchParams } from "next/navigation";
-import { getAllParams } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import FormHeader from "./form-header";
@@ -49,10 +40,6 @@ import { useServerAction } from "zsa-react";
 export default function PostFigureForm() {
   const params = useSearchParams();
 
-  const [state, formAction] = useActionState(postDesertFigureAction, {
-    status: INTERNAL_FORM_STATE_STATUS.PENDING,
-    params: getAllParams(params.entries()),
-  });
   const { reset, execute, status } = useServerAction(postDesertFigureZsaAction);
   const form = useForm<NewDesertFigure>({
     resolver: zodResolver(newDesertFigureSchema),
@@ -61,10 +48,8 @@ export default function PostFigureForm() {
       lastName: "",
       epithet: "",
       type: DESERT_FIGURE_TYPE.AUTHOR,
-      ...(state?.fields ?? {}),
     },
   });
-  const formRef = useRef<HTMLFormElement>(null);
 
   // Finish implementation of new form submission process
   async function handleFormSubmission(formData: NewDesertFigure) {
@@ -75,7 +60,7 @@ export default function PostFigureForm() {
     }
   }
 
-  if (state?.status == INTERNAL_FORM_STATE_STATUS.LOADING) {
+  if (status == "pending") {
     return (
       <div className="min-w-72 w-full md:w-3/4 border border-border rounded flex justify-center items-end">
         <Lottie loop animationData={lottieLoader} play />
@@ -83,7 +68,7 @@ export default function PostFigureForm() {
     );
   }
 
-  if (state?.status == INTERNAL_FORM_STATE_STATUS.SUCCESS) {
+  if (status == "success") {
     return (
       <div className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <h1 className="md:col-span-2">Thank You!</h1>
@@ -91,7 +76,7 @@ export default function PostFigureForm() {
           className="md:col-span-2"
           onClick={() => {
             form.reset();
-            state.status = INTERNAL_FORM_STATE_STATUS.PENDING;
+            reset();
           }}
         >
           Add Another Figure
@@ -100,14 +85,14 @@ export default function PostFigureForm() {
     );
   }
 
-  if (state?.status == INTERNAL_FORM_STATE_STATUS.FAILURE) {
+  if (status == "error") {
     return (
       <div className="min-w-72 w-full md:w-3/4 border border-border rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <h1>{state.message}</h1>
+        <h1>Something went wrong...</h1>
         <Button
           onClick={() => {
             form.reset();
-            state.status = INTERNAL_FORM_STATE_STATUS.PENDING;
+            reset();
           }}
         >
           Try Again
@@ -120,21 +105,11 @@ export default function PostFigureForm() {
     <>
       <Form {...form}>
         <form
-          ref={formRef}
           className="max-w-screen-lg mt-2 w-full rounded grid grid-cols-1 md:grid-cols-2 gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            form.handleSubmit(() => {
-              state.status = INTERNAL_FORM_STATE_STATUS.LOADING;
-              const d = new FormData(formRef.current!);
-              formAction(d);
-            })(e);
-          }}
-          action={formAction}
+          onSubmit={form.handleSubmit(handleFormSubmission)}
         >
           <FormHeader
             title="Add a Desert Figure"
-            message={state.message}
             wrapperClass="md:col-span-2"
           />
 
