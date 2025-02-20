@@ -95,14 +95,21 @@ export default function NewExcerptForm({ desertFigure }: Props) {
 
   if (status == "success") {
     return (
-      <div>
-        <h1>Wow great job</h1>
-        <Button onClick={() => resetForm(true)}>START FRESH</Button>
-        {form.getValues("desertFigure") && (
-          <Button onClick={() => resetForm(false)}>
-            Add Another for {form.getValues("desertFigure")?.fullName}
+      <div className="py-4 max-w-lg m-auto">
+        <h1 className="text-2xl font-medium">
+          Thank You for Submitting an Excerpt
+        </h1>
+        <p className="mb-6">It will be reviewed and then published shortly</p>
+        <div className="flex gap-4">
+          <Button className="flex-1" onClick={() => resetForm(true)}>
+            START FRESH
           </Button>
-        )}
+          {form.getValues("desertFigure") && (
+            <Button className="flex-1" onClick={() => resetForm(false)}>
+              Add Another for {form.getValues("desertFigure")?.fullName}
+            </Button>
+          )}
+        </div>
       </div>
     );
   }

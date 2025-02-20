@@ -26,13 +26,14 @@ export const nextAuthConfig = {
       if (token.userId) {
         session.user.id = token.userId;
       }
+      // the idea is to pass permissions here
+      session.user.token = token;
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
         token.userId = user.id;
       }
-
       return token;
     },
   },

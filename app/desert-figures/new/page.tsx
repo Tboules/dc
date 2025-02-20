@@ -1,9 +1,9 @@
 import PostFigureForm from "@/components/forms/post-figure";
-import { getServerSession } from "next-auth";
+import { serverAuthSession } from "@/lib/utils/auth";
 import { redirect } from "next/navigation";
 
 export default async function NewDesertFigurePage() {
-  const session = await getServerSession();
+  const session = await serverAuthSession();
   if (!session) {
     redirect(
       `/api/auth/signin?callbackUrl=${encodeURIComponent("/desert-figures/new")}`,

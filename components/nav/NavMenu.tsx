@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/sheet";
 import { Route } from "nextjs-routes";
 import { IconName, NavIconSwitcher } from "@/components/icon";
+import AuthButton from "./auth-button";
 
 interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -151,14 +152,4 @@ export default function NavMenu() {
       </div>
     </nav>
   );
-}
-
-function AuthButton() {
-  const { data: session } = useSession();
-
-  if (session) {
-    return <Button onClick={() => signOut()}>Sign Out</Button>;
-  }
-
-  return <Button onClick={() => signIn()}>Sign In</Button>;
 }
