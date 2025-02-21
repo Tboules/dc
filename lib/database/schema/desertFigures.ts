@@ -31,7 +31,7 @@ export const desertFigureSchema = createSelectSchema(desertFigures, {
 
 export const newDesertFigureSchema = createInsertSchema(desertFigures, {
   firstName: (s) => s.firstName.min(1, "First Name is required"),
-  thumbnail: () => z.custom<File>(),
+  thumbnail: () => z.custom<FileList>(),
   fullName: (s) => s.fullName.optional(),
   statusId: (s) => s.statusId.optional(),
   lastName: (s) => s.lastName.transform(normalizeStringToNull),

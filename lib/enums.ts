@@ -1,5 +1,12 @@
 export type ObjectValues<T> = T[keyof T];
 
+export const USER_ROLES = {
+  user: "user",
+  admin: "admin",
+} as const;
+
+export type UserRole = ObjectValues<typeof USER_ROLES>;
+
 export const FIND_DESERT_FIGURE_FORM_STATUS = {
   LOADING: "loading",
   INIT: "init",

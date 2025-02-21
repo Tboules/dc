@@ -34,7 +34,8 @@ export const postDesertFigureZsaAction = createServerAction()
     }
 
     //upload file to s3
-    if (input.thumbnail && input.thumbnail.size != 0) {
+    console.log(input.thumbnail, typeof input.thumbnail, "thumbnail weirdness");
+    if (input.thumbnail?.length && input.thumbnail[0].size != 0) {
       const fileId = uuid();
       const presignedUrl = await getPresignedUrl(fileId);
       if (!presignedUrl) {
@@ -43,7 +44,7 @@ export const postDesertFigureZsaAction = createServerAction()
 
       const fileUploadResponse = await fetch(presignedUrl, {
         method: "PUT",
-        body: input.thumbnail,
+        body: input.thumbnail[0],
       });
 
       if (!fileUploadResponse.ok) {
@@ -64,5 +65,6 @@ export const postDesertFigureZsaAction = createServerAction()
       statusId: draftStatus.id,
       thumbnail: thumbnailUrl,
     });
+
     await db.insert(desertFigures).values(insertFigure);
   });

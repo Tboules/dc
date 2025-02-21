@@ -10,6 +10,8 @@ export default async function NewDesertFigurePage() {
     );
   }
 
+  console.log(session.user);
+
   return (
     <div className="max-w-screen-xl flex flex-col items-center m-auto p-4">
       <PostFigureForm />

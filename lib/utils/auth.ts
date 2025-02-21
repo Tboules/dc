@@ -9,9 +9,20 @@ import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import db from "@/lib/database";
 import { Adapter } from "next-auth/adapters";
+import {
+  accounts,
+  sessions,
+  users,
+  verificationTokens,
+} from "@/lib/database/schema";
 
 export const nextAuthConfig = {
-  adapter: DrizzleAdapter(db) as Adapter,
+  adapter: DrizzleAdapter(db, {
+    usersTable: users,
+    accountsTable: accounts,
+    sessionsTable: sessions,
+    verificationTokensTable: verificationTokens,
+  }) as Adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -25,14 +36,15 @@ export const nextAuthConfig = {
     async session({ session, token }) {
       if (token.userId) {
         session.user.id = token.userId;
+        session.user.role = token.role;
       }
       // the idea is to pass permissions here
-      session.user.token = token;
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
         token.userId = user.id;
+        token.role = user.role;
       }
       return token;
     },

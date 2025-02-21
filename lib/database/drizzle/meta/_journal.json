@@ -36,6 +36,13 @@
       "when": 1739492250301,
       "tag": "0004_thin_mordo",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1740166595910,
+      "tag": "0005_graceful_archangel",
+      "breakpoints": true
     }
   ]
 }
