@@ -43,6 +43,13 @@
       "when": 1740166595910,
       "tag": "0005_graceful_archangel",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1740192464373,
+      "tag": "0006_soft_millenium_guard",
+      "breakpoints": true
     }
   ]
 }

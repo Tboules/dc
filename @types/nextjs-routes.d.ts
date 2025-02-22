@@ -20,7 +20,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/excerpt/new">
     | StaticRoute<"/icons">
     | StaticRoute<"/icons/new">
-    | StaticRoute<"/tags">;
+    | StaticRoute<"/tags">
+    | StaticRoute<"/user">;
 
   interface StaticRoute<Pathname> {
     pathname: Pathname;

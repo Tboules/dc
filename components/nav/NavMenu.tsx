@@ -24,6 +24,7 @@ import {
 import { Route } from "nextjs-routes";
 import { IconName, NavIconSwitcher } from "@/components/icon";
 import AuthButton from "./auth-button";
+import { useSession } from "next-auth/react";
 
 interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -74,6 +75,7 @@ function AddMenu() {
 }
 
 export default function NavMenu() {
+  const session = useSession();
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b border-b-border/60">
       <div className="p-4 text-secondary-foreground w-full max-w-screen-xl m-auto flex items-center gap-4">
@@ -143,9 +145,21 @@ export default function NavMenu() {
                 </Link>
               ))}
 
-              <div className="flex flex-col flex-1 justify-end">
+              {/* user section */}
+              <div className="flex flex-col flex-1 justify-end gap-2">
                 <Separator className="mx-auto  !mb-2" />
                 <h3 className="pb-4">User</h3>
+
+                {session.data?.user.role == "admin" && (
+                  <>
+                    <p>user is admin</p>
+                  </>
+                )}
+                <Link href="/user">
+                  <Button variant="outline" className="w-full">
+                    Manage Content
+                  </Button>
+                </Link>
                 <AuthButton />
               </div>
             </SheetHeader>
