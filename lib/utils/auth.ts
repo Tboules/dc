@@ -15,7 +15,7 @@ import {
   users,
   verificationTokens,
 } from "@/lib/database/schema";
-import { Route, RouteLiteral } from "nextjs-routes";
+import { Route } from "nextjs-routes";
 import { redirect } from "next/navigation";
 
 export const nextAuthConfig = {

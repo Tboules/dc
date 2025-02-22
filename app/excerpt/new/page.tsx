@@ -7,11 +7,9 @@ import { handleProtectedRoute } from "@/lib/utils/auth";
 export default async function NewExcerptFormPage({
   searchParams,
 }: NextPageProps) {
+  await handleProtectedRoute("/excerpt/new");
+
   const { desertFigure } = await searchParams;
-
-  const session = await handleProtectedRoute("/excerpt/new");
-  console.log(session);
-
   const figure = await selectDesertFigureById(desertFigure as string);
 
   return (
