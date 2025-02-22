@@ -2,20 +2,15 @@ import { NextPageProps } from "@/@types/next-types";
 import FormHeader from "@/components/forms/form-header";
 import NewExcerptForm from "@/components/forms/new-excerpt-form";
 import { selectDesertFigureById } from "@/lib/database/handlers/desert-figures";
-import { serverAuthSession } from "@/lib/utils/auth";
-import { redirect } from "next/navigation";
+import { handleProtectedRoute } from "@/lib/utils/auth";
 
 export default async function NewExcerptFormPage({
   searchParams,
 }: NextPageProps) {
   const { desertFigure } = await searchParams;
 
-  const session = await serverAuthSession();
-  if (!session) {
-    redirect(
-      `/api/auth/signin?callbackUrl=${encodeURIComponent("/excerpt/new")}`,
-    );
-  }
+  const session = await handleProtectedRoute("/excerpt/new");
+  console.log(session);
 
   const figure = await selectDesertFigureById(desertFigure as string);
 

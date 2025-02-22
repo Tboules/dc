@@ -1,15 +1,8 @@
 import PostFigureForm from "@/components/forms/post-figure";
-import { serverAuthSession } from "@/lib/utils/auth";
-import { redirect } from "next/navigation";
+import { handleProtectedRoute } from "@/lib/utils/auth";
 
 export default async function NewDesertFigurePage() {
-  const session = await serverAuthSession();
-  if (!session) {
-    redirect(
-      `/api/auth/signin?callbackUrl=${encodeURIComponent("/desert-figures/new")}`,
-    );
-  }
-
+  const session = await handleProtectedRoute("/desert-figures/new");
   console.log(session.user);
 
   return (

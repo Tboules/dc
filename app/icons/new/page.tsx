@@ -1,13 +1,7 @@
-import { serverAuthSession } from "@/lib/utils/auth";
-import { redirect } from "next/navigation";
+import { handleProtectedRoute } from "@/lib/utils/auth";
 
 export default async function NewIconPage() {
-  const session = await serverAuthSession();
-  if (!session) {
-    redirect(
-      `/api/auth/signin?callbackUrl=${encodeURIComponent("/icons/new")}`,
-    );
-  }
+  await handleProtectedRoute("/icons/new");
 
   return (
     <div>

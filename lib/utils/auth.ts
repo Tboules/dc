@@ -15,6 +15,8 @@ import {
   users,
   verificationTokens,
 } from "@/lib/database/schema";
+import { Route, RouteLiteral } from "nextjs-routes";
+import { redirect } from "next/navigation";
 
 export const nextAuthConfig = {
   adapter: DrizzleAdapter(db, {
@@ -59,4 +61,16 @@ export function serverAuthSession(
     | []
 ) {
   return getServerSession(...args, nextAuthConfig);
+}
+
+// We can pass in another param here to check for user role as well to protect admin pages
+export async function handleProtectedRoute(callbackRoute: Route["pathname"]) {
+  const session = await serverAuthSession();
+  if (!session) {
+    redirect(
+      `/api/auth/signin?callbackUrl=${encodeURIComponent(callbackRoute)}`,
+    );
+  }
+
+  return session;
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Menu } from "lucide-react";
@@ -108,7 +107,7 @@ export default function NavMenu() {
             <Menu className="sm:hidden w-8 h-8 p-1 rounded-md hover:bg-secondary" />
           </SheetTrigger>
           <SheetContent className="max-w-[400px] w-full">
-            <SheetHeader>
+            <SheetHeader className="h-full">
               <SheetTitle>Desert Collections</SheetTitle>
               <ul className="pt-4">
                 {NAV_MENU_ITEMS.map((item) => (
@@ -129,6 +128,7 @@ export default function NavMenu() {
 
               <Separator className="mx-auto !mb-2" />
 
+              <h3 className="pb-4">Contribute</h3>
               {SUB_MENU_ITEMS.map((item) => (
                 <Link href={item.route} key={item.name}>
                   <SheetClose asChild>
@@ -143,9 +143,11 @@ export default function NavMenu() {
                 </Link>
               ))}
 
-              <SheetClose asChild>
+              <div className="flex flex-col flex-1 justify-end">
+                <Separator className="mx-auto  !mb-2" />
+                <h3 className="pb-4">User</h3>
                 <AuthButton />
-              </SheetClose>
+              </div>
             </SheetHeader>
           </SheetContent>
         </Sheet>
