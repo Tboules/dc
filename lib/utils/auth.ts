@@ -17,6 +17,7 @@ import {
 } from "@/lib/database/schema";
 import { Route } from "nextjs-routes";
 import { redirect } from "next/navigation";
+import { USER_ROLES, UserRole } from "../enums";
 
 export const nextAuthConfig = {
   adapter: DrizzleAdapter(db, {
@@ -64,12 +65,19 @@ export function serverAuthSession(
 }
 
 // We can pass in another param here to check for user role as well to protect admin pages
-export async function handleProtectedRoute(callbackRoute: Route["pathname"]) {
+export async function handleProtectedRoute(
+  callbackRoute: Route["pathname"],
+  role: UserRole = "user",
+) {
   const session = await serverAuthSession();
   if (!session) {
     redirect(
       `/api/auth/signin?callbackUrl=${encodeURIComponent(callbackRoute)}`,
     );
+  }
+
+  if (role == "admin" && session.user.role != USER_ROLES.admin) {
+    throw new Error("You are not an admin");
   }
 
   return session;
