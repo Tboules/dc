@@ -155,7 +155,7 @@ export default function NavMenu() {
                     <p>user is admin</p>
                   </>
                 )}
-                <Link href="/user">
+                <Link href="/user/content/excerpt">
                   <Button variant="outline" className="w-full">
                     Manage Content
                   </Button>
