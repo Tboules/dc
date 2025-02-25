@@ -151,16 +151,24 @@ export default function NavMenu() {
                 <h3 className="pb-4">User</h3>
 
                 {session.data?.user.role == "admin" && (
-                  <>
-                    <p>user is admin</p>
-                  </>
+                  <Link href="/user/admin">
+                    <SheetClose asChild>
+                      <Button variant="outline" className="w-full">
+                        Admin Panel
+                      </Button>
+                    </SheetClose>
+                  </Link>
                 )}
                 <Link href="/user/content/excerpt">
-                  <Button variant="outline" className="w-full">
-                    Manage Content
-                  </Button>
+                  <SheetClose asChild>
+                    <Button variant="outline" className="w-full">
+                      Manage Content
+                    </Button>
+                  </SheetClose>
                 </Link>
-                <AuthButton />
+                <SheetClose asChild>
+                  <AuthButton />
+                </SheetClose>
               </div>
             </SheetHeader>
           </SheetContent>
