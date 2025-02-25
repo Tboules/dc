@@ -1,15 +1,17 @@
+import { handleProtectedRoute } from "@/lib/utils/auth";
+import { CURRENT_PATH_IN_HEADER } from "@/lib/utils/constants";
 import { headers } from "next/headers";
+import { Route } from "nextjs-routes";
 
 export default async function UserContentLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // user the following to get this done
-  //https://www.propelauth.com/post/getting-url-in-next-server-components
   const headersList = await headers();
-  console.log(headersList.get("referrer"));
-  // await handleProtectedRoute(slug as Route["pathname"]);
+  const currentPath = headersList.get(CURRENT_PATH_IN_HEADER);
+
+  await handleProtectedRoute(currentPath as Route["pathname"]);
 
   return (
     <>

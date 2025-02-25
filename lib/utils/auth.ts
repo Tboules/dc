@@ -66,13 +66,13 @@ export function serverAuthSession(
 
 // We can pass in another param here to check for user role as well to protect admin pages
 export async function handleProtectedRoute(
-  callbackRoute: Route["pathname"],
+  callbackRoute?: Route["pathname"],
   role: UserRole = "user",
 ) {
   const session = await serverAuthSession();
   if (!session) {
     redirect(
-      `/api/auth/signin?callbackUrl=${encodeURIComponent(callbackRoute)}`,
+      `/api/auth/signin?callbackUrl=${encodeURIComponent(callbackRoute ?? "/")}`,
     );
   }
 
