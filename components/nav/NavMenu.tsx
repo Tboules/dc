@@ -25,6 +25,7 @@ import { Route } from "nextjs-routes";
 import { IconName, NavIconSwitcher } from "@/components/icon";
 import AuthButton from "./auth-button";
 import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -148,7 +149,17 @@ export default function NavMenu() {
               {/* user section */}
               <div className="flex flex-col flex-1 justify-end gap-2">
                 <Separator className="mx-auto  !mb-2" />
-                <h3 className="pb-4">User</h3>
+                <div>
+                  <Avatar>
+                    <AvatarImage
+                      src={session.data?.user.image ?? ""}
+                      alt="user image"
+                      onError={(e) => console.log(e)}
+                    />
+                    <AvatarFallback>TB</AvatarFallback>
+                  </Avatar>
+                  <h3 className="pb-4">User</h3>
+                </div>
 
                 {session.data?.user.role == "admin" && (
                   <Link href="/user/admin">

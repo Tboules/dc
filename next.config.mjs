@@ -7,11 +7,16 @@ const nextConfig = {
     turbo: {},
   },
   reactStrictMode: true,
+  crossOrigin: "anonymous",
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "**.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.googleusercontent.com",
       },
     ],
   },
