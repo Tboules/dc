@@ -42,6 +42,11 @@ const main = async () => {
             "The user has created a draft that is still in the works.",
         },
         {
+          name: "Pending",
+          description:
+            "The content was created and is awaiting approval for publication.",
+        },
+        {
           name: "Private",
           description:
             "This content has been marked as private meaning it can only be seen by the creator.",
