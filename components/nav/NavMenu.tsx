@@ -85,7 +85,7 @@ export default function NavMenu() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <Separator className="h-4" orientation="vertical" />
+        <Separator className="hidden sm:h-4 sm:block" orientation="vertical" />
         <div className="hidden sm:block">
           <AddMenu />
         </div>
@@ -93,6 +93,7 @@ export default function NavMenu() {
         {/* Mobile Nav */}
         <MobileMenu />
 
+        <Separator className="h-4" orientation="vertical" />
         <UserMenu />
       </div>
     </nav>
@@ -186,42 +187,47 @@ function UserMenu() {
 
 function MobileMenu() {
   return (
-    <Sheet>
-      <SheetTrigger>
-        <Menu className="sm:hidden w-8 h-8 p-1 rounded-md hover:bg-secondary" />
-      </SheetTrigger>
-      <SheetContent className="max-w-[400px] w-full">
-        <SheetHeader className="h-full">
-          <SheetTitle>Desert Collections</SheetTitle>
-          <ul className="pt-4">
-            {NAV_MENU_ITEMS.map((item) => (
-              <li key={item.name} className="w-full text-start py-2">
-                <Link href={item.route}>
-                  <SheetClose asChild>
-                    <Button variant="ghost" className="w-full justify-start">
-                      {item.name}
-                    </Button>
-                  </SheetClose>
-                </Link>
-              </li>
+    <div className="sm:hidden">
+      <Sheet>
+        <SheetTrigger>
+          <Menu className="w-8 h-8 p-1 rounded-md hover:bg-secondary" />
+        </SheetTrigger>
+        <SheetContent className="max-w-[400px] w-full">
+          <SheetHeader className="h-full">
+            <SheetTitle>Desert Collections</SheetTitle>
+            <ul className="pt-4">
+              {NAV_MENU_ITEMS.map((item) => (
+                <li key={item.name} className="w-full text-start py-2">
+                  <Link href={item.route}>
+                    <SheetClose asChild>
+                      <Button variant="ghost" className="w-full justify-start">
+                        {item.name}
+                      </Button>
+                    </SheetClose>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <Separator className="mx-auto !mb-2" />
+
+            <h3 className="pb-4">Contribute</h3>
+            {SUB_MENU_ITEMS.map((item) => (
+              <Link href={item.route} key={item.name}>
+                <SheetClose asChild>
+                  <Button className="w-full" variant={"outline"}>
+                    <NavIconSwitcher
+                      name={item.icon}
+                      className="mr-1 p-[2px]"
+                    />
+                    {item.name}
+                  </Button>
+                </SheetClose>
+              </Link>
             ))}
-          </ul>
-
-          <Separator className="mx-auto !mb-2" />
-
-          <h3 className="pb-4">Contribute</h3>
-          {SUB_MENU_ITEMS.map((item) => (
-            <Link href={item.route} key={item.name}>
-              <SheetClose asChild>
-                <Button className="w-full" variant={"outline"}>
-                  <NavIconSwitcher name={item.icon} className="mr-1 p-[2px]" />
-                  {item.name}
-                </Button>
-              </SheetClose>
-            </Link>
-          ))}
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }
