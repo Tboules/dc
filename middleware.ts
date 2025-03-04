@@ -8,3 +8,11 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next({ headers: requestHeaders });
 }
+
+export const config = {
+  matcher: [
+    "/user/content/desert-figures",
+    "/user/content/excerpt",
+    "/user/content/tags",
+  ],
+};
