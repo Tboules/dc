@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { LogOut, Menu, ShieldIcon, TableOfContents } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import {
   NavigationMenu,
@@ -26,6 +26,14 @@ import { IconName, NavIconSwitcher } from "@/components/icon";
 import AuthButton from "./auth-button";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -48,6 +56,44 @@ const SUB_MENU_ITEMS: SubMenuItem[] = [
   { route: "/desert-figures/new", name: "Desert Figure", icon: "user" },
   { route: "/icons/new", name: "Icon", icon: "image" },
 ];
+
+export default function NavMenu() {
+  return (
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b border-b-border/60">
+      <div className="p-4 text-secondary-foreground w-full max-w-screen-xl m-auto flex items-center gap-4">
+        <h1 className="text-lg font-semibold flex-1">Desert Collections</h1>
+
+        {/* navigation menu */}
+        <NavigationMenu className="hidden sm:block">
+          <NavigationMenuList>
+            {NAV_MENU_ITEMS.map((item) => (
+              <NavigationMenuItem key={item.name}>
+                <Link href={item.route} passHref legacyBehavior>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    {item.name}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+
+        <Separator className="h-4" orientation="vertical" />
+        <div className="hidden sm:block">
+          <AddMenu />
+        </div>
+        <div className="hidden sm:block">
+          <AuthButton />
+        </div>
+
+        {/* Mobile Nav */}
+        <MobileMenu />
+
+        <UserMenu />
+      </div>
+    </nav>
+  );
+}
 
 function AddMenu() {
   return (
@@ -75,116 +121,116 @@ function AddMenu() {
   );
 }
 
-export default function NavMenu() {
+function UserMenu() {
   const session = useSession();
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b border-b-border/60">
-      <div className="p-4 text-secondary-foreground w-full max-w-screen-xl m-auto flex items-center gap-4">
-        <h1 className="text-lg font-semibold flex-1">Desert Collections</h1>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Avatar>
+          <AvatarImage
+            src={session.data?.user.image ?? ""}
+            alt="user image"
+            onError={(e) => console.log(e)}
+          />
+          <AvatarFallback>TB</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
 
-        {/* navigation menu */}
-        <NavigationMenu className="hidden sm:block">
-          <NavigationMenuList>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <ShieldIcon />
+          <span>Admin Panel</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <TableOfContents />
+          Manage Content
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <LogOut />
+          Sign Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function MobileMenu() {
+  return (
+    <Sheet>
+      <SheetTrigger>
+        <Menu className="sm:hidden w-8 h-8 p-1 rounded-md hover:bg-secondary" />
+      </SheetTrigger>
+      <SheetContent className="max-w-[400px] w-full">
+        <SheetHeader className="h-full">
+          <SheetTitle>Desert Collections</SheetTitle>
+          <ul className="pt-4">
             {NAV_MENU_ITEMS.map((item) => (
-              <NavigationMenuItem key={item.name}>
-                <Link href={item.route} passHref legacyBehavior>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {item.name}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-
-        <Separator className="h-4" orientation="vertical" />
-        <div className="hidden sm:flex items-center gap-4">
-          <AddMenu />
-          <AuthButton />
-        </div>
-
-        {/* Mobile Nav */}
-
-        <Sheet>
-          <SheetTrigger>
-            <Menu className="sm:hidden w-8 h-8 p-1 rounded-md hover:bg-secondary" />
-          </SheetTrigger>
-          <SheetContent className="max-w-[400px] w-full">
-            <SheetHeader className="h-full">
-              <SheetTitle>Desert Collections</SheetTitle>
-              <ul className="pt-4">
-                {NAV_MENU_ITEMS.map((item) => (
-                  <li key={item.name} className="w-full text-start py-2">
-                    <Link href={item.route}>
-                      <SheetClose asChild>
-                        <Button
-                          variant="ghost"
-                          className="w-full justify-start"
-                        >
-                          {item.name}
-                        </Button>
-                      </SheetClose>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
-              <Separator className="mx-auto !mb-2" />
-
-              <h3 className="pb-4">Contribute</h3>
-              {SUB_MENU_ITEMS.map((item) => (
-                <Link href={item.route} key={item.name}>
+              <li key={item.name} className="w-full text-start py-2">
+                <Link href={item.route}>
                   <SheetClose asChild>
-                    <Button className="w-full" variant={"outline"}>
-                      <NavIconSwitcher
-                        name={item.icon}
-                        className="mr-1 p-[2px]"
-                      />
+                    <Button variant="ghost" className="w-full justify-start">
                       {item.name}
                     </Button>
                   </SheetClose>
                 </Link>
-              ))}
+              </li>
+            ))}
+          </ul>
 
-              {/* user section */}
-              <div className="flex flex-col flex-1 justify-end gap-2">
-                <Separator className="mx-auto  !mb-2" />
-                <div>
-                  <Avatar>
-                    <AvatarImage
-                      src={session.data?.user.image ?? ""}
-                      alt="user image"
-                      onError={(e) => console.log(e)}
-                    />
-                    <AvatarFallback>TB</AvatarFallback>
-                  </Avatar>
-                  <h3 className="pb-4">User</h3>
-                </div>
+          <Separator className="mx-auto !mb-2" />
 
-                {session.data?.user.role == "admin" && (
-                  <Link href="/user/admin">
-                    <SheetClose asChild>
-                      <Button variant="outline" className="w-full">
-                        Admin Panel
-                      </Button>
-                    </SheetClose>
-                  </Link>
-                )}
-                <Link href="/user/content/excerpt">
-                  <SheetClose asChild>
-                    <Button variant="outline" className="w-full">
-                      Manage Content
-                    </Button>
-                  </SheetClose>
-                </Link>
-                <SheetClose asChild>
-                  <AuthButton />
-                </SheetClose>
-              </div>
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </nav>
+          <h3 className="pb-4">Contribute</h3>
+          {SUB_MENU_ITEMS.map((item) => (
+            <Link href={item.route} key={item.name}>
+              <SheetClose asChild>
+                <Button className="w-full" variant={"outline"}>
+                  <NavIconSwitcher name={item.icon} className="mr-1 p-[2px]" />
+                  {item.name}
+                </Button>
+              </SheetClose>
+            </Link>
+          ))}
+
+          {/* <div className="flex flex-col flex-1 justify-end gap-2"> */}
+          {/*   <Separator className="mx-auto  !mb-2" /> */}
+          {/*   <div> */}
+          {/*     <Avatar> */}
+          {/*       <AvatarImage */}
+          {/*         src={session.data?.user.image ?? ""} */}
+          {/*         alt="user image" */}
+          {/*         onError={(e) => console.log(e)} */}
+          {/*       /> */}
+          {/*       <AvatarFallback>TB</AvatarFallback> */}
+          {/*     </Avatar> */}
+          {/*     <h3 className="pb-4">User</h3> */}
+          {/*   </div> */}
+          {/**/}
+          {/*   {session.data?.user.role == "admin" && ( */}
+          {/*     <Link href="/user/admin"> */}
+          {/*       <SheetClose asChild> */}
+          {/*         <Button variant="outline" className="w-full"> */}
+          {/*           Admin Panel */}
+          {/*         </Button> */}
+          {/*       </SheetClose> */}
+          {/*     </Link> */}
+          {/*   )} */}
+          {/*   <Link href="/user/content/excerpt"> */}
+          {/*     <SheetClose asChild> */}
+          {/*       <Button variant="outline" className="w-full"> */}
+          {/*         Manage Content */}
+          {/*       </Button> */}
+          {/*     </SheetClose> */}
+          {/*   </Link> */}
+          {/*   <SheetClose asChild> */}
+          {/*     <AuthButton /> */}
+          {/*   </SheetClose> */}
+          {/* </div> */}
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
   );
 }

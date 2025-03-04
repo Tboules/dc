@@ -23,7 +23,7 @@ export default function BookSearchAutoComplete() {
 
   const books = useQuery({
     queryKey: ["books", debounceValue],
-    queryFn: () => searchForBooks(debounceValue ?? ""),
+    queryFn: () => searchForBooks(debounceValue ?? "") ?? Promise.resolve([]),
     enabled: debounceValue ? debounceValue.length > 3 : true,
   });
 

@@ -16,7 +16,9 @@ import { contentStatus } from "@/lib/database/schema/content_status";
 
 export async function findDesertFigure(val: string) {
   try {
-    return await searchForDesertFigure(val);
+    const data = await searchForDesertFigure(val);
+    console.log("data coming from search function", data);
+    return data;
   } catch (error) {
     console.log(error);
     throw error;
