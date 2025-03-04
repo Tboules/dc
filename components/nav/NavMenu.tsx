@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LogOut, Menu, ShieldIcon, TableOfContents } from "lucide-react";
+import { LogOut, Menu, ShieldIcon, TableOfContents, User } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import {
   NavigationMenu,
@@ -128,11 +128,13 @@ function UserMenu() {
       <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage
-            src={session.data?.user.image ?? ""}
+            src={session.data?.user.image ?? undefined}
             alt="user image"
             onError={(e) => console.log(e)}
           />
-          <AvatarFallback>TB</AvatarFallback>
+          <AvatarFallback>
+            <User />
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
 
