@@ -2,7 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LogOut, Menu, ShieldIcon, TableOfContents, User } from "lucide-react";
+import {
+  LogIn,
+  LogOut,
+  Menu,
+  ShieldIcon,
+  TableOfContents,
+  User,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import {
   NavigationMenu,
@@ -23,8 +30,7 @@ import {
 } from "@/components/ui/sheet";
 import { Route } from "nextjs-routes";
 import { IconName, NavIconSwitcher } from "@/components/icon";
-import AuthButton from "./auth-button";
-import { useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -34,6 +40,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -82,9 +89,6 @@ export default function NavMenu() {
         <div className="hidden sm:block">
           <AddMenu />
         </div>
-        <div className="hidden sm:block">
-          <AuthButton />
-        </div>
 
         {/* Mobile Nav */}
         <MobileMenu />
@@ -123,6 +127,8 @@ function AddMenu() {
 
 function UserMenu() {
   const session = useSession();
+  const router = useRouter();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -139,22 +145,40 @@ function UserMenu() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <ShieldIcon />
-          <span>Admin Panel</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <TableOfContents />
-          Manage Content
-        </DropdownMenuItem>
+        {session.status === "authenticated" ? (
+          <>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/user/admin">
+                <ShieldIcon />
+                Admin Panel
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/user/content/excerpt">
+                <TableOfContents />
+                Manage Content
+              </Link>
+            </DropdownMenuItem>
 
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut />
-          Sign Out
-        </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={() => {
+                signOut({ redirect: false });
+                router.push("/");
+              }}
+            >
+              <LogOut />
+              Sign Out
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <DropdownMenuItem onSelect={() => signIn()}>
+            <LogIn />
+            Sign In
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -196,41 +220,6 @@ function MobileMenu() {
               </SheetClose>
             </Link>
           ))}
-
-          {/* <div className="flex flex-col flex-1 justify-end gap-2"> */}
-          {/*   <Separator className="mx-auto  !mb-2" /> */}
-          {/*   <div> */}
-          {/*     <Avatar> */}
-          {/*       <AvatarImage */}
-          {/*         src={session.data?.user.image ?? ""} */}
-          {/*         alt="user image" */}
-          {/*         onError={(e) => console.log(e)} */}
-          {/*       /> */}
-          {/*       <AvatarFallback>TB</AvatarFallback> */}
-          {/*     </Avatar> */}
-          {/*     <h3 className="pb-4">User</h3> */}
-          {/*   </div> */}
-          {/**/}
-          {/*   {session.data?.user.role == "admin" && ( */}
-          {/*     <Link href="/user/admin"> */}
-          {/*       <SheetClose asChild> */}
-          {/*         <Button variant="outline" className="w-full"> */}
-          {/*           Admin Panel */}
-          {/*         </Button> */}
-          {/*       </SheetClose> */}
-          {/*     </Link> */}
-          {/*   )} */}
-          {/*   <Link href="/user/content/excerpt"> */}
-          {/*     <SheetClose asChild> */}
-          {/*       <Button variant="outline" className="w-full"> */}
-          {/*         Manage Content */}
-          {/*       </Button> */}
-          {/*     </SheetClose> */}
-          {/*   </Link> */}
-          {/*   <SheetClose asChild> */}
-          {/*     <AuthButton /> */}
-          {/*   </SheetClose> */}
-          {/* </div> */}
         </SheetHeader>
       </SheetContent>
     </Sheet>
