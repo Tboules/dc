@@ -31,10 +31,8 @@ export default async function RootLayout({
         )}
       >
         <Providers>
-          <main>
-            <NavMenu />
-            <div className="max-w-screen-lg mx-auto">{children}</div>
-          </main>
+          <NavMenu />
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
