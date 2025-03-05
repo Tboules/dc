@@ -6,7 +6,7 @@ export default async function NewDesertFigurePage() {
   await handleProtectedRoute("/desert-figures/new");
 
   return (
-    <div className="max-w-screen-xl flex flex-col items-center m-auto p-4">
+    <div className="flex flex-col items-center">
       <PostFigureForm />
     </div>
   );

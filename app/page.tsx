@@ -1,7 +1,9 @@
+import DefaultLayout from "@/components/layouts/default-layout";
+
 export default function Home() {
   return (
-    <div className="p-4">
+    <DefaultLayout>
       <h1>Welcome to Desert Collections</h1>
-    </div>
+    </DefaultLayout>
   );
 }

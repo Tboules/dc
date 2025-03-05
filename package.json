@@ -11,7 +11,8 @@
     "db_push": "npx tsx ./lib/database/migration.ts",
     "db_seed": "npx tsx ./lib/database/seed.ts",
     "gen_migration": "pnpm drizzle-kit generate",
-    "db:studio": "pnpm drizzle-kit studio"
+    "db:studio": "pnpm drizzle-kit studio",
+    "gen_route_types": "npx nextjs-routes"
   },
   "dependencies": {
     "@auth/core": "^0.37.3",

@@ -13,7 +13,7 @@ export default async function NewExcerptFormPage({
   const figure = await selectDesertFigureById(desertFigure as string);
 
   return (
-    <div className="md:p-4 p-2 max-w-screen-lg mx-auto">
+    <div>
       <FormHeader title="Add an Excerpt" />
 
       <NewExcerptForm desertFigure={figure} />
