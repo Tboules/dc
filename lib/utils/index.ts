@@ -57,3 +57,15 @@ export function normalizeStringToNull(s: string) {
 
   return s;
 }
+
+export function generateUserInitials(name: string | null | undefined) {
+  if (!name) return null;
+
+  const nameArray = name.trim().split(" ");
+
+  if (nameArray.length > 1) {
+    return nameArray[0][0] + nameArray[nameArray.length - 1][0];
+  }
+
+  return nameArray[0][0];
+}

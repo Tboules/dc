@@ -41,6 +41,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { generateUserInitials } from "@/lib/utils";
 
 interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -130,6 +131,8 @@ function UserMenu() {
   const session = useSession();
   const router = useRouter();
 
+  const userInitials = generateUserInitials(session.data?.user.name);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -140,7 +143,7 @@ function UserMenu() {
             onError={(e) => console.log(e)}
           />
           <AvatarFallback>
-            <User />
+            {userInitials ? userInitials : <User />}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
