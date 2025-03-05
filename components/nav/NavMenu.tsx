@@ -157,7 +157,7 @@ function UserMenu() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/user/content/excerpt">
+              <Link href="/user/content/excerpts">
                 <TableOfContents />
                 Manage Content
               </Link>
