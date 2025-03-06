@@ -68,7 +68,7 @@ const SUB_MENU_ITEMS: SubMenuItem[] = [
 export default function NavMenu() {
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b border-b-border/60">
-      <div className="p-4 text-secondary-foreground w-full max-w-screen-xl m-auto flex items-center gap-4">
+      <div className="p-4 text-secondary-foreground w-full max-w-screen-2xl m-auto flex items-center gap-4">
         <h1 className="text-lg font-semibold flex-1">Desert Collections</h1>
 
         {/* navigation menu */}

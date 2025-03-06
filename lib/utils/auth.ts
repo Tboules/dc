@@ -15,9 +15,9 @@ import {
   users,
   verificationTokens,
 } from "@/lib/database/schema";
-import { Route } from "nextjs-routes";
 import { redirect } from "next/navigation";
 import { USER_ROLES, UserRole } from "../enums";
+import { DesertCollectionsStaticRoute } from "@/@types/helper-types";
 
 export const nextAuthConfig = {
   adapter: DrizzleAdapter(db, {
@@ -66,7 +66,7 @@ export function serverAuthSession(
 
 // We can pass in another param here to check for user role as well to protect admin pages
 export async function handleProtectedRoute(
-  callbackRoute?: Route["pathname"],
+  callbackRoute?: DesertCollectionsStaticRoute,
   role: UserRole = "user",
 ) {
   const session = await serverAuthSession();
