@@ -1,3 +1,5 @@
+"use client";
+
 import { LucideProps, Quote, SquareUser, Tags } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import {
@@ -7,9 +9,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { DesertCollectionsStaticRoute } from "@/@types/helper-types";
+import { Separator } from "../ui/separator";
 
 type SideBarMenu = {
   title: string;
@@ -38,16 +42,20 @@ const USER_SIDE_BAR_NAV_ITEMS: SideBarMenu[] = [
 ];
 
 export default function UserSidebar() {
+  const { setOpenMobile } = useSidebar();
   return (
-    <Sidebar>
-      <SidebarHeader>User Content</SidebarHeader>
+    <Sidebar className="p-2 bg-sidebar">
+      <SidebarHeader className="py-2 text-lg font-medium">
+        User Content
+      </SidebarHeader>
+      <Separator className="mb-4" />
 
       <SidebarContent>
         <SidebarMenu>
           {USER_SIDE_BAR_NAV_ITEMS.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <Link href={item.url}>
+                <Link href={item.url} onClick={() => setOpenMobile(false)}>
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>

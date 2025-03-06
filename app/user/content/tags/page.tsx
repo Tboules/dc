@@ -1,10 +1,11 @@
 import { handleProtectedRoute } from "@/lib/utils/auth";
+import { UserContentSidebarHeader } from "@/app/user/content/layout";
 
 export default async function UserContentTagsPage() {
   await handleProtectedRoute("/user/content/tags");
   return (
     <div>
-      <h1>Hello User Tags</h1>
+      <UserContentSidebarHeader title="User Tags" />
     </div>
   );
 }
