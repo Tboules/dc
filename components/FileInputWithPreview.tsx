@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { Input, InputProps } from "./ui/input";
+import { Input } from "./ui/input";
 import { Image as ImageIcon } from "lucide-react";
 
-interface Props extends InputProps {}
+type Props = React.ComponentProps<"input">;
 
 const FileInputWithPreview = React.forwardRef<HTMLInputElement, Props>(
   ({ ...rest }: Props, ref) => {
