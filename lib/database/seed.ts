@@ -47,14 +47,14 @@ const main = async () => {
             "The content was created and is awaiting approval for publication.",
         },
         {
-          name: "Private",
-          description:
-            "This content has been marked as private meaning it can only be seen by the creator.",
-        },
-        {
           name: "Published",
           description:
             "This content has been approved and is live for all to see.",
+        },
+        {
+          name: "Private",
+          description:
+            "This content has been marked as private meaning it can only be seen by the creator.",
         },
         {
           name: "Flagged",

@@ -16,9 +16,10 @@ export default async function UserContentExcerptPage({
   searchParams,
 }: PageProps) {
   await handleProtectedRoute("/user/content/excerpts");
-  const { offset } = await offsetSearchParams(searchParams);
 
+  const { offset } = await offsetSearchParams(searchParams);
   const excerpts = await selectUserExcerpts(10, offset);
+
   return (
     <div>
       <UserContentSidebarHeader title="User Excerpts" />
