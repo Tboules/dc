@@ -26,7 +26,7 @@ export const excerpts = pgTable("excerpt", {
   desertFigureID: uuid("desert_figure_id")
     .references(() => desertFigures.id)
     .notNull(),
-  dateAdded: timestamp("date_added").defaultNow(),
+  dateAdded: timestamp("date_added").notNull().defaultNow(),
   lastUpdated: timestamp("last_updated").defaultNow(),
   createdBy: text("added_by").references(() => users.id),
   statusId: uuid("status_id")

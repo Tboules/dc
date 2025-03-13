@@ -3,6 +3,8 @@ import { UserContentSidebarHeader } from "@/app/user/content/layout";
 import { selectUserExcerpts } from "@/lib/database/handlers/excerpts";
 import PaginationTester from "@/components/pagination-tester";
 import { createLoader, parseAsInteger, SearchParams } from "nuqs/server";
+import { UserContentDataTable } from "@/app/user/_components/user-content-data-table";
+import { USER_EXCERPT_COLUMNS } from "@/app/user/_components/columns";
 
 const offsetSearchParams = createLoader({
   offset: parseAsInteger.withDefault(0),
@@ -25,7 +27,7 @@ export default async function UserContentExcerptPage({
       <UserContentSidebarHeader title="User Excerpts" />
       <PaginationTester />
 
-      <pre>{JSON.stringify(excerpts, null, 2)}</pre>
+      <UserContentDataTable columns={USER_EXCERPT_COLUMNS} data={excerpts} />
     </div>
   );
 }
