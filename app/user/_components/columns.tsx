@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 
 type Tag = {
   id: string;
@@ -33,7 +34,7 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
     header: "Date Added",
     cell: ({ row }) => {
       const date = row.original.dateAdded;
-      return <div>{date.toDateString()}</div>;
+      return <div>{format(date, "PP")}</div>;
     },
   },
   {

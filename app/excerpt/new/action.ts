@@ -13,6 +13,11 @@ import { Reference, references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
 import { and, eq, ilike } from "drizzle-orm";
 import { contentStatus } from "@/lib/database/schema/content_status";
+import { JSDOM } from "jsdom";
+import DOMPurify from "dompurify";
+
+const window = new JSDOM("").window;
+const purify = DOMPurify(window);
 
 export async function findDesertFigure(val: string) {
   try {
@@ -102,7 +107,7 @@ export const postExcerptZsaAction = createServerAction()
       const insertedExcerpt = await tx
         .insert(excerpts)
         .values({
-          body: input.body,
+          body: purify.sanitize(input.body),
           title: input.title,
           type: input.type,
           desertFigureID: input.desertFigureID,
