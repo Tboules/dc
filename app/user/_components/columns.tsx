@@ -1,5 +1,6 @@
 "use client";
 
+import SafeHtmlRenderer from "@/components/safe-html-renderer";
 import { Badge } from "@/components/ui/badge";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -28,6 +29,10 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
   {
     accessorKey: "body",
     header: "Body",
+    cell: ({ row }) => {
+      const body = row.original.body;
+      return <SafeHtmlRenderer htmlString={body} />;
+    },
   },
   {
     accessorKey: "dateAdded",
@@ -51,14 +56,16 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
   },
   {
     accessorKey: "tags",
-    header: "Reference",
+    header: "Tags",
     cell: ({ row }) => {
       const tags = row.original.tags;
 
       return (
         <div className="flex gap-2">
           {tags.map((tag) => (
-            <Badge key={tag.id}>{tag.name}</Badge>
+            <Badge variant="outline" className="text-center" key={tag.id}>
+              {tag.name}
+            </Badge>
           ))}
         </div>
       );
