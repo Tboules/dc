@@ -9,7 +9,9 @@ export default async function UserContentLayout({
   return (
     <SidebarProvider>
       <UserSidebar />
-      <div className="max-w-screen-2xl p-4">{children}</div>
+      <div className="max-w-screen-2xl overflow-x-auto p-2  md:p-4 mx-auto">
+        {children}
+      </div>
     </SidebarProvider>
   );
 }
