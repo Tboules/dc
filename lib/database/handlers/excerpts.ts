@@ -3,6 +3,20 @@
 import db from "@/lib/database";
 import { serverAuthSession } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
+import { count, eq } from "drizzle-orm";
+import { excerpts } from "@/lib/database/schema/excerpts";
+
+export async function selectUserExcerptCount() {
+  const session = await serverAuthSession();
+  if (!session) throw new Error("No user found");
+
+  const excerptCount = await db
+    .select({ count: count() })
+    .from(excerpts)
+    .where(eq(excerpts.createdBy, session.user.id ?? ""));
+
+  return excerptCount[0].count;
+}
 
 export async function selectUserExcerpts(
   limit: number = 10,

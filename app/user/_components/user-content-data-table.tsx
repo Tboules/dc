@@ -21,11 +21,13 @@ import useServerPagination from "@/hooks/use-server-pagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  totalDataCount: number;
 }
 
 export function UserContentDataTable<TData, TValue>({
   columns,
   data,
+  totalDataCount,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -33,7 +35,7 @@ export function UserContentDataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
   });
-  const pagination = useServerPagination();
+  const pagination = useServerPagination({ totalDataCount });
 
   return (
     <div>
@@ -92,12 +94,16 @@ export function UserContentDataTable<TData, TValue>({
           variant="outline"
           size="sm"
           onClick={pagination.handlePreviousPage}
-          disabled={pagination.page <= 0}
-          // disabled={!table.getCanPreviousPage()}
+          disabled={pagination.getCannotMoveBack()}
         >
           Previous
         </Button>
-        <Button variant="outline" size="sm" onClick={pagination.handleNextPage}>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={pagination.getCannotMoveForward()}
+          onClick={pagination.handleNextPage}
+        >
           Next
         </Button>
       </div>

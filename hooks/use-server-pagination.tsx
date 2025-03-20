@@ -2,7 +2,11 @@
 
 import { parseAsInteger, useQueryState } from "nuqs";
 
-export default function useServerPagination() {
+type Props = {
+  totalDataCount: number;
+};
+
+export default function useServerPagination({ totalDataCount }: Props) {
   const [page, setPage] = useQueryState(
     "page",
     parseAsInteger.withDefault(0).withOptions({
@@ -33,9 +37,19 @@ export default function useServerPagination() {
     setPageLimit(limit);
   }
 
+  function getCannotMoveBack() {
+    return page <= 0;
+  }
+
+  function getCannotMoveForward() {
+    return (page + 1) * pageLimit >= totalDataCount;
+  }
+
   return {
     page,
     pageLimit,
+    getCannotMoveBack,
+    getCannotMoveForward,
     handleNextPage,
     handlePreviousPage,
     handleUpdatePageLimit,
