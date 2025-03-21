@@ -5,6 +5,7 @@ import { serverAuthSession } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
 import { count, eq } from "drizzle-orm";
 import { excerpts } from "@/lib/database/schema/excerpts";
+import { UserContentSearchParams } from "@/lib/utils/params";
 
 export async function selectUserExcerptCount() {
   const session = await serverAuthSession();
@@ -18,17 +19,20 @@ export async function selectUserExcerptCount() {
   return excerptCount[0].count;
 }
 
-export async function selectUserExcerpts(
-  limit: number = 10,
-  offset: number = 0,
-): Promise<UserExcerpt[]> {
+export async function selectUserExcerpts({
+  page,
+  pageLimit,
+  q,
+}: UserContentSearchParams): Promise<UserExcerpt[]> {
   const session = await serverAuthSession();
   if (!session) throw new Error("No user found");
 
+  console.log(q);
+
   // make sure to filter by user
   const excerpts = await db.query.excerpts.findMany({
-    limit,
-    offset,
+    limit: pageLimit,
+    offset: page * pageLimit,
     where: (exc, { eq }) => eq(exc.createdBy, session.user.id ?? ""),
     with: {
       createdBy: true,

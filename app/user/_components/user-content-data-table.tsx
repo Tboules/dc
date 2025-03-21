@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import useServerPagination from "@/hooks/use-server-pagination";
+import useSearchParams from "@/hooks/use-nuqs-search-params";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,7 +35,12 @@ export function UserContentDataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
   });
-  const pagination = useServerPagination({ totalDataCount });
+  const {
+    getCannotMoveBack,
+    getCannotMoveForward,
+    handlePreviousPage,
+    handleNextPage,
+  } = useSearchParams({ totalDataCount });
 
   return (
     <div>
@@ -93,16 +98,16 @@ export function UserContentDataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
-          onClick={pagination.handlePreviousPage}
-          disabled={pagination.getCannotMoveBack()}
+          onClick={handlePreviousPage}
+          disabled={getCannotMoveBack()}
         >
           Previous
         </Button>
         <Button
           variant="outline"
           size="sm"
-          disabled={pagination.getCannotMoveForward()}
-          onClick={pagination.handleNextPage}
+          disabled={getCannotMoveForward()}
+          onClick={handleNextPage}
         >
           Next
         </Button>
