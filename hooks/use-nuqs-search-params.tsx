@@ -19,8 +19,8 @@ type NuqsSearchParamsContextProps = {
   >[0];
   handleNextPage: () => void;
   handlePreviousPage: () => void;
-  getCannotMoveForward: () => void;
-  getCannotMoveBack: () => void;
+  getCannotMoveForward: () => boolean;
+  getCannotMoveBack: () => boolean;
   initTotalDataCount: (dc: number) => void;
   searchInput: string;
   setSearchInput: Dispatch<SetStateAction<string>>;
