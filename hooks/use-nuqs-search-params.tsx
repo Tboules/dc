@@ -1,7 +1,15 @@
 "use client";
 import { USER_CONTENT_SEARCH_PARAMS } from "@/lib/utils/params";
 import { useQueryStates } from "nuqs";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 // for Reference view @/lib/utils/params.ts
 
@@ -14,6 +22,8 @@ type NuqsSearchParamsContextProps = {
   getCannotMoveForward: () => void;
   getCannotMoveBack: () => void;
   initTotalDataCount: (dc: number) => void;
+  searchInput: string;
+  setSearchInput: Dispatch<SetStateAction<string>>;
 };
 
 const NuqsSearchParamsContext =
@@ -26,6 +36,18 @@ type Props = {
 export function NuqsSearchParamsProvider({ children }: Props) {
   const [params, setSearchParams] = useQueryStates(USER_CONTENT_SEARCH_PARAMS);
   const [totalDataCount, setTotalDataCount] = useState<number | null>(null);
+  const [searchInput, setSearchInput] = useState("");
+
+  //debounce search param
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchParams({ q: searchInput });
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchInput]);
 
   function handleNextPage() {
     setSearchParams({ page: params.page + 1 });
@@ -60,6 +82,8 @@ export function NuqsSearchParamsProvider({ children }: Props) {
         getCannotMoveForward,
         getCannotMoveBack,
         initTotalDataCount,
+        searchInput,
+        setSearchInput,
       }}
     >
       {children}

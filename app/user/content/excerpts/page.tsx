@@ -1,5 +1,5 @@
 import { handleProtectedRoute } from "@/lib/utils/auth";
-import { UserContentSidebarHeader } from "@/app/user/content/layout";
+import { UserContentSidebarHeader } from "@/app/user/_components/user-content-header";
 import {
   selectUserExcerptCount,
   selectUserExcerpts,
