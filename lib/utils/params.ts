@@ -6,7 +6,6 @@ import {
 } from "nuqs/server";
 
 // used in use-server-params hook
-
 export const USER_CONTENT_SEARCH_PARAMS = {
   page: parseAsInteger.withDefault(0).withOptions({
     shallow: false,

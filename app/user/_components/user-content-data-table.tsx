@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import useSearchParams from "@/hooks/use-nuqs-search-params";
+import { useEffect } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,7 +41,12 @@ export function UserContentDataTable<TData, TValue>({
     getCannotMoveForward,
     handlePreviousPage,
     handleNextPage,
-  } = useSearchParams({ totalDataCount });
+    initTotalDataCount,
+  } = useSearchParams();
+
+  useEffect(() => {
+    initTotalDataCount(totalDataCount);
+  }, []);
 
   return (
     <div>

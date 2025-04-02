@@ -1,6 +1,7 @@
 import UserSidebar from "@/components/nav/user-sidebar";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { NuqsSearchParamsProvider } from "@/hooks/use-nuqs-search-params";
 
 export default async function UserContentLayout({
   children,
@@ -9,10 +10,12 @@ export default async function UserContentLayout({
 }) {
   return (
     <SidebarProvider>
-      <UserSidebar />
-      <div className="max-w-screen-2xl overflow-x-auto p-2  md:p-4 mx-auto">
-        {children}
-      </div>
+      <NuqsSearchParamsProvider>
+        <UserSidebar />
+        <div className="max-w-screen-2xl overflow-x-auto p-2  md:p-4 mx-auto">
+          {children}
+        </div>
+      </NuqsSearchParamsProvider>
     </SidebarProvider>
   );
 }
