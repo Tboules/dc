@@ -1,7 +1,7 @@
 WITH vars AS (
     SELECT 'love'::text as search_term
 )
-select paradedb.score(e.id), e.body, e.title, df.full_name, string_agg(t.name, ', ' ORDER BY t.name) as tags from excerpt e
+select paradedb.score(e.id),  e.body, e.title, df.full_name, string_agg(t.name, ', ' ORDER BY t.name) as tags from excerpt e
     inner join desert_figure as df on df.id = e.desert_figure_id
     inner join excerpt_tag as et on et.excerpt_id = e.id
     inner join tag as t on et.tag_id = t.id

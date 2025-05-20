@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 
-type Tag = {
+export type Tag = {
   id: string;
   name: string;
 };
@@ -17,7 +17,7 @@ export type UserExcerpt = {
   dateAdded: Date;
   desertFigureName: string;
   status: string;
-  reference: string | undefined;
+  // reference: string | undefined;
   tags: Tag[];
 };
 

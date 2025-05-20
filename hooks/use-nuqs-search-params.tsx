@@ -38,6 +38,10 @@ export function NuqsSearchParamsProvider({ children }: Props) {
   const [totalDataCount, setTotalDataCount] = useState<number | null>(null);
   const [searchInput, setSearchInput] = useState("");
 
+  useEffect(() => {
+    setSearchInput(params.q);
+  }, []);
+
   //debounce search param
   useEffect(() => {
     const handler = setTimeout(() => {
