@@ -11,7 +11,7 @@ export default async function UserContentLayout({
     <SidebarProvider>
       <NuqsSearchParamsProvider>
         <UserSidebar />
-        <div className="max-w-screen-2xl overflow-x-auto p-2  md:p-4 mx-auto">
+        <div className="max-w-screen-2xl md:min-w-[calc(100%-16rem)] min-w-full overflow-x-auto p-2  md:p-4 mx-auto">
           {children}
         </div>
       </NuqsSearchParamsProvider>
