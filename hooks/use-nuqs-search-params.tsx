@@ -45,7 +45,7 @@ export function NuqsSearchParamsProvider({ children }: Props) {
   //debounce search param
   useEffect(() => {
     const handler = setTimeout(() => {
-      setSearchParams({ q: searchInput });
+      setSearchParams({ q: searchInput, page: null });
     }, 300);
 
     return () => {
