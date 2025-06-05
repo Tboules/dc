@@ -5,7 +5,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const HTML_STRING_MAX_LENGTH = 200;
+const HTML_STRING_MAX_LENGTH = 100;
 
 export default function SafeHtmlRenderer({
   htmlString,
