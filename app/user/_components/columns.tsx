@@ -31,7 +31,7 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
     header: "Body",
     cell: ({ row }) => {
       const body = row.original.body;
-      return <SafeHtmlRenderer title={row.original.title} htmlString={body} />;
+      return <SafeHtmlRenderer htmlString={body} />;
     },
   },
   {
@@ -45,14 +45,6 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
   {
     accessorKey: "desertFigureName",
     header: "Desert Figure",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "reference",
-    header: "Reference",
   },
   {
     accessorKey: "tags",
@@ -70,5 +62,13 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
         </div>
       );
     },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "reference",
+    header: "Reference",
   },
 ];
