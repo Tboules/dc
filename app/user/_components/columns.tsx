@@ -31,7 +31,8 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
     header: "Body",
     cell: ({ row }) => {
       const body = row.original.body;
-      return <SafeHtmlRenderer htmlString={body} />;
+      const title = row.original.title;
+      return <SafeHtmlRenderer htmlString={body} title={title} />;
     },
   },
   {
