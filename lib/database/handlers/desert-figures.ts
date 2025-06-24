@@ -5,7 +5,9 @@ import {
   desertFigures,
   desertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
+import { serverAuthSession } from "@/lib/utils/auth";
 import { eq, sql } from "drizzle-orm";
+import { contentStatus } from "../schema";
 
 export async function selectDesertFigureById(figureId: string | undefined) {
   if (!figureId) return;
@@ -56,4 +58,30 @@ export async function searchForDesertFigure(searchValue: string) {
 
     return validFigure;
   });
+}
+
+// Definition and function for querying User Desert Figures
+
+export type UserDesertFigure = {
+  id: string;
+  fullName: string;
+  dateAdded: Date | null;
+  status: string;
+};
+
+export async function selectUserDesertFigures(): Promise<UserDesertFigure[]> {
+  const session = await serverAuthSession();
+  if (!session) throw new Error("No user found");
+
+  const desertFigureRows = await db
+    .select({
+      id: desertFigures.id,
+      fullName: desertFigures.fullName,
+      status: contentStatus.name,
+      dateAdded: desertFigures.dateAdded,
+    })
+    .from(desertFigures)
+    .innerJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId));
+
+  return desertFigureRows;
 }

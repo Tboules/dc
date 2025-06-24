@@ -2,6 +2,7 @@
 
 import SafeHtmlRenderer from "@/components/safe-html-renderer";
 import { Badge } from "@/components/ui/badge";
+import { UserDesertFigure } from "@/lib/database/handlers/desert-figures";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 
@@ -71,5 +72,24 @@ export const USER_EXCERPT_COLUMNS: ColumnDef<UserExcerpt>[] = [
   {
     accessorKey: "reference",
     header: "Reference",
+  },
+];
+
+export const USER_DESERT_FIGURE_COLUMNS: ColumnDef<UserDesertFigure>[] = [
+  {
+    accessorKey: "fullName",
+    header: "Name",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "dateAdded",
+    header: "Date Added",
+    cell: ({ row }) => {
+      const date = row.original.dateAdded;
+      return <div>{format(date ?? Date.now(), "PP")}</div>;
+    },
   },
 ];
