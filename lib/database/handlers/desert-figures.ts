@@ -6,8 +6,9 @@ import {
   desertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
 import { serverAuthSession } from "@/lib/utils/auth";
-import { eq, sql } from "drizzle-orm";
+import { count, eq, sql } from "drizzle-orm";
 import { contentStatus } from "../schema";
+import { UserContentSearchParams } from "@/lib/utils/params";
 
 export async function selectDesertFigureById(figureId: string | undefined) {
   if (!figureId) return;
@@ -69,7 +70,11 @@ export type UserDesertFigure = {
   status: string;
 };
 
-export async function selectUserDesertFigures(): Promise<UserDesertFigure[]> {
+export async function selectUserDesertFigures({
+  page,
+  pageLimit,
+  q,
+}: UserContentSearchParams): Promise<UserDesertFigure[]> {
   const session = await serverAuthSession();
   if (!session) throw new Error("No user found");
 
@@ -81,7 +86,24 @@ export async function selectUserDesertFigures(): Promise<UserDesertFigure[]> {
       dateAdded: desertFigures.dateAdded,
     })
     .from(desertFigures)
-    .innerJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId));
+    .innerJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId))
+    .where(eq(desertFigures.createdBy, session.user.id ?? ""))
+    .limit(pageLimit)
+    .offset(page * pageLimit);
 
   return desertFigureRows;
+}
+
+// function for grabbing Desert Figure Count by user
+
+export async function selectUserDesertFigureCount(): Promise<number> {
+  const session = await serverAuthSession();
+  if (!session) throw new Error("No user found");
+
+  const countQueryResult = await db
+    .select({ count: count() })
+    .from(desertFigures)
+    .where(eq(desertFigures.createdBy, session.user.id ?? ""));
+
+  return countQueryResult[0].count;
 }
