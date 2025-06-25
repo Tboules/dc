@@ -13,6 +13,14 @@ where e.id @@@ paradedb.match('body', v.search_term, distance => 1)
 group by e.id, df.full_name
 order by paradedb.score(e.id) desc;
 
+select *
+from desert_figure
+where desert_figure.id @@@ paradedb.match('full_name', 'saint anthony', distance => 2);
+
+select * from desert_figure
+order by similarity(full_name, 'amba antonious')
+desc limit 5;
+
 create index excerpt_search_idx on excerpt
 using bm25 (id, title, body)
 with (key_field = 'id');

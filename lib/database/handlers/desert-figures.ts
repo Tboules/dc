@@ -78,7 +78,9 @@ export async function selectUserDesertFigures({
   const session = await serverAuthSession();
   if (!session) throw new Error("No user found");
 
-  const desertFigureRows = await db
+  const hasSearch = q.trim().length > 0;
+
+  let desertFigureRows = await db
     .select({
       id: desertFigures.id,
       fullName: desertFigures.fullName,
@@ -88,6 +90,11 @@ export async function selectUserDesertFigures({
     .from(desertFigures)
     .innerJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId))
     .where(eq(desertFigures.createdBy, session.user.id ?? ""))
+    .orderBy(
+      ...(hasSearch
+        ? [sql`similarity(${desertFigures.fullName}, ${q}) DESC`]
+        : []),
+    )
     .limit(pageLimit)
     .offset(page * pageLimit);
 
