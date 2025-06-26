@@ -1,7 +1,7 @@
 "use server";
 
 import db from "@/lib/database";
-import { serverAuthSession } from "@/lib/utils/auth";
+import { handleProtectedHandler } from "@/lib/utils/auth";
 import { UserExcerpt, Tag } from "@/app/user/_components/columns";
 import { and, count, eq, sql } from "drizzle-orm";
 import {
@@ -14,8 +14,7 @@ import {
 import { UserContentSearchParams } from "@/lib/utils/params";
 
 export async function selectUserExcerptCount() {
-  const session = await serverAuthSession();
-  if (!session) throw new Error("No user found");
+  const session = await handleProtectedHandler();
 
   const excerptCount = await db
     .select({ count: count() })
@@ -30,8 +29,7 @@ export async function selectUserExcerpts({
   pageLimit,
   q,
 }: UserContentSearchParams): Promise<UserExcerpt[]> {
-  const session = await serverAuthSession();
-  if (!session) throw new Error("No user found");
+  const session = await handleProtectedHandler();
 
   console.log(q);
 

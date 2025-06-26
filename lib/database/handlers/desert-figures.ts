@@ -5,7 +5,7 @@ import {
   desertFigures,
   desertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
-import { serverAuthSession } from "@/lib/utils/auth";
+import { handleProtectedHandler } from "@/lib/utils/auth";
 import { count, eq, sql } from "drizzle-orm";
 import { contentStatus } from "../schema";
 import { UserContentSearchParams } from "@/lib/utils/params";
@@ -75,8 +75,7 @@ export async function selectUserDesertFigures({
   pageLimit,
   q,
 }: UserContentSearchParams): Promise<UserDesertFigure[]> {
-  const session = await serverAuthSession();
-  if (!session) throw new Error("No user found");
+  const session = await handleProtectedHandler();
 
   const hasSearch = q.trim().length > 0;
 
@@ -104,8 +103,7 @@ export async function selectUserDesertFigures({
 // function for grabbing Desert Figure Count by user
 
 export async function selectUserDesertFigureCount(): Promise<number> {
-  const session = await serverAuthSession();
-  if (!session) throw new Error("No user found");
+  const session = await handleProtectedHandler();
 
   const countQueryResult = await db
     .select({ count: count() })

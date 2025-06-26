@@ -64,6 +64,20 @@ export function serverAuthSession(
   return getServerSession(...args, nextAuthConfig);
 }
 
+export async function handleProtectedHandler(role: UserRole = "user") {
+  const session = await serverAuthSession();
+
+  if (!session) {
+    redirect(`/api/auth/signin`);
+  }
+
+  if (role == "admin" && session.user.role != USER_ROLES.admin) {
+    redirect(`/api/auth/signin`);
+  }
+
+  return session;
+}
+
 // We can pass in another param here to check for user role as well to protect admin pages
 export async function handleProtectedRoute(
   callbackRoute?: DesertCollectionsStaticRoute,

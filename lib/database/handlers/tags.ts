@@ -1,7 +1,8 @@
 import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
-import { sql } from "drizzle-orm";
+import { count, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
+import { handleProtectedHandler } from "@/lib/utils/auth";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(
@@ -20,4 +21,15 @@ export async function searchForTagHandler(searchValue: string) {
     value: row.id,
     label: row.name,
   })) as Option[];
+}
+
+export async function selectUserTagsCount(): Promise<number> {
+  const session = await handleProtectedHandler();
+
+  const countQueryResult = await db
+    .select({ count: count() })
+    .from(tags)
+    .where(eq(tags.createdBy, session?.user.id ?? ""));
+
+  return countQueryResult[0].count;
 }

@@ -21,6 +21,10 @@ select * from desert_figure
 order by similarity(full_name, 'amba antonious')
 desc limit 5;
 
+select * from tag
+order by similarity(name, 'borred') desc
+limit 5;
+
 create index excerpt_search_idx on excerpt
 using bm25 (id, title, body)
 with (key_field = 'id');
