@@ -1,5 +1,5 @@
-import DefaultLayout from "@/components/layouts/default-layout";
+import LayoutWithSearch from "@/components/layouts/layout-with-search";
 
 export default function TagsLayout({ children }: React.PropsWithChildren) {
-  return <DefaultLayout>{children}</DefaultLayout>;
+  return <LayoutWithSearch title="Tags">{children}</LayoutWithSearch>;
 }

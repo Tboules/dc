@@ -28,3 +28,15 @@ export type UserContentSearchParams = inferParserType<
 export const userContentSearchParamsLoader = createLoader(
   USER_CONTENT_SEARCH_PARAMS,
 );
+
+// used for search feature on many pages
+export const GLOBAL_SEARCH_PARAMS = {
+  q: parseAsString.withDefault("").withOptions({
+    shallow: false,
+    history: "push",
+  }),
+};
+
+export type GlobalSearchParams = inferParserType<typeof GLOBAL_SEARCH_PARAMS>;
+
+export const globalSearchParamsLoader = createLoader(GLOBAL_SEARCH_PARAMS);
