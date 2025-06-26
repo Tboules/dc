@@ -1,12 +1,25 @@
 import { handleProtectedRoute } from "@/lib/utils/auth";
 import { UserContentSidebarHeader } from "@/app/user/_components/user-content-header";
-import { selectUserTagsCount } from "@/lib/database/handlers/tags";
+import {
+  selectUserTags,
+  selectUserTagsCount,
+} from "@/lib/database/handlers/tags";
+import { SearchParams } from "nuqs/server";
+import { userContentSearchParamsLoader } from "@/lib/utils/params";
 
-export default async function UserContentTagsPage() {
+type PageProps = {
+  searchParams: Promise<SearchParams>;
+};
+
+export default async function UserContentTagsPage({ searchParams }: PageProps) {
   await handleProtectedRoute("/user/content/tags");
 
+  const params = await userContentSearchParamsLoader(searchParams);
+  const userTags = await selectUserTags(params);
+
+  console.log(userTags);
+
   const userTagCount = await selectUserTagsCount();
-  console.log(userTagCount);
 
   return (
     <div>

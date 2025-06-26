@@ -3,6 +3,7 @@ import { tags } from "@/lib/database/schema/tags";
 import { count, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
 import { handleProtectedHandler } from "@/lib/utils/auth";
+import { UserContentSearchParams } from "@/lib/utils/params";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(
@@ -22,6 +23,32 @@ export async function searchForTagHandler(searchValue: string) {
     label: row.name,
   })) as Option[];
 }
+
+export async function selectUserTags({
+  page,
+  pageLimit,
+  q,
+}: UserContentSearchParams) {
+  const session = await handleProtectedHandler();
+
+  const hasSearch = q.trim().length > 0;
+
+  const tags = await db.query.tags.findMany({
+    with: {
+      status: true,
+    },
+    where: (tags, { eq }) => eq(tags.createdBy, session.user.id ?? ""),
+    orderBy: hasSearch
+      ? (tags) => sql`similarity(${tags.name}, ${q}) DESC`
+      : undefined,
+    limit: pageLimit,
+    offset: pageLimit * page,
+  });
+
+  return tags;
+}
+
+export type UserTag = Awaited<ReturnType<typeof selectUserTags>>;
 
 export async function selectUserTagsCount(): Promise<number> {
   const session = await handleProtectedHandler();
