@@ -48,7 +48,7 @@ export async function selectUserTags({
   return tags;
 }
 
-export type UserTag = Awaited<ReturnType<typeof selectUserTags>>;
+export type UserTag = Awaited<ReturnType<typeof selectUserTags>>[number];
 
 export async function selectUserTagsCount(): Promise<number> {
   const session = await handleProtectedHandler();

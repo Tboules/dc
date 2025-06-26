@@ -3,6 +3,7 @@
 import SafeHtmlRenderer from "@/components/safe-html-renderer";
 import { Badge } from "@/components/ui/badge";
 import { UserDesertFigure } from "@/lib/database/handlers/desert-figures";
+import { UserTag } from "@/lib/database/handlers/tags";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 
@@ -83,6 +84,29 @@ export const USER_DESERT_FIGURE_COLUMNS: ColumnDef<UserDesertFigure>[] = [
   {
     accessorKey: "status",
     header: "Status",
+  },
+  {
+    accessorKey: "dateAdded",
+    header: "Date Added",
+    cell: ({ row }) => {
+      const date = row.original.dateAdded;
+      return <div>{format(date ?? Date.now(), "PP")}</div>;
+    },
+  },
+];
+
+export const USER_TAGS_COLUMNS: ColumnDef<UserTag>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const statusName = row.original.status.name;
+      return <div>{statusName}</div>;
+    },
   },
   {
     accessorKey: "dateAdded",
