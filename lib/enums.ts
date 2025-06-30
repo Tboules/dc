@@ -54,3 +54,14 @@ export const EXCERPT_TYPE = {
 } as const;
 
 export type ExcerptType = ObjectValues<typeof EXCERPT_TYPE>;
+
+export const CONTENT_STATUS = {
+  DRAFT: "Draft",
+  PENDING: "Pending",
+  PUBLISHED: "Published",
+  PRIVATE: "Private",
+  FLAGGED: "Flagged",
+  DELETED: "Deleted",
+};
+
+export type ContentStatus = ObjectValues<typeof CONTENT_STATUS>;

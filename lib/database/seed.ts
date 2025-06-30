@@ -626,6 +626,12 @@ const main = async () => {
           createdBy: TONY_ID,
           statusId: statuses[2].id,
         },
+        // 44
+        {
+          name: "holiness",
+          createdBy: TONY_ID,
+          statusId: statuses[1].id,
+        },
       ];
 
       const tagIds = await tx

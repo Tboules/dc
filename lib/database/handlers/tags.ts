@@ -4,6 +4,8 @@ import { count, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
 import { handleProtectedHandler } from "@/lib/utils/auth";
 import { UserContentSearchParams } from "@/lib/utils/params";
+import { contentStatus } from "../schema";
+import { CONTENT_STATUS } from "@/lib/enums";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(
@@ -59,4 +61,17 @@ export async function selectUserTagsCount(): Promise<number> {
     .where(eq(tags.createdBy, session?.user.id ?? ""));
 
   return countQueryResult[0].count;
+}
+
+export async function selectTags() {
+  const queryResults = await db
+    .select({
+      name: tags.name,
+      id: tags.id,
+    })
+    .from(tags)
+    .leftJoin(contentStatus, eq(tags.statusId, contentStatus.id))
+    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED));
+
+  return queryResults;
 }

@@ -17,14 +17,6 @@ select *
 from desert_figure
 where desert_figure.id @@@ paradedb.match('full_name', 'saint anthony', distance => 2);
 
-select * from desert_figure
-order by similarity(full_name, 'amba antonious')
-desc limit 5;
-
-select * from tag
-order by similarity(name, 'borred') desc
-limit 5;
-
 create index excerpt_search_idx on excerpt
 using bm25 (id, title, body)
 with (key_field = 'id');
@@ -38,3 +30,14 @@ using bm25 (id, name)
 with (key_field = 'id');
 
 --- After getting nowhere with Chatgpt it looks like the view route will not work, rewrite to above query to include status and reference
+
+---
+
+select * from desert_figure
+order by similarity(full_name, 'amba antonious')
+        desc limit 5;
+
+select * from tag
+order by similarity(name, 'borred') desc
+limit 5;
+
