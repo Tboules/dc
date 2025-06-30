@@ -6,14 +6,14 @@ import {
 } from "@/lib/database/handlers/desert-figures";
 import { UserContentDataTable } from "../../_components/user-content-data-table";
 import { USER_DESERT_FIGURE_COLUMNS } from "../../_components/columns";
-import { SearchParams } from "nuqs/server";
-import { userContentSearchParamsLoader } from "@/lib/utils/params";
+import {
+  PagePropsWithParams,
+  userContentSearchParamsLoader,
+} from "@/lib/utils/params";
 
-type PageProps = {
-  searchParams: Promise<SearchParams>;
-};
-
-export default async function UserContentDFPage({ searchParams }: PageProps) {
+export default async function UserContentDFPage({
+  searchParams,
+}: PagePropsWithParams) {
   await handleProtectedRoute("/user/content/desert-figures");
 
   const params = await userContentSearchParamsLoader(searchParams);

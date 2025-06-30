@@ -12,7 +12,7 @@ export default function LayoutWithSearch({
   return (
     <DefaultLayout>
       <div className="p-4 md:p-16 ">
-        <h1 className="text-3xl mb-4">Find {title}...</h1>
+        <h1 className="text-3xl mb-4">{title}</h1>
         <GlobalSearchInput />
       </div>
       {children}

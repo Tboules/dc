@@ -56,7 +56,7 @@ const NAV_MENU_ITEMS: NavMenuItem[] = [
   { route: "/", name: "Dashboard" },
   { route: "/desert-figures", name: "Desert Figures" },
   { route: "/tags", name: "Tags" },
-  { route: "/icons", name: "Icons" },
+  // { route: "/icons", name: "Icons" },
 ];
 
 const SUB_MENU_ITEMS: SubMenuItem[] = [

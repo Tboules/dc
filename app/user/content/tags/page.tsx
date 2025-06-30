@@ -5,15 +5,15 @@ import {
   selectUserTags,
   selectUserTagsCount,
 } from "@/lib/database/handlers/tags";
-import { SearchParams } from "nuqs/server";
-import { userContentSearchParamsLoader } from "@/lib/utils/params";
+import {
+  PagePropsWithParams,
+  userContentSearchParamsLoader,
+} from "@/lib/utils/params";
 import { USER_TAGS_COLUMNS } from "../../_components/columns";
 
-type PageProps = {
-  searchParams: Promise<SearchParams>;
-};
-
-export default async function UserContentTagsPage({ searchParams }: PageProps) {
+export default async function UserContentTagsPage({
+  searchParams,
+}: PagePropsWithParams) {
   await handleProtectedRoute("/user/content/tags");
 
   const params = await userContentSearchParamsLoader(searchParams);

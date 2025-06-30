@@ -1,7 +1,7 @@
-import DefaultLayout from "@/components/layouts/default-layout";
+import LayoutWithSearch from "@/components/layouts/layout-with-search";
 
 export default function DesertFiguresLayout({
   children,
 }: React.PropsWithChildren) {
-  return <DefaultLayout>{children}</DefaultLayout>;
+  return <LayoutWithSearch title="Desert Figures">{children}</LayoutWithSearch>;
 }

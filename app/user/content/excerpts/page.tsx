@@ -4,18 +4,16 @@ import {
   selectUserExcerptCount,
   selectUserExcerpts,
 } from "@/lib/database/handlers/excerpts";
-import { SearchParams } from "nuqs/server";
 import { UserContentDataTable } from "@/app/user/_components/user-content-data-table";
 import { USER_EXCERPT_COLUMNS } from "@/app/user/_components/columns";
-import { userContentSearchParamsLoader } from "@/lib/utils/params";
-
-type PageProps = {
-  searchParams: Promise<SearchParams>;
-};
+import {
+  PagePropsWithParams,
+  userContentSearchParamsLoader,
+} from "@/lib/utils/params";
 
 export default async function UserContentExcerptPage({
   searchParams,
-}: PageProps) {
+}: PagePropsWithParams) {
   await handleProtectedRoute("/user/content/excerpts");
 
   const params = await userContentSearchParamsLoader(searchParams);
