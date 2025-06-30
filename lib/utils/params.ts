@@ -3,7 +3,13 @@ import {
   createLoader,
   parseAsString,
   inferParserType,
+  SearchParams,
 } from "nuqs/server";
+
+// pageprops with params
+export interface PagePropsWithParams {
+  searchParams: Promise<SearchParams>;
+}
 
 // used in use-server-params hook
 export const USER_CONTENT_SEARCH_PARAMS = {
