@@ -1,3 +1,4 @@
+import { selectTags } from "@/lib/database/handlers/tags";
 import {
   globalSearchParamsLoader,
   PagePropsWithParams,
@@ -6,10 +7,11 @@ import {
 export default async function TagsRoot({ searchParams }: PagePropsWithParams) {
   const params = await globalSearchParamsLoader(searchParams);
 
-  console.log(params);
+  const tags = await selectTags(params);
+
   return (
     <div>
-      <h1>Hello Tags Root </h1>
+      <pre>{JSON.stringify(tags, null, 2)}</pre>
     </div>
   );
 }

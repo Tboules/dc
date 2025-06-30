@@ -3,7 +3,10 @@ import { tags } from "@/lib/database/schema/tags";
 import { count, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
 import { handleProtectedHandler } from "@/lib/utils/auth";
-import { UserContentSearchParams } from "@/lib/utils/params";
+import {
+  GlobalSearchParams,
+  UserContentSearchParams,
+} from "@/lib/utils/params";
 import { contentStatus } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
 
@@ -63,15 +66,24 @@ export async function selectUserTagsCount(): Promise<number> {
   return countQueryResult[0].count;
 }
 
-export async function selectTags() {
-  const queryResults = await db
+export async function selectTags({ q }: GlobalSearchParams) {
+  const hasSearch = q.trim().length > 0;
+
+  let queryResults = db
     .select({
       name: tags.name,
       id: tags.id,
     })
     .from(tags)
     .leftJoin(contentStatus, eq(tags.statusId, contentStatus.id))
-    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED));
+    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED))
+    .$dynamic();
 
-  return queryResults;
+  if (hasSearch) {
+    queryResults = queryResults
+      .orderBy(sql`similarity(${tags.name}, ${q}) DESC`)
+      .limit(10);
+  }
+
+  return await queryResults;
 }
