@@ -87,3 +87,7 @@ export async function selectTags({ q }: GlobalSearchParams) {
 
   return await queryResults;
 }
+
+export type TagFromSelectTagsFunc = Awaited<
+  ReturnType<typeof selectTags>
+>[number];
