@@ -14,7 +14,7 @@ export function UserContentSidebarHeader({ title }: { title: string }) {
         <h1 className="text-lg font-medium">{title}</h1>
       </div>
       <Input
-        className="max-w-[32rem]"
+        className="max-w-lg"
         placeholder="Search"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}

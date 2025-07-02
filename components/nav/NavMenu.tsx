@@ -67,8 +67,8 @@ const SUB_MENU_ITEMS: SubMenuItem[] = [
 
 export default function NavMenu() {
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b border-b-border/60">
-      <div className="p-4 text-secondary-foreground w-full max-w-screen-2xl m-auto flex items-center gap-4">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-b-border/60">
+      <div className="p-4 text-secondary-foreground w-full max-w-(--breakpoint-2xl) m-auto flex items-center gap-4">
         <h1 className="text-lg font-semibold flex-1">Desert Collections</h1>
 
         {/* navigation menu */}
@@ -108,14 +108,12 @@ function AddMenu() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Add</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="p-2 min-w-32 space-y-2">
+            <div className="min-w-32">
               {SUB_MENU_ITEMS.map((item) => (
                 <Link key={item.name} href={item.route} legacyBehavior passHref>
-                  <NavigationMenuLink>
-                    <div className="w-full border border-border p-4 rounded hover:bg-secondary transition mb-2">
-                      <NavIconSwitcher name={item.icon} />
-                      <p className="mt-2">{item.name}</p>
-                    </div>
+                  <NavigationMenuLink className="w-full border border-border p-4 rounded hover:bg-secondary transition mb-2">
+                    <NavIconSwitcher name={item.icon} />
+                    <p className="mt-2">{item.name}</p>
                   </NavigationMenuLink>
                 </Link>
               ))}
@@ -212,7 +210,7 @@ function MobileMenu() {
               ))}
             </ul>
 
-            <Separator className="mx-auto !mb-2" />
+            <Separator className="mx-auto mb-2!" />
 
             <h3 className="pb-4">Contribute</h3>
             {SUB_MENU_ITEMS.map((item) => (

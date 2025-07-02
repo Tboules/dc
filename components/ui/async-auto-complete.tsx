@@ -125,13 +125,13 @@ function AsyncAutoComplete<T>({
           onFocus={() => setOpen(true)}
           placeholder={placeholder}
           disabled={disabled}
-          className="text-base focus-visible:outline-none ring-offset-background focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="text-base focus-visible:outline-hidden ring-offset-background focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-2"
         />
       </div>
       <div className="relative mt-1">
         <div
           className={cn(
-            "animate-in fade-in-0 zoom-in-95 absolute top-0 z-10 w-full rounded-xl bg-default outline-none",
+            "animate-in fade-in-0 zoom-in-95 absolute top-0 z-10 w-full rounded-xl bg-default outline-hidden",
             isOpen ? "block" : "hidden",
           )}
         >

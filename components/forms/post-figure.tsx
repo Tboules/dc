@@ -105,7 +105,7 @@ export default function PostFigureForm() {
     <>
       <Form {...form}>
         <form
-          className="max-w-screen-lg mt-2 w-full rounded grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="max-w-(--breakpoint-lg) mt-2 w-full rounded grid grid-cols-1 md:grid-cols-2 gap-4"
           onSubmit={form.handleSubmit(handleFormSubmission)}
         >
           <FormHeader

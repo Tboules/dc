@@ -16,7 +16,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="max-w-screen-lg mx-auto p-8 flex flex-col justify-center items-center">
+    <div className="max-w-(--breakpoint-lg) mx-auto p-8 flex flex-col justify-center items-center">
       <h2 className="text-2xl mb-8 text-center">Something went wrong!</h2>
       <Button onClick={() => reset()}>Try again</Button>
     </div>

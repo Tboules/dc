@@ -92,7 +92,7 @@ export default function FindFigureAsyncInput({ setSelectedFigureID }: Props) {
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className="md:w-[38rem]">
+      <PopoverContent className="md:w-152">
         <Command shouldFilter={false}>
           <CommandList>
             <CommandInput

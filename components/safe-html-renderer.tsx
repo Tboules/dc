@@ -27,10 +27,13 @@ export default function SafeHtmlRenderer({
     <Dialog>
       <DialogTrigger asChild>
         <button className="text-left hover:bg-secondary rounded-sm p-4">
-          <div className="text-lg min-w-80" dangerouslySetInnerHTML={markup} />
+          <div
+            className="text-lg min-w-80 text-wrap cursor-pointer"
+            dangerouslySetInnerHTML={markup}
+          />
         </button>
       </DialogTrigger>
-      <DialogContent className="max-w-screen-md overflow-y-scroll max-h-[80%]">
+      <DialogContent className="max-w-(--breakpoint-md) overflow-y-scroll max-h-[80%]">
         <DialogTitle>{title}</DialogTitle>
         <div
           className="text-lg"

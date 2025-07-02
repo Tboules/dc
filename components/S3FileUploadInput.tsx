@@ -1,12 +1,12 @@
 import React, { ChangeEvent } from "react";
-import { Input, InputProps } from "./ui/input";
+import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { v4 as uuidv4 } from "uuid";
 import { ObjectValues } from "@/lib/enums";
 import Lottie from "react-lottie-player";
 import lottieAnimation from "@/assets/loading.json";
 
-interface Props extends InputProps {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   setFinalImageUrl: (id: string) => void;
 }
 
