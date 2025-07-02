@@ -10,8 +10,8 @@ type Props = {
 
 export default function TagBadgeLink({ tag }: Props) {
   return (
-    <Badge>
-      <Link href={`/tags`}>{tag.name}</Link>
+    <Badge asChild className="py-2 px-4 text-md">
+      <Link href={`/`}>{tag.name}</Link>
     </Badge>
   );
 }
