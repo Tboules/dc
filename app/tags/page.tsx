@@ -1,5 +1,4 @@
 import TagBadgeLink from "@/components/tag-badge-link";
-import { Badge } from "@/components/ui/badge";
 import { selectTags } from "@/lib/database/handlers/tags";
 import {
   globalSearchParamsLoader,
