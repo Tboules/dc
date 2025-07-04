@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { TagFromSelectTagsFunc } from "@/lib/database/handlers/tags";
 import Link from "next/link";
 import chroma from "chroma-js";
+import { RouteLiteral } from "nextjs-routes";
 
 type Props = {
   tag: TagFromSelectTagsFunc;
@@ -40,7 +41,7 @@ export default function TagBadgeLink({ tag }: Props) {
       className={`py-2 px-4 text-md text-slate-700`}
       style={{ backgroundColor: color }}
     >
-      <Link href={`/`}>{tag.name}</Link>
+      <Link href={`/tags/${tag.id}` as RouteLiteral}>{tag.name}</Link>
     </Badge>
   );
 }

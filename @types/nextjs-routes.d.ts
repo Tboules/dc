@@ -21,6 +21,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/icons">
     | StaticRoute<"/icons/new">
     | StaticRoute<"/tags">
+    | DynamicRoute<"/tags/[tagId]", { "tagId": string }>
     | StaticRoute<"/user/admin">
     | StaticRoute<"/user/content/desert-figures">
     | StaticRoute<"/user/content/excerpts">
