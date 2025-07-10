@@ -1,4 +1,3 @@
-CREATE TYPE "public"."user_role" AS ENUM('user', 'admin');--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "excerpt" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"body" text NOT NULL,
@@ -81,13 +80,18 @@ CREATE TABLE IF NOT EXISTS "account" (
 	CONSTRAINT "account_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "user_role" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" text
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text,
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
 	"image" text,
-	"role" "user_role" DEFAULT 'user'
+	"role" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
@@ -190,10 +194,20 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "user" ADD CONSTRAINT "user_role_user_role_id_fk" FOREIGN KEY ("role") REFERENCES "public"."user_role"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+
+--> custome statement
+DROP MATERIALIZED VIEW IF EXISTS excerpt_document;
+
 --> statement-breakpoint
 CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "desert_figure"."full_name", "desert_figure"."id" as "desertFigureId", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", "reference"."source", "reference"."cover", "content_status"."name", "content_status"."id" as "statusId", 
           json_agg(

@@ -1,8 +1,8 @@
 export type ObjectValues<T> = T[keyof T];
 
 export const USER_ROLES = {
-  user: "user",
-  admin: "admin",
+  user: 1,
+  admin: 2,
 } as const;
 
 export type UserRole = ObjectValues<typeof USER_ROLES>;

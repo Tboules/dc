@@ -9,7 +9,13 @@ import { DESERT_FIGURE_TITLE } from "../enums";
 import { NewExcerpt, excerpts } from "./schema/excerpts";
 import { NewTag, tags } from "./schema/tags";
 import { NewExcerptTag, excerptTags } from "./schema/excerptTags";
-import { contentStatus, NewContentStatus, references } from "./schema";
+import {
+  contentStatus,
+  NewContentStatus,
+  NewUserRole,
+  references,
+  userRoles,
+} from "./schema";
 dotenv.config({ path: ".env.local" });
 
 const TONY_ID = "d53d1855-14fa-4365-bb51-f30b29d28506";
@@ -35,6 +41,19 @@ const main = async () => {
       await tx.delete(desertFigures);
       await tx.delete(contentStatus);
       console.log("Seed Comencing...");
+
+      const USER_ROLES: NewUserRole[] = [
+        {
+          id: 1,
+          name: "user",
+        },
+        {
+          id: 2,
+          name: "admin",
+        },
+      ];
+
+      await tx.insert(userRoles).values(USER_ROLES).onConflictDoNothing();
 
       const CONTENT_STATUS: NewContentStatus[] = [
         {

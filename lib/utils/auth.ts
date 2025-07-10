@@ -3,12 +3,12 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from "next";
-import { getServerSession } from "next-auth";
+import { getServerSession, User } from "next-auth";
 import { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import db from "@/lib/database";
-import { Adapter } from "next-auth/adapters";
+import { Adapter, AdapterUser } from "next-auth/adapters";
 import {
   accounts,
   sessions,
@@ -19,13 +19,33 @@ import { redirect } from "next/navigation";
 import { USER_ROLES, UserRole } from "../enums";
 import { DesertCollectionsStaticRoute } from "@/@types/helper-types";
 
+const baseAdapter = DrizzleAdapter(db, {
+  usersTable: users,
+  accountsTable: accounts,
+  sessionsTable: sessions,
+  verificationTokensTable: verificationTokens,
+}) as Adapter;
+
+const customAdapter: Adapter = {
+  ...baseAdapter,
+  async createUser(userData: Omit<AdapterUser, "id">) {
+    const [created] = await db
+      .insert(users)
+      .values({
+        name: userData.name,
+        email: userData.email,
+        image: userData.image,
+        emailVerified: userData.emailVerified,
+        role: USER_ROLES.user, // 👈 set role FK
+      })
+      .returning();
+
+    return created;
+  },
+};
+
 export const nextAuthConfig = {
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }) as Adapter,
+  adapter: customAdapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -64,14 +84,14 @@ export function serverAuthSession(
   return getServerSession(...args, nextAuthConfig);
 }
 
-export async function handleProtectedHandler(role: UserRole = "user") {
+export async function handleProtectedHandler(role: UserRole = 1) {
   const session = await serverAuthSession();
 
   if (!session) {
     redirect(`/api/auth/signin`);
   }
 
-  if (role == "admin" && session.user.role != USER_ROLES.admin) {
+  if (role == USER_ROLES.admin && session.user.role != USER_ROLES.admin) {
     redirect(`/api/auth/signin`);
   }
 
@@ -81,7 +101,7 @@ export async function handleProtectedHandler(role: UserRole = "user") {
 // We can pass in another param here to check for user role as well to protect admin pages
 export async function handleProtectedRoute(
   callbackRoute?: DesertCollectionsStaticRoute,
-  role: UserRole = "user",
+  role: UserRole = 1,
 ) {
   const session = await serverAuthSession();
   if (!session) {
@@ -90,7 +110,7 @@ export async function handleProtectedRoute(
     );
   }
 
-  if (role == "admin" && session.user.role != USER_ROLES.admin) {
+  if (role == USER_ROLES.admin && session.user.role != USER_ROLES.admin) {
     throw new Error("You are not an admin");
   }
 
