@@ -1,13 +1,13 @@
 import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
-import { count, sql, eq } from "drizzle-orm";
+import { count, and, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
 import { handleProtectedHandler } from "@/lib/utils/auth";
 import {
   GlobalSearchParams,
   UserContentSearchParams,
 } from "@/lib/utils/params";
-import { contentStatus } from "../schema";
+import { contentStatus, excerpts, excerptTags } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
 
 export async function searchForTagHandler(searchValue: string) {
@@ -66,6 +66,8 @@ export async function selectUserTagsCount(): Promise<number> {
   return countQueryResult[0].count;
 }
 
+// FUNCTION TO QUERY ALL TAGS
+
 export async function selectTags({ q }: GlobalSearchParams) {
   const hasSearch = q.trim().length > 0;
 
@@ -91,3 +93,21 @@ export async function selectTags({ q }: GlobalSearchParams) {
 export type TagFromSelectTagsFunc = Awaited<
   ReturnType<typeof selectTags>
 >[number];
+
+// FUNCTION TO QUERY A SINGLE TAG
+
+export async function selectTagExcerpts(id: string) {
+  // obviously now I need to include all of the other joins for this excerpt
+  // I think I should create a view for excerpts that refreshes every night, or that at least refreshes after every publish?
+  const queryResults = await db
+    .select()
+    .from(excerpts)
+    .leftJoin(excerptTags, eq(excerptTags.excerptId, excerpts.id))
+    .leftJoin(tags, eq(excerptTags.tagId, tags.id))
+    .leftJoin(contentStatus, eq(excerpts.statusId, contentStatus.id))
+    .where(
+      and(eq(tags.id, id), eq(contentStatus.name, CONTENT_STATUS.PUBLISHED)),
+    );
+
+  return queryResults;
+}
