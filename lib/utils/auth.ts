@@ -3,7 +3,7 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from "next";
-import { getServerSession, User } from "next-auth";
+import { getServerSession } from "next-auth";
 import { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
@@ -36,7 +36,7 @@ const customAdapter: Adapter = {
         email: userData.email,
         image: userData.image,
         emailVerified: userData.emailVerified,
-        role: USER_ROLES.user, // 👈 set role FK
+        role: USER_ROLES.user,
       })
       .returning();
 

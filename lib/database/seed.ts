@@ -18,8 +18,8 @@ import {
 } from "./schema";
 dotenv.config({ path: ".env.local" });
 
-const TONY_ID = "d53d1855-14fa-4365-bb51-f30b29d28506";
-const MARIANNE_ID = "d96902e2-f876-41a4-aed8-3aeb503df9db";
+const TONY_ID = "b589d35a-fbd8-4a04-ad79-14fba097b930";
+const MARIANNE_ID = "552db9ae-7788-4d6c-98ec-93a52b1d313b";
 
 const sql = postgres(process.env.DATABASE_URL, {
   ssl: "require",
