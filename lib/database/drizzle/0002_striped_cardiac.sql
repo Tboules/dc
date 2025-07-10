@@ -1,1 +1,0 @@
-ALTER TABLE "reference" ADD CONSTRAINT "reference_external_id_unique" UNIQUE("external_id");

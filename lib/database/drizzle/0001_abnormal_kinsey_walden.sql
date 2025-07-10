@@ -1,1 +1,0 @@
-ALTER TABLE "reference" ADD COLUMN "date_added" timestamp DEFAULT now();

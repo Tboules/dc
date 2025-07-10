@@ -1,105 +1,140 @@
 {
-  "id": "0d7d9929-7c47-4a76-9778-f944bdd7eace",
+  "id": "fa58317b-e706-4b8d-9a54-75b7f3592fcf",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account": {
-      "name": "account",
+    "public.excerpt": {
+      "name": "excerpt",
       "schema": "",
       "columns": {
-        "userId": {
-          "name": "userId",
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "body": {
+          "name": "body",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "type": {
           "name": "type",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "provider": {
-          "name": "provider",
+        "reference_id": {
+          "name": "reference_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "article_url": {
+          "name": "article_url",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "desert_figure_id": {
+          "name": "desert_figure_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "providerAccountId": {
-          "name": "providerAccountId",
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "last_updated": {
+          "name": "last_updated",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "added_by": {
+          "name": "added_by",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status_id": {
+          "name": "status_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "refresh_token": {
-          "name": "refresh_token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "access_token": {
-          "name": "access_token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "token_type": {
-          "name": "token_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "scope": {
-          "name": "scope",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "id_token": {
-          "name": "id_token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "session_state": {
-          "name": "session_state",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "account_userId_user_id_fk": {
-          "name": "account_userId_user_id_fk",
-          "tableFrom": "account",
-          "tableTo": "user",
+        "excerpt_reference_id_reference_id_fk": {
+          "name": "excerpt_reference_id_reference_id_fk",
+          "tableFrom": "excerpt",
+          "tableTo": "reference",
           "columnsFrom": [
-            "userId"
+            "reference_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "excerpt_desert_figure_id_desert_figure_id_fk": {
+          "name": "excerpt_desert_figure_id_desert_figure_id_fk",
+          "tableFrom": "excerpt",
+          "tableTo": "desert_figure",
+          "columnsFrom": [
+            "desert_figure_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "excerpt_added_by_user_id_fk": {
+          "name": "excerpt_added_by_user_id_fk",
+          "tableFrom": "excerpt",
+          "tableTo": "user",
+          "columnsFrom": [
+            "added_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "excerpt_status_id_content_status_id_fk": {
+          "name": "excerpt_status_id_content_status_id_fk",
+          "tableFrom": "excerpt",
+          "tableTo": "content_status",
+          "columnsFrom": [
+            "status_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "account_provider_providerAccountId_pk": {
-          "name": "account_provider_providerAccountId_pk",
-          "columns": [
-            "provider",
-            "providerAccountId"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
@@ -178,6 +213,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "status_id": {
+          "name": "status_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -194,6 +235,19 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
+        },
+        "desert_figure_status_id_content_status_id_fk": {
+          "name": "desert_figure_status_id_content_status_id_fk",
+          "tableFrom": "desert_figure",
+          "tableTo": "content_status",
+          "columnsFrom": [
+            "status_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -202,8 +256,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.excerpt": {
-      "name": "excerpt",
+    "public.tag": {
+      "name": "tag",
       "schema": "",
       "columns": {
         "id": {
@@ -213,40 +267,9 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "body": {
-          "name": "body",
+        "name": {
+          "name": "name",
           "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "smallint",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "reference_id": {
-          "name": "reference_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "article_url": {
-          "name": "article_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "desert_figure_id": {
-          "name": "desert_figure_id",
-          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -257,51 +280,24 @@
           "notNull": false,
           "default": "now()"
         },
-        "last_updated": {
-          "name": "last_updated",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
         "added_by": {
           "name": "added_by",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "status_id": {
+          "name": "status_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "excerpt_reference_id_reference_id_fk": {
-          "name": "excerpt_reference_id_reference_id_fk",
-          "tableFrom": "excerpt",
-          "tableTo": "reference",
-          "columnsFrom": [
-            "reference_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "excerpt_desert_figure_id_desert_figure_id_fk": {
-          "name": "excerpt_desert_figure_id_desert_figure_id_fk",
-          "tableFrom": "excerpt",
-          "tableTo": "desert_figure",
-          "columnsFrom": [
-            "desert_figure_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "excerpt_added_by_user_id_fk": {
-          "name": "excerpt_added_by_user_id_fk",
-          "tableFrom": "excerpt",
+        "tag_added_by_user_id_fk": {
+          "name": "tag_added_by_user_id_fk",
+          "tableFrom": "tag",
           "tableTo": "user",
           "columnsFrom": [
             "added_by"
@@ -311,10 +307,103 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
+        },
+        "tag_status_id_content_status_id_fk": {
+          "name": "tag_status_id_content_status_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "content_status",
+          "columnsFrom": [
+            "status_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "tag_name_unique": {
+          "name": "tag_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.reference": {
+      "name": "reference",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "external_id": {
+          "name": "external_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open_library'"
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sub_title": {
+          "name": "sub_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "author": {
+          "name": "author",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cover": {
+          "name": "cover",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "reference_external_id_unique": {
+          "name": "reference_external_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "external_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -470,53 +559,149 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.reference": {
-      "name": "reference",
+    "public.account": {
+      "name": "account",
+      "schema": "",
+      "columns": {
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "providerAccountId": {
+          "name": "providerAccountId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_type": {
+          "name": "token_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "session_state": {
+          "name": "session_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "account_userId_user_id_fk": {
+          "name": "account_userId_user_id_fk",
+          "tableFrom": "account",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "account_provider_providerAccountId_pk": {
+          "name": "account_provider_providerAccountId_pk",
+          "columns": [
+            "provider",
+            "providerAccountId"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user": {
+      "name": "user",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "external_id": {
-          "name": "external_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "source": {
-          "name": "source",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'open_library'"
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "sub_title": {
-          "name": "sub_title",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "author": {
-          "name": "author",
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "cover": {
-          "name": "cover",
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image": {
+          "name": "image",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "user_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'user'"
         }
       },
       "indexes": {},
@@ -572,110 +757,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.tag": {
-      "name": "tag",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "date_added": {
-          "name": "date_added",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "added_by": {
-          "name": "added_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "tag_added_by_user_id_fk": {
-          "name": "tag_added_by_user_id_fk",
-          "tableFrom": "tag",
-          "tableTo": "user",
-          "columnsFrom": [
-            "added_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "tag_name_unique": {
-          "name": "tag_name_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.user": {
-      "name": "user",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "emailVerified": {
-          "name": "emailVerified",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "image": {
-          "name": "image",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.verificationToken": {
       "name": "verificationToken",
       "schema": "",
@@ -714,14 +795,111 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
+    },
+    "public.content_status": {
+      "name": "content_status",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "content_status_name_unique": {
+          "name": "content_status_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.user_role": {
+      "name": "user_role",
+      "schema": "public",
+      "values": [
+        "user",
+        "admin"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
   "policies": {},
-  "views": {},
+  "views": {
+    "public.excerpt_document": {
+      "columns": {
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open_library'"
+        },
+        "cover": {
+          "name": "cover",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "definition": "select \"excerpt\".\"id\" as \"excerptId\", \"excerpt\".\"body\", \"excerpt\".\"title\" as \"excerptTitle\", \"desert_figure\".\"full_name\", \"desert_figure\".\"id\" as \"desertFigureId\", \"reference\".\"title\" as \"referenceTitle\", \"reference\".\"id\" as \"referenceId\", \"reference\".\"source\", \"reference\".\"cover\", \"content_status\".\"name\", \"content_status\".\"id\" as \"statusId\", \n          json_agg(\n            json_build_object(\n              'tagID', \"tag\".\"id\",\n              'tag', \"tag\".\"name\"\n            )\n          )\n         as \"tags\" from \"excerpt\" left join \"desert_figure\" on \"desert_figure\".\"id\" = \"excerpt\".\"desert_figure_id\" left join \"reference\" on \"reference\".\"id\" = \"excerpt\".\"reference_id\" left join \"content_status\" on \"content_status\".\"id\" = \"excerpt\".\"status_id\" left join \"excerpt_tag\" on \"excerpt_tag\".\"excerpt_id\" = \"excerpt\".\"id\" left join \"tag\" on \"excerpt_tag\".\"tag_id\" = \"tag\".\"id\" group by \"excerpt\".\"id\", \"excerpt\".\"body\", \"excerpt\".\"title\", \"desert_figure\".\"full_name\", \"desert_figure\".\"id\", \"reference\".\"title\", \"reference\".\"id\", \"reference\".\"source\", \"reference\".\"cover\", \"content_status\".\"name\", \"content_status\".\"id\"",
+      "name": "excerpt_document",
+      "schema": "public",
+      "isExisting": false,
+      "materialized": true
+    }
+  },
   "_meta": {
     "columns": {},
     "schemas": {},

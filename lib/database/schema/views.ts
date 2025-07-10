@@ -12,17 +12,17 @@ import { eq, sql } from "drizzle-orm";
 export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
   qb
     .select({
-      excerptId: excerpts.id,
-      body: excerpts.body,
-      title: excerpts.title,
-      desertFigure: desertFigures.fullName,
-      desertFigureID: desertFigures.id,
-      reference: references.title,
-      referenceID: references.id,
+      excerptId: sql<string>`${excerpts.id}`.as("excerptId"),
+      excerptBody: excerpts.body,
+      excerptTitle: sql`${excerpts.title}`.as("excerptTitle"),
+      desertFigureName: desertFigures.fullName,
+      desertFigureId: sql<string>`${desertFigures.id}`.as("desertFigureId"),
+      referenceTitle: sql<string>`${references.title}`.as("referenceTitle"),
+      referenceId: sql<string>`${references.id}`.as("referenceId"),
       referenceSource: references.source,
       referenceCover: references.cover,
       status: contentStatus.name,
-      statusID: contentStatus.id,
+      statusId: sql<string>`${contentStatus.id}`.as("statusId"),
       tags: sql`
           json_agg(
             json_build_object(

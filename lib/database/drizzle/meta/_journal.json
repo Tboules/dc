@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1734659516953,
-      "tag": "0000_blue_jetstream",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1738274767128,
-      "tag": "0001_abnormal_kinsey_walden",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1738706481886,
-      "tag": "0002_striped_cardiac",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1739487805632,
-      "tag": "0003_early_moonstone",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1739492250301,
-      "tag": "0004_thin_mordo",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1740166595910,
-      "tag": "0005_graceful_archangel",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1740192464373,
-      "tag": "0006_soft_millenium_guard",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1752107614450,
-      "tag": "0007_watery_grey_gargoyle",
+      "when": 1752110598602,
+      "tag": "0000_closed_mattie_franklin",
       "breakpoints": true
     }
   ]
