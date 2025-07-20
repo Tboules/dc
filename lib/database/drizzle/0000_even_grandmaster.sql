@@ -204,10 +204,6 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
-
---> custome statement
-DROP MATERIALIZED VIEW IF EXISTS excerpt_document;
-
 --> statement-breakpoint
 CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "desert_figure"."full_name", "desert_figure"."id" as "desertFigureId", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", "reference"."source", "reference"."cover", "content_status"."name", "content_status"."id" as "statusId", 
           json_agg(
