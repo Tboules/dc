@@ -21,8 +21,11 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
       referenceId: sql<string>`${references.id}`.as("referenceId"),
       referenceSource: references.source,
       referenceCover: references.cover,
-      status: contentStatus.name,
+      status: sql<string>`${contentStatus.name}`.as("statusName"),
       statusId: sql<string>`${contentStatus.id}`.as("statusId"),
+      excerptCreatedBy: sql<string>`${excerpts.createdBy}`.as(
+        "excerptCreatedBy",
+      ),
       tags: sql`
           json_agg(
             json_build_object(
