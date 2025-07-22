@@ -1,20 +1,22 @@
 import dotenv from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import {
-  DesertFigureDirectInsert,
-  desertFigures,
-} from "./schema/desertFigures";
 import { DESERT_FIGURE_TITLE } from "../enums";
-import { NewExcerpt, excerpts } from "./schema/excerpts";
-import { NewTag, tags } from "./schema/tags";
-import { NewExcerptTag, excerptTags } from "./schema/excerptTags";
 import {
   contentStatus,
+  excerptDocument,
   NewContentStatus,
   NewUserRole,
   references,
   userRoles,
+  DesertFigureDirectInsert,
+  desertFigures,
+  NewExcerpt,
+  excerpts,
+  NewTag,
+  tags,
+  NewExcerptTag,
+  excerptTags,
 } from "./schema";
 dotenv.config({ path: ".env.local" });
 
@@ -94,6 +96,7 @@ const main = async () => {
         .returning();
 
       const DESERT_FIGURES_SEED: DesertFigureDirectInsert[] = [
+        //0
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Antony",
@@ -102,6 +105,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Antony the Great",
           statusId: statuses[2].id,
         },
+        //1
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Macarius",
@@ -110,6 +114,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Macarius the Great",
           statusId: statuses[2].id,
         },
+        //2
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Moses",
@@ -118,6 +123,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Moses the Strong",
           statusId: statuses[2].id,
         },
+        //3
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "John",
@@ -126,6 +132,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " John the Short",
           statusId: statuses[2].id,
         },
+        //4
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Gregory",
@@ -134,6 +141,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Gregory the Theologian",
           statusId: statuses[2].id,
         },
+        //5
         {
           title: DESERT_FIGURE_TITLE.FATHER,
           firstName: "Alexander",
@@ -142,6 +150,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.FATHER + " Alexander Schmemann",
           statusId: statuses[2].id,
         },
+        //6
         {
           title: DESERT_FIGURE_TITLE.FATHER,
           firstName: "Stephen",
@@ -150,6 +159,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.FATHER + " Stephen Freeman",
           statusId: statuses[2].id,
         },
+        //7
         {
           title: DESERT_FIGURE_TITLE.FATHER,
           firstName: "Thomas",
@@ -158,6 +168,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.FATHER + " Thomas Merton",
           statusId: statuses[2].id,
         },
+        //8
         {
           title: DESERT_FIGURE_TITLE.FATHER,
           firstName: "Kyrillos",
@@ -166,6 +177,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.FATHER + " Kyrillos Ibrahim",
           statusId: statuses[2].id,
         },
+        //9
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Clement",
@@ -174,6 +186,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Clement of Rome",
           statusId: statuses[2].id,
         },
+        //10
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Ignatius",
@@ -182,6 +195,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Ignatius of Antioch",
           statusId: statuses[2].id,
         },
+        //11
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Polycarp",
@@ -190,6 +204,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Polycarp of Smyrna",
           statusId: statuses[2].id,
         },
+        //12
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Justin",
@@ -198,12 +213,22 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Justin Martyr",
           statusId: statuses[2].id,
         },
+        //13
         {
           title: DESERT_FIGURE_TITLE.SAINT,
           firstName: "Irenaeus",
           epithet: "of Lyon",
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Irenaeus of Lyon",
+          statusId: statuses[2].id,
+        },
+        //14
+        {
+          title: DESERT_FIGURE_TITLE.SAINT,
+          firstName: "Porphyrios",
+          epithet: "of Evia",
+          createdBy: MARIANNE_ID,
+          fullName: DESERT_FIGURE_TITLE.SAINT + " Porphyrios of Evia",
           statusId: statuses[2].id,
         },
       ];
@@ -371,6 +396,22 @@ const main = async () => {
           title: "The Human as a Temple",
           desertFigureID: authorIds[6].id,
           createdBy: TONY_ID,
+          statusId: statuses[2].id,
+        },
+        // 19 tags -- 4 humility, 14 love, 45 prayer
+        {
+          body: "Only the Holy Spirit, only the grace of God, can inspire the Jesus Prayer. It's not difficult to repeat the words, but you cannot pray it properly because your old fallen self rebuffs it. Unless you enter into the atmosphere of grace, you will not be able to say the prayer. As soon as you hear an offensive word are you grieved? And as soon as you hear something complimentary are you pleased? That shows that you are not ready, that you do not yet have what is required. For divine grce to come you must acquire the prerequisites: love and humility.",
+          title: "Only the Holy Spirit Can Teach Us to Pray",
+          desertFigureID: authorIds[14].id,
+          createdBy: MARIANNE_ID,
+          statusId: statuses[2].id,
+        },
+        // 20 tags -- 15 selfless, 45 prayer
+        {
+          body: "In our prayer we should ask only for the salvation of our soul. Didn't the Lord say, Seek first the Kingdom of God, and all these things will be added to you? Easily, without the slightest difficulty, Christ can give us what we want. And remember the secret. The secret is not to think about asking for the specific thing at all. The secret is to ask for your union with Christ with utter selflessness.",
+          title: "Ask for the Salvation of your Soul",
+          desertFigureID: authorIds[14].id,
+          createdBy: MARIANNE_ID,
           statusId: statuses[2].id,
         },
       ];
@@ -651,6 +692,12 @@ const main = async () => {
           createdBy: TONY_ID,
           statusId: statuses[1].id,
         },
+        // 45
+        {
+          name: "prayer",
+          createdBy: MARIANNE_ID,
+          statusId: statuses[2].id,
+        },
       ];
 
       const tagIds = await tx
@@ -879,9 +926,30 @@ const main = async () => {
           excerptId: excerptIds[18].id,
           tagId: tagIds[42].id,
         },
+        {
+          excerptId: excerptIds[19].id,
+          tagId: tagIds[4].id,
+        },
+        {
+          excerptId: excerptIds[19].id,
+          tagId: tagIds[14].id,
+        },
+        {
+          excerptId: excerptIds[19].id,
+          tagId: tagIds[45].id,
+        },
+        {
+          excerptId: excerptIds[20].id,
+          tagId: tagIds[15].id,
+        },
+        {
+          excerptId: excerptIds[20].id,
+          tagId: tagIds[45].id,
+        },
       ];
 
       await tx.insert(excerptTags).values(EXCERPT_TAG_SEED);
+      await tx.refreshMaterializedView(excerptDocument);
 
       console.log("...Seed Concluding");
     });

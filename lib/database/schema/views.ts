@@ -34,6 +34,9 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
             )
           )
         `.as("tags"),
+      searchableTags: sql`
+          string_agg(${tags.name}, ', ')
+        `.as("tagsSearchable"),
     })
     .from(excerpts)
     .leftJoin(desertFigures, eq(desertFigures.id, excerpts.desertFigureID))

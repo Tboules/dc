@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { sql } from "drizzle-orm";
-import { excerptDocument } from "./schema";
 
 dotenv.config({ path: ".env.local" });
 
@@ -12,13 +11,15 @@ const main = async () => {
     max: 1,
   });
   try {
-    console.log("Let's refresh the materialized views --->");
+    console.log("Post Migration Script Running ----->");
     const db = drizzle(connection);
+    await db.execute(sql`
+      create index excerpt_document_idx on excerpt_document
+          using bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", full_name, "referenceTitle")
+          with (key_field = 'excerptId');
+      `);
 
-    // excerpt document view
-    await db.refreshMaterializedView(excerptDocument);
-
-    console.log("----> Finished!! :)");
+    console.log("----| and were done!");
   } catch (error) {
     console.log(error);
   } finally {

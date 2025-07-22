@@ -41,4 +41,29 @@ select * from tag
 order by similarity(name, 'borred') desc
 limit 5;
 
+--- Create Indexes on excerptDocuments
+refresh materialized view excerpt_document;
+select * from excerpt_document;
 
+create index excerpt_document_idx on excerpt_document
+    using bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", full_name, "referenceTitle")
+    with (key_field = 'excerptId');
+
+select * from excerpt_document;
+
+-- search query for excerpt documents
+WITH vars AS (
+    SELECT 'love'::text as search_term
+)
+SELECT
+    paradedb.score(ed."excerptId") AS score,
+    *
+FROM excerpt_document AS ed
+CROSS JOIN vars AS v
+WHERE
+    ed."excerptId" @@@ paradedb.match('body', v.search_term, distance => 1)
+     OR ed."excerptId" @@@ paradedb.match('excerptTitle', v.search_term, distance => 1)
+    OR ed."excerptId" @@@ paradedb.match('referenceTitle', v.search_term, distance => 1)
+    OR ed."excerptId" @@@ paradedb.match('tagsSearchable', v.search_term, distance => 1)
+    OR ed."excerptId" @@@ paradedb.match('full_name', v.search_term, distance => 1)
+ORDER BY score DESC
