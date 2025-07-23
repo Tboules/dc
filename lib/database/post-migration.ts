@@ -14,9 +14,13 @@ const main = async () => {
     console.log("Post Migration Script Running ----->");
     const db = drizzle(connection);
     await db.execute(sql`
-      create index excerpt_document_idx on excerpt_document
-          using bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", full_name, "referenceTitle")
+      CREATE INDEX excerpt_document_idx ON excerpt_document
+          USING bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", full_name, "referenceTitle")
           with (key_field = 'excerptId');
+
+      CREATE INDEX excerpt_document_tags_gin_idx
+        ON excerpt_document
+        USING GIN (tags jsonb_path_ops);
       `);
 
     console.log("----| and were done!");

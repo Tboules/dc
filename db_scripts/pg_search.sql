@@ -68,11 +68,11 @@ WHERE
     OR ed."excerptId" @@@ paradedb.match('full_name', v.search_term, distance => 1)
 ORDER BY score DESC;
 
-select * from excerpt_document
-where exists (
-    select 1
-    from json_array_elements(tags) as tag_obj
-    where tag_obj->>'tagID' = '5800f919-d0c0-4139-a34e-7ac65b7c4803'
-);
+CREATE INDEX excerpt_document_tags_gin_idx
+  ON excerpt_document
+  USING GIN (tags jsonb_path_ops);
 
-select * from tag
+select * from excerpt_document
+where tags @> '[{ "tagID": "ae9ab2fd-620f-4a75-a11d-30d06508fd23" }]';
+
+select * from tag;

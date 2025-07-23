@@ -7,13 +7,13 @@ export default async function TagPage({
   params: Promise<{ tagId: string }>;
 }) {
   const { tagId } = await params;
-  const tag = await selectTagExcerpts(tagId);
+  const tagAndExcerpts = await selectTagExcerpts(tagId);
 
   return (
     <DefaultLayout>
       <section>
-        <h1>tag page </h1>
-        <pre>{JSON.stringify(tag, null, 2)}</pre>
+        <h1>{tagAndExcerpts.tag?.name} </h1>
+        <pre>{JSON.stringify(tagAndExcerpts.excerpts, null, 2)}</pre>
       </section>
     </DefaultLayout>
   );

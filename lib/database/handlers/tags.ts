@@ -104,15 +104,18 @@ export type TagFromSelectTagsFunc = Awaited<
 export async function selectTagExcerpts(id: string) {
   // obviously now I need to include all of the other joins for this excerpt
   // I think I should create a view for excerpts that refreshes every night, or that at least refreshes after every publish?
+
+  const tag = await db.query.tags.findFirst({
+    where: (t, { eq }) => eq(t.id, id),
+  });
+
   const queryResults = await db
     .select()
     .from(excerptDocument)
-    .where(
-      sql`exists (
-          select 1
-          from json_array_elements(tags) as tag_obj
-          where tag_obj->>'tagID' = ${id}
-      )`,
-    );
-  return queryResults;
+    .where(sql`tags @> ${JSON.stringify([{ tagID: id }])}::jsonb`);
+
+  return {
+    tag,
+    excerpts: queryResults,
+  };
 }
