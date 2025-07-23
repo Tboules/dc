@@ -1,6 +1,5 @@
 "use client";
 
-import { searchForBooks } from "@/lib/network/open-library";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useFormContext } from "react-hook-form";
@@ -14,6 +13,7 @@ import AsyncAutoComplete, {
   AutoCompleteSelectProps,
 } from "@/components/ui/async-auto-complete";
 import { useDebounce } from "@/hooks/use-debounce";
+import { handleReferenceSearch } from "@/server_actions/book-search";
 
 export default function BookSearchAutoComplete() {
   const { setValue: setFormValue } = useFormContext<FormExcerpt>();
@@ -23,8 +23,9 @@ export default function BookSearchAutoComplete() {
 
   const books = useQuery({
     queryKey: ["books", debounceValue],
-    queryFn: () => searchForBooks(debounceValue ?? "") ?? Promise.resolve([]),
-    enabled: debounceValue ? debounceValue.length > 3 : true,
+    queryFn: () =>
+      handleReferenceSearch(debounceValue ?? "") ?? Promise.resolve([]),
+    enabled: debounceValue ? debounceValue.length > 3 : false,
   });
 
   return (
@@ -33,6 +34,7 @@ export default function BookSearchAutoComplete() {
         inputValue={value ?? ""}
         setInputValue={setValue}
         onValueChange={(v) => {
+          console.log(v);
           setFormValue("reference", v);
         }}
         placeholder="What book are you looking for?"

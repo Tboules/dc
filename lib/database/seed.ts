@@ -17,6 +17,7 @@ import {
   tags,
   NewExcerptTag,
   excerptTags,
+  NewReference,
 } from "./schema";
 dotenv.config({ path: ".env.local" });
 
@@ -95,6 +96,21 @@ const main = async () => {
         .values(CONTENT_STATUS)
         .returning();
 
+      const REFERENCE_SEED: NewReference[] = [
+        {
+          externalId: "/works/OL3102558W",
+          title: "The Life of Antony",
+          author: "Athanasius Saint, Patriarch of Alexandria",
+          cover: "https://covers.openlibrary.org/b/id/1633331-M.jpg",
+        },
+        {
+          externalId: "/works/OL17847207W",
+          title: "The Sayings of the Desert Fathers",
+          author: "Benedicta Ward",
+          cover: "https://covers.openlibrary.org/b/id/8144807-M.jpg",
+        },
+      ];
+
       const DESERT_FIGURES_SEED: DesertFigureDirectInsert[] = [
         //0
         {
@@ -104,6 +120,8 @@ const main = async () => {
           createdBy: TONY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Antony the Great",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-antony-the-great.jpg",
         },
         //1
         {
@@ -113,6 +131,8 @@ const main = async () => {
           createdBy: TONY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Macarius the Great",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-antony-the-great.jpg",
         },
         //2
         {
@@ -122,6 +142,8 @@ const main = async () => {
           createdBy: TONY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Moses the Strong",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-macarius-the-great.jpg",
         },
         //3
         {
@@ -131,6 +153,8 @@ const main = async () => {
           createdBy: TONY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " John the Short",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-john-the-short.jpg",
         },
         //4
         {
@@ -140,6 +164,8 @@ const main = async () => {
           createdBy: TONY_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Gregory the Theologian",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-gregory-the-theologian.jpg",
         },
         //5
         {
@@ -149,6 +175,8 @@ const main = async () => {
           createdBy: TONY_ID,
           fullName: DESERT_FIGURE_TITLE.FATHER + " Alexander Schmemann",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/Schmemann.png",
         },
         //6
         {
@@ -158,6 +186,8 @@ const main = async () => {
           createdBy: TONY_ID,
           fullName: DESERT_FIGURE_TITLE.FATHER + " Stephen Freeman",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/fr-stephen-freeman.jpg",
         },
         //7
         {
@@ -167,6 +197,8 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.FATHER + " Thomas Merton",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/Thomas-Merton.jpg",
         },
         //8
         {
@@ -176,6 +208,8 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.FATHER + " Kyrillos Ibrahim",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/fr-kyrillos-ibrahim.jpg",
         },
         //9
         {
@@ -185,6 +219,8 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Clement of Rome",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-clement-of-rome.jpg",
         },
         //10
         {
@@ -194,6 +230,8 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Ignatius of Antioch",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-ignatius-of-antioch.jpg",
         },
         //11
         {
@@ -203,6 +241,8 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Polycarp of Smyrna",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-polycarp-of-smyrna.jpg",
         },
         //12
         {
@@ -221,6 +261,8 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Irenaeus of Lyon",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/St.-Irenaeus.jpg",
         },
         //14
         {
@@ -230,6 +272,8 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           fullName: DESERT_FIGURE_TITLE.SAINT + " Porphyrios of Evia",
           statusId: statuses[2].id,
+          thumbnail:
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-porphyrios-of-evia.jpg",
         },
       ];
 
@@ -949,6 +993,9 @@ const main = async () => {
       ];
 
       await tx.insert(excerptTags).values(EXCERPT_TAG_SEED);
+
+      // refresh views post seed
+      console.log("---> Refreshing Views");
       await tx.refreshMaterializedView(excerptDocument);
 
       console.log("...Seed Concluding");

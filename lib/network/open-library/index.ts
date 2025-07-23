@@ -1,11 +1,11 @@
 "use server";
 
+import { z } from "zod";
 import {
   NewReference,
   newReferenceSchema,
 } from "@/lib/database/schema/references";
 import { openLibraryInstance } from "@/lib/network";
-import { z } from "zod";
 
 const refArraySchema = z.array(newReferenceSchema);
 

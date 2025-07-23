@@ -73,6 +73,4 @@ CREATE INDEX excerpt_document_tags_gin_idx
   USING GIN (tags jsonb_path_ops);
 
 select * from excerpt_document
-where tags @> '[{ "tagID": "ae9ab2fd-620f-4a75-a11d-30d06508fd23" }]';
-
-select * from tag;
+where tags @> '[{ "tagID": "e47fe076-f3c7-431f-85c4-7e9ba65db971" }]';
