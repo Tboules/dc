@@ -22,6 +22,9 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
       excerptTitle: sql`${excerpts.title}`.as("excerptTitle"),
       desertFigureName: desertFigures.fullName,
       desertFigureId: sql<string>`${desertFigures.id}`.as("desertFigureId"),
+      desertFigureThumbnail: sql<string>`${desertFigures.thumbnail}`.as(
+        "desertFigureThumbnail",
+      ),
       referenceTitle: sql<string>`${references.title}`.as("referenceTitle"),
       referenceId: sql<string>`${references.id}`.as("referenceId"),
       referenceSource: references.source,
