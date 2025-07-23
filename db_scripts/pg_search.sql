@@ -66,4 +66,13 @@ WHERE
     OR ed."excerptId" @@@ paradedb.match('referenceTitle', v.search_term, distance => 1)
     OR ed."excerptId" @@@ paradedb.match('tagsSearchable', v.search_term, distance => 1)
     OR ed."excerptId" @@@ paradedb.match('full_name', v.search_term, distance => 1)
-ORDER BY score DESC
+ORDER BY score DESC;
+
+select * from excerpt_document
+where exists (
+    select 1
+    from json_array_elements(tags) as tag_obj
+    where tag_obj->>'tagID' = '5800f919-d0c0-4139-a34e-7ac65b7c4803'
+);
+
+select * from tag

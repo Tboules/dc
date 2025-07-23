@@ -7,7 +7,12 @@ import {
   GlobalSearchParams,
   UserContentSearchParams,
 } from "@/lib/utils/params";
-import { contentStatus, excerpts, excerptTags } from "../schema";
+import {
+  contentStatus,
+  excerptDocument,
+  excerpts,
+  excerptTags,
+} from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
 
 export async function searchForTagHandler(searchValue: string) {
@@ -101,13 +106,13 @@ export async function selectTagExcerpts(id: string) {
   // I think I should create a view for excerpts that refreshes every night, or that at least refreshes after every publish?
   const queryResults = await db
     .select()
-    .from(excerpts)
-    .leftJoin(excerptTags, eq(excerptTags.excerptId, excerpts.id))
-    .leftJoin(tags, eq(excerptTags.tagId, tags.id))
-    .leftJoin(contentStatus, eq(excerpts.statusId, contentStatus.id))
+    .from(excerptDocument)
     .where(
-      and(eq(tags.id, id), eq(contentStatus.name, CONTENT_STATUS.PUBLISHED)),
+      sql`exists (
+          select 1
+          from json_array_elements(tags) as tag_obj
+          where tag_obj->>'tagID' = ${id}
+      )`,
     );
-
   return queryResults;
 }

@@ -8,6 +8,11 @@ import { tags } from "@/lib/database/schema/tags";
 import { pgMaterializedView } from "drizzle-orm/pg-core";
 import { eq, sql } from "drizzle-orm";
 
+type TagsJson = {
+  tag: string;
+  tagID: string;
+};
+
 // Excerpt Document Style View
 export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
   qb
@@ -26,7 +31,7 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
       excerptCreatedBy: sql<string>`${excerpts.createdBy}`.as(
         "excerptCreatedBy",
       ),
-      tags: sql`
+      tags: sql<TagsJson[]>`
           json_agg(
             json_build_object(
               'tagID', ${tags.id},
