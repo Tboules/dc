@@ -33,10 +33,7 @@ export default function BookSearchAutoComplete() {
       <AsyncAutoComplete<NewReference>
         inputValue={value ?? ""}
         setInputValue={setValue}
-        onValueChange={(v) => {
-          console.log(v);
-          setFormValue("reference", v);
-        }}
+        onValueChange={(v) => setFormValue("reference", v)}
         placeholder="What book are you looking for?"
         options={books.data ?? []}
         emptyMessage="No search results at the moment"
