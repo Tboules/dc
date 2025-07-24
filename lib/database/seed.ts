@@ -538,10 +538,11 @@ const main = async () => {
           referenceId: referenceIds[4].id,
         },
         // Thomas Merton
-        // 21 tags -- silence, play, joy
+        // 21 tags -- silence 48, play 47, joy 46
         {
           body: "What is serious to men is often very trivial in the sight of God. What in God might appear to us as 'play' is perhaps what he Himself takes most seriously. At any rate, the Lord plays and diverts Himself in the garden of His creation, and if we could let go of our own obsession with what we think is the meaning of it all, we might be able to hear His call and follow Him in His mysterious, cosmic dance. We do not have to go very far to catch echoes of that game, and of that dancing. When we are alone on a starlit night; when by chance we see the migrating birds in autumn descending on a grove of junipers to rest and eat; when we see children in a moment when they are really children; when we know love in our own hearts; or when, like the Japanese poet Bashō we hear an old frog land in a quiet pond with a solitary splash--at such times the awakening, the turning inside out of all values, the 'newness,' the emptiness and the purity of vision that make themselves evident, provide a glimpse of the cosmic dance. For the world and time are the dance of the Lord in emptiness. The silence of the spheres is the music of a wedding feast. The more we persist in misunderstanding the phenomena of life, the more we analyze them out into strange finalities and complex purposes of our own, the more we involve ourselves in sadness, absurdity and despair. But it does not matter much, because no despair of ours can alter the reality of things; or stain the joy of the cosmic dance which is always there. Indeed, we are in the midst of it, and it is in the midst of us, for it beats in our very blood, whether we want it to or not. Yet the fact remains that we are invited to forget ourselves on purpose, cast our awful solemnity to the winds and join in the general dance.",
-          title: "Ask for the Salvation of your Soul",
+          title:
+            "What is serious to men is often very trivial in the sight of God",
           desertFigureID: authorIds[7].id,
           createdBy: MARIANNE_ID,
           statusId: statuses[1].id,
@@ -831,6 +832,24 @@ const main = async () => {
           createdBy: MARIANNE_ID,
           statusId: statuses[2].id,
         },
+        // 46
+        {
+          name: "joy",
+          createdBy: MARIANNE_ID,
+          statusId: statuses[1].id,
+        },
+        // 47
+        {
+          name: "play",
+          createdBy: MARIANNE_ID,
+          statusId: statuses[1].id,
+        },
+        // 48
+        {
+          name: "silence",
+          createdBy: MARIANNE_ID,
+          statusId: statuses[1].id,
+        },
       ];
 
       const tagIds = await tx
@@ -1078,6 +1097,18 @@ const main = async () => {
         {
           excerptId: excerptIds[20].id,
           tagId: tagIds[45].id,
+        },
+        {
+          excerptId: excerptIds[21].id,
+          tagId: tagIds[46].id,
+        },
+        {
+          excerptId: excerptIds[21].id,
+          tagId: tagIds[47].id,
+        },
+        {
+          excerptId: excerptIds[21].id,
+          tagId: tagIds[48].id,
         },
       ];
 

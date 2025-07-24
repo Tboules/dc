@@ -1,5 +1,5 @@
 {
-  "id": "492f7d3b-782e-4c75-822d-ebf4dc2189ad",
+  "id": "f04701a2-abff-4176-9542-62f77c719a24",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -900,22 +900,9 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "source": {
-          "name": "source",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'open_library'"
-        },
-        "cover": {
-          "name": "cover",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
         }
       },
-      "definition": "select \"excerpt\".\"id\" as \"excerptId\", \"excerpt\".\"body\", \"excerpt\".\"title\" as \"excerptTitle\", \"desert_figure\".\"full_name\", \"desert_figure\".\"id\" as \"desertFigureId\", \"desert_figure\".\"thumbnail\" as \"desertFigureThumbnail\", \"reference\".\"title\" as \"referenceTitle\", \"reference\".\"id\" as \"referenceId\", \"reference\".\"source\", \"reference\".\"cover\", \"content_status\".\"name\" as \"statusName\", \"content_status\".\"id\" as \"statusId\", \"excerpt\".\"added_by\" as \"excerptCreatedBy\", \n          json_agg(\n            json_build_object(\n              'tagID', \"tag\".\"id\",\n              'tag', \"tag\".\"name\"\n            )\n          )::jsonb\n         as \"tags\", \n          string_agg(\"tag\".\"name\", ', ')\n         as \"tagsSearchable\" from \"excerpt\" left join \"desert_figure\" on \"desert_figure\".\"id\" = \"excerpt\".\"desert_figure_id\" left join \"reference\" on \"reference\".\"id\" = \"excerpt\".\"reference_id\" left join \"content_status\" on \"content_status\".\"id\" = \"excerpt\".\"status_id\" left join \"excerpt_tag\" on \"excerpt_tag\".\"excerpt_id\" = \"excerpt\".\"id\" left join \"tag\" on \"excerpt_tag\".\"tag_id\" = \"tag\".\"id\" group by \"excerpt\".\"id\", \"excerpt\".\"body\", \"excerpt\".\"title\", \"desert_figure\".\"full_name\", \"desert_figure\".\"id\", \"reference\".\"title\", \"reference\".\"id\", \"reference\".\"source\", \"reference\".\"cover\", \"content_status\".\"name\", \"content_status\".\"id\"",
+      "definition": "select \"excerpt\".\"id\" as \"excerptId\", \"excerpt\".\"body\", \"excerpt\".\"title\" as \"excerptTitle\", \"desert_figure\".\"full_name\", \"desert_figure\".\"id\" as \"desertFigureId\", \"desert_figure\".\"thumbnail\" as \"desertFigureThumbnail\", \"reference\".\"title\" as \"referenceTitle\", \"reference\".\"id\" as \"referenceId\", \"reference\".\"source\" as \"referenceSource\", \"reference\".\"cover\" as \"referenceCover\", \"content_status\".\"name\" as \"statusName\", \"content_status\".\"id\" as \"statusId\", \"excerpt\".\"added_by\" as \"excerptCreatedBy\", \n          json_agg(\n            json_build_object(\n              'tagID', \"tag\".\"id\",\n              'tag', \"tag\".\"name\"\n            )\n          )::jsonb\n         as \"tags\", \n          string_agg(\"tag\".\"name\", ', ')\n         as \"tagsSearchable\" from \"excerpt\" left join \"desert_figure\" on \"desert_figure\".\"id\" = \"excerpt\".\"desert_figure_id\" left join \"reference\" on \"reference\".\"id\" = \"excerpt\".\"reference_id\" left join \"content_status\" on \"content_status\".\"id\" = \"excerpt\".\"status_id\" left join \"excerpt_tag\" on \"excerpt_tag\".\"excerpt_id\" = \"excerpt\".\"id\" left join \"tag\" on \"excerpt_tag\".\"tag_id\" = \"tag\".\"id\" group by \"excerpt\".\"id\", \"excerpt\".\"body\", \"excerpt\".\"title\", \"desert_figure\".\"full_name\", \"desert_figure\".\"id\", \"reference\".\"title\", \"reference\".\"id\", \"reference\".\"source\", \"reference\".\"cover\", \"content_status\".\"name\", \"content_status\".\"id\"",
       "name": "excerpt_document",
       "schema": "public",
       "isExisting": false,
