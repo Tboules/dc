@@ -97,19 +97,76 @@ const main = async () => {
         .returning();
 
       const REFERENCE_SEED: NewReference[] = [
+        // 0 -- Life of Antony
         {
-          externalId: "/works/OL3102558W",
+          externalId: "pDinwQEACAAJ",
+          source:
+            "http://books.google.com/books?id=pDinwQEACAAJ&dq=life+of+antony&hl=&source=gbs_api",
           title: "The Life of Antony",
-          author: "Athanasius Saint, Patriarch of Alexandria",
-          cover: "https://covers.openlibrary.org/b/id/1633331-M.jpg",
+          author: "Saint Athanasius (Patriarch of Alexandria)",
+          cover:
+            "http://books.google.com/books/content?id=pDinwQEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
         },
+        // 1 -- Sayings of the Desert Fathers
         {
-          externalId: "/works/OL17847207W",
+          externalId: "CrdFEAAAQBAJ",
+          source:
+            "http://books.google.com/books?id=CrdFEAAAQBAJ&dq=sayings+of+the+desert+fathers&hl=&source=gbs_api",
           title: "The Sayings of the Desert Fathers",
-          author: "Benedicta Ward",
-          cover: "https://covers.openlibrary.org/b/id/8144807-M.jpg",
+          subTitle: "The Apophthegmata Patrum: The Alphabetic Collection",
+          author: "",
+          cover:
+            "http://books.google.com/books/content?id=CrdFEAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+        },
+        // 2 -- For the Life of the World
+        {
+          externalId: "gF3Orr5FW2MC",
+          source:
+            "http://books.google.com/books?id=gF3Orr5FW2MC&dq=for+the+life+of+the+world&hl=&source=gbs_api",
+          title: "For the Life of the World",
+          subTitle: "Sacraments and Orthodoxy",
+          author: "Alexander Schmemann",
+          cover:
+            "http://books.google.com/books/content?id=gF3Orr5FW2MC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+        },
+        // 3 -- Face to Face: Knowing God Beyond our Shame
+        {
+          externalId: "I8WEzwEACAAJ",
+          source:
+            "http://books.google.com/books?id=I8WEzwEACAAJ&dq=knowing+god+beyond+our+shame&hl=&source=gbs_api",
+          title: "Face to Face",
+          subTitle: "Knowing God Beyond Our Shame",
+          author: "Stephen Freeman",
+          cover:
+            "http://books.google.com/books/content?id=I8WEzwEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+        },
+        // 4 -- Wounded by Love
+        {
+          externalId: "9AI9QwAACAAJ",
+          source:
+            "http://books.google.com/books?id=9AI9QwAACAAJ&dq=wounded+by+love&hl=&source=gbs_api",
+          title: "Wounded by Love",
+          subTitle: "The Life and the Wisdom of Elder Porphyrios",
+          author: "Porphyrios (Gerōn)",
+          cover:
+            "http://books.google.com/books/content?id=9AI9QwAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+        },
+        // 5 -- New Seeds of Contemplation
+        {
+          externalId: "QCpoWBN3Q5sC",
+          source:
+            "https://play.google.com/store/books/details?id=QCpoWBN3Q5sC&source=gbs_api",
+          title: "New Seeds of Contemplation",
+          author: "Thomas Merton",
+          cover:
+            "http://books.google.com/books/content?id=QCpoWBN3Q5sC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
         },
       ];
+
+      const referenceIds = await tx
+        .insert(references)
+        .values(REFERENCE_SEED)
+        .returning({ id: references.id });
 
       const DESERT_FIGURES_SEED: DesertFigureDirectInsert[] = [
         //0
@@ -291,6 +348,7 @@ const main = async () => {
           desertFigureID: authorIds[0].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[0].id,
         },
         //1 tags -- trust, humility, doubt
         {
@@ -299,6 +357,7 @@ const main = async () => {
           desertFigureID: authorIds[0].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[1].id,
         },
         //2 tags -- pleasing God, presence of God, watchfullness
         {
@@ -307,6 +366,7 @@ const main = async () => {
           desertFigureID: authorIds[0].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[1].id,
         },
         //St. Macarius the Great
         // 3 tags -- vulnerability, confession, shame
@@ -316,6 +376,7 @@ const main = async () => {
           desertFigureID: authorIds[1].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[1].id,
         },
         //4 tags -- 12 warfare, 13 deception
         {
@@ -324,6 +385,7 @@ const main = async () => {
           desertFigureID: authorIds[1].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[1].id,
         },
         //5 tags -- 14 love, 15 selfless, 16 gifts
         {
@@ -332,6 +394,7 @@ const main = async () => {
           desertFigureID: authorIds[1].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[1].id,
         },
         // St. Moses the Strong
         // 6 tags -- 17 don't judge, 43 meekness, 4 humility
@@ -341,6 +404,7 @@ const main = async () => {
           desertFigureID: authorIds[2].id,
           statusId: statuses[2].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[1].id,
         },
         // 7 tags -- 18 priorities, 28 fasting, 19 hospitality
         {
@@ -349,6 +413,7 @@ const main = async () => {
           desertFigureID: authorIds[2].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[1].id,
         },
         // 8 tags -- 20 wisdom, 21 stillness, 22 patience
         {
@@ -357,6 +422,7 @@ const main = async () => {
           desertFigureID: authorIds[2].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[1].id,
         },
         // St. John the Short
         // 9 tags -- 23 obedience, 24 persistence, 25 discipleship
@@ -366,6 +432,7 @@ const main = async () => {
           desertFigureID: authorIds[3].id,
           statusId: statuses[2].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[1].id,
         },
         // 10 tags -- 4 humility, 26 zeal, 27 pride
         {
@@ -374,6 +441,7 @@ const main = async () => {
           desertFigureID: authorIds[3].id,
           statusId: statuses[2].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[1].id,
         },
         // 11 tags -- 28 fasting, 29 passions, 2 struggle
         {
@@ -382,6 +450,7 @@ const main = async () => {
           desertFigureID: authorIds[3].id,
           statusId: statuses[2].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[1].id,
         },
         // St. Gregory the Theologian
         // 12 tags -- 30 faith, 31 speak truth, 32 temperance
@@ -391,6 +460,7 @@ const main = async () => {
           statusId: statuses[2].id,
           desertFigureID: authorIds[4].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[1].id,
         },
         // 13 tags -- 2 hard work, 33 desire
         {
@@ -399,6 +469,7 @@ const main = async () => {
           statusId: statuses[2].id,
           desertFigureID: authorIds[4].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[1].id,
         },
         // Fr. Alexander Schmemann
         // 14 tags -- 34 eucharist, 35 priest, 36 communion
@@ -408,6 +479,7 @@ const main = async () => {
           title: "Man as Priest",
           desertFigureID: authorIds[5].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[2].id,
         },
         // 15 tags -- 37 the fall, 36 communion, 38 meaning
         {
@@ -416,6 +488,7 @@ const main = async () => {
           title: "The Fall as Living Life as an End In Itself",
           desertFigureID: authorIds[5].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[2].id,
         },
         // 16 tags -- 39 liturgy, 34 eucharist, 40 church
         {
@@ -424,6 +497,7 @@ const main = async () => {
           title: "A Proper Understanding of Liturgy",
           desertFigureID: authorIds[5].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[2].id,
         },
         // Fr. Stephen Freeman
         // 17 tags -- 11 shame, 41 identity, 33 seeking
@@ -433,6 +507,7 @@ const main = async () => {
           desertFigureID: authorIds[6].id,
           statusId: statuses[2].id,
           createdBy: TONY_ID,
+          referenceId: referenceIds[3].id,
         },
         // 18 tags -- 11 shame, 41 identity, 42 healthy sexuality
         {
@@ -441,7 +516,9 @@ const main = async () => {
           desertFigureID: authorIds[6].id,
           createdBy: TONY_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[3].id,
         },
+        // Saint Porphyrios
         // 19 tags -- 4 humility, 14 love, 45 prayer
         {
           body: "Only the Holy Spirit, only the grace of God, can inspire the Jesus Prayer. It's not difficult to repeat the words, but you cannot pray it properly because your old fallen self rebuffs it. Unless you enter into the atmosphere of grace, you will not be able to say the prayer. As soon as you hear an offensive word are you grieved? And as soon as you hear something complimentary are you pleased? That shows that you are not ready, that you do not yet have what is required. For divine grce to come you must acquire the prerequisites: love and humility.",
@@ -449,6 +526,7 @@ const main = async () => {
           desertFigureID: authorIds[14].id,
           createdBy: MARIANNE_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[4].id,
         },
         // 20 tags -- 15 selfless, 45 prayer
         {
@@ -457,6 +535,17 @@ const main = async () => {
           desertFigureID: authorIds[14].id,
           createdBy: MARIANNE_ID,
           statusId: statuses[2].id,
+          referenceId: referenceIds[4].id,
+        },
+        // Thomas Merton
+        // 21 tags -- silence, play, joy
+        {
+          body: "What is serious to men is often very trivial in the sight of God. What in God might appear to us as 'play' is perhaps what he Himself takes most seriously. At any rate, the Lord plays and diverts Himself in the garden of His creation, and if we could let go of our own obsession with what we think is the meaning of it all, we might be able to hear His call and follow Him in His mysterious, cosmic dance. We do not have to go very far to catch echoes of that game, and of that dancing. When we are alone on a starlit night; when by chance we see the migrating birds in autumn descending on a grove of junipers to rest and eat; when we see children in a moment when they are really children; when we know love in our own hearts; or when, like the Japanese poet Bashō we hear an old frog land in a quiet pond with a solitary splash--at such times the awakening, the turning inside out of all values, the 'newness,' the emptiness and the purity of vision that make themselves evident, provide a glimpse of the cosmic dance. For the world and time are the dance of the Lord in emptiness. The silence of the spheres is the music of a wedding feast. The more we persist in misunderstanding the phenomena of life, the more we analyze them out into strange finalities and complex purposes of our own, the more we involve ourselves in sadness, absurdity and despair. But it does not matter much, because no despair of ours can alter the reality of things; or stain the joy of the cosmic dance which is always there. Indeed, we are in the midst of it, and it is in the midst of us, for it beats in our very blood, whether we want it to or not. Yet the fact remains that we are invited to forget ourselves on purpose, cast our awful solemnity to the winds and join in the general dance.",
+          title: "Ask for the Salvation of your Soul",
+          desertFigureID: authorIds[7].id,
+          createdBy: MARIANNE_ID,
+          statusId: statuses[1].id,
+          referenceId: referenceIds[5].id,
         },
       ];
 
