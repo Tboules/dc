@@ -95,11 +95,7 @@ export type TagFromSelectTagsFunc = Awaited<
 >[number];
 
 // FUNCTION TO QUERY A SINGLE TAG
-
 export async function selectTagExcerpts(id: string) {
-  // obviously now I need to include all of the other joins for this excerpt
-  // I think I should create a view for excerpts that refreshes every night, or that at least refreshes after every publish?
-
   const tag = await db.query.tags.findFirst({
     where: (t, { eq }) => eq(t.id, id),
   });

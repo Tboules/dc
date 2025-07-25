@@ -4,14 +4,7 @@ import db from "@/lib/database";
 import { handleProtectedHandler } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
 import { and, count, eq, sql } from "drizzle-orm";
-import {
-  excerpts,
-  contentStatus,
-  desertFigures,
-  tags,
-  excerptTags,
-  excerptDocument,
-} from "@/lib/database/schema";
+import { excerpts, excerptDocument } from "@/lib/database/schema";
 import { UserContentSearchParams } from "@/lib/utils/params";
 
 export async function selectUserExcerptCount() {
