@@ -10,4 +10,4 @@ export * from "./sessions";
 export * from "./verificationTokens";
 export * from "./content_status";
 export * from "./relations";
-export * from "./views";
+export { excerptDocument } from "./views";
