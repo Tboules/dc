@@ -8,7 +8,7 @@ import { tags } from "@/lib/database/schema/tags";
 import { pgMaterializedView } from "drizzle-orm/pg-core";
 import { eq, sql } from "drizzle-orm";
 
-type TagsJson = {
+export type Tag = {
   tag: string;
   tagID: string;
 };
@@ -19,8 +19,11 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
     .select({
       excerptId: sql<string>`${excerpts.id}`.as("excerptId"),
       excerptBody: excerpts.body,
-      excerptTitle: sql`${excerpts.title}`.as("excerptTitle"),
-      desertFigureName: desertFigures.fullName,
+      excerptTitle: sql<string>`${excerpts.title}`.as("excerptTitle"),
+      excerptDateAdded: sql<Date>`${excerpts.dateAdded}`.as("excerptDateAdded"),
+      desertFigureName: sql<string>`${desertFigures.fullName}`.as(
+        "desertFigureName",
+      ),
       desertFigureId: sql<string>`${desertFigures.id}`.as("desertFigureId"),
       desertFigureThumbnail: sql<string>`${desertFigures.thumbnail}`.as(
         "desertFigureThumbnail",
@@ -34,7 +37,7 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
       excerptCreatedBy: sql<string>`${excerpts.createdBy}`.as(
         "excerptCreatedBy",
       ),
-      tags: sql<TagsJson[]>`
+      tags: sql<Tag[]>`
           json_agg(
             json_build_object(
               'tagID', ${tags.id},

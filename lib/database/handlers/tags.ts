@@ -1,18 +1,13 @@
 import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
-import { count, and, sql, eq } from "drizzle-orm";
+import { count, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
 import { handleProtectedHandler } from "@/lib/utils/auth";
 import {
   GlobalSearchParams,
   UserContentSearchParams,
 } from "@/lib/utils/params";
-import {
-  contentStatus,
-  excerptDocument,
-  excerpts,
-  excerptTags,
-} from "../schema";
+import { contentStatus, excerptDocument } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
 
 export async function searchForTagHandler(searchValue: string) {

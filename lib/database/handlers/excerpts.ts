@@ -2,7 +2,7 @@
 
 import db from "@/lib/database";
 import { handleProtectedHandler } from "@/lib/utils/auth";
-import { UserExcerpt, Tag } from "@/app/user/_components/columns";
+import { UserExcerpt } from "@/app/user/_components/columns";
 import { and, count, eq, sql } from "drizzle-orm";
 import {
   excerpts,
@@ -10,6 +10,7 @@ import {
   desertFigures,
   tags,
   excerptTags,
+  excerptDocument,
 } from "@/lib/database/schema";
 import { UserContentSearchParams } from "@/lib/utils/params";
 
@@ -31,56 +32,46 @@ export async function selectUserExcerpts({
 }: UserContentSearchParams): Promise<UserExcerpt[]> {
   const session = await handleProtectedHandler();
 
-  console.log(q);
-
   const hasSearch = q.trim().length > 0;
 
   const searchQuery = hasSearch
     ? sql`
-      ${excerpts.createdBy} = ${session.user.id ?? ""} AND
+      ${excerptDocument.excerptCreatedBy} = ${session.user.id ?? ""} AND
       (
-        ${excerpts.id}        @@@ paradedb.match('title',  ${q}, distance => 1)
-        OR ${excerpts.id}      @@@ paradedb.match('body',   ${q}, distance => 1)
-        OR ${tags.id}          @@@ paradedb.match('name',   ${q}, distance => 1)
-        OR ${desertFigures.id} @@@ paradedb.match('full_name', ${q}, distance => 1)
+        ${excerptDocument.excerptId} @@@ paradedb.match('body', ${q}, distance => 1)
+         OR ${excerptDocument.excerptId} @@@ paradedb.match('excerptTitle', ${q}, distance => 1)
+        OR ${excerptDocument.excerptId} @@@ paradedb.match('referenceTitle', ${q}, distance => 1)
+        OR ${excerptDocument.excerptId} @@@ paradedb.match('tagsSearchable', ${q}, distance => 1)
+        OR ${excerptDocument.excerptId} @@@ paradedb.match('desertFigureName', ${q}, distance => 1)
       )
     `
     : sql`true`;
 
   const orderQuery = hasSearch
-    ? sql`paradedb.score(${excerpts.id}) DESC`
-    : sql`${excerpts.dateAdded} DESC`; //
+    ? sql`paradedb.score(${excerptDocument.excerptId}) DESC`
+    : sql`${excerptDocument.excerptDateAdded} DESC`; //
 
   const excerptRows = await db
     .select({
-      id: excerpts.id,
-      title: excerpts.title,
-      body: excerpts.body,
-      dateAdded: excerpts.dateAdded,
-      desertFigureName: desertFigures.fullName,
-      status: contentStatus.name,
-      tags: sql<Tag[]>`
-        json_agg(
-          json_build_object(
-            'id', ${tags.id},
-            'name', ${tags.name}
-          )
-        )
-      `,
+      id: excerptDocument.excerptId,
+      title: excerptDocument.excerptTitle,
+      body: excerptDocument.excerptBody,
+      dateAdded: excerptDocument.excerptDateAdded,
+      desertFigureName: excerptDocument.desertFigureName,
+      status: excerptDocument.status,
+      tags: excerptDocument.tags,
+      reference: excerptDocument.referenceTitle,
     })
-    .from(excerpts)
-    .innerJoin(desertFigures, eq(desertFigures.id, excerpts.desertFigureID))
-    .innerJoin(contentStatus, eq(contentStatus.id, excerpts.statusId))
-    .innerJoin(excerptTags, eq(excerptTags.excerptId, excerpts.id))
-    .innerJoin(tags, eq(tags.id, excerptTags.tagId))
-    .where(and(eq(excerpts.createdBy, session.user.id ?? ""), searchQuery))
-    .groupBy(excerpts.id, desertFigures.fullName, contentStatus.name)
+    .from(excerptDocument)
+    .where(
+      and(
+        eq(excerptDocument.excerptCreatedBy, session.user.id ?? ""),
+        searchQuery,
+      ),
+    )
     .orderBy(orderQuery)
     .limit(pageLimit)
     .offset(page * pageLimit);
 
-  return excerptRows.map((r) => ({
-    ...r,
-    tags: r.tags as Tag[],
-  }));
+  return excerptRows;
 }

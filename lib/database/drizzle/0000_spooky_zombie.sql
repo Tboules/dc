@@ -205,7 +205,7 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "desert_figure"."full_name", "desert_figure"."id" as "desertFigureId", "desert_figure"."thumbnail" as "desertFigureThumbnail", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", "reference"."source" as "referenceSource", "reference"."cover" as "referenceCover", "content_status"."name" as "statusName", "content_status"."id" as "statusId", "excerpt"."added_by" as "excerptCreatedBy", 
+CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "excerpt"."date_added" as "excerptDateAdded", "desert_figure"."full_name" as "desertFigureName", "desert_figure"."id" as "desertFigureId", "desert_figure"."thumbnail" as "desertFigureThumbnail", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", "reference"."source" as "referenceSource", "reference"."cover" as "referenceCover", "content_status"."name" as "statusName", "content_status"."id" as "statusId", "excerpt"."added_by" as "excerptCreatedBy", 
           json_agg(
             json_build_object(
               'tagID', "tag"."id",

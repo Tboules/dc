@@ -15,7 +15,7 @@ const main = async () => {
     const db = drizzle(connection);
     await db.execute(sql`
       CREATE INDEX excerpt_document_idx ON excerpt_document
-          USING bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", full_name, "referenceTitle")
+          USING bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", "desertFigureName", "referenceTitle")
           with (key_field = 'excerptId');
 
       CREATE INDEX excerpt_document_tags_gin_idx
