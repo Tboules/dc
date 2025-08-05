@@ -9,6 +9,7 @@ import {
 } from "@/lib/utils/params";
 import { contentStatus, excerptDocument } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
+import { ExcerptDocument } from "../schema/views";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(

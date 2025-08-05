@@ -13,6 +13,25 @@ export type Tag = {
   tagID: string;
 };
 
+export type ExcerptDocument = {
+  excerptId: string;
+  excerptBody: string;
+  excerptTitle: string;
+  excerptDateAdded: Date;
+  desertFigureName: string;
+  desertFigureId: string;
+  desertFigureThumbnail?: string;
+  referenceTitle?: string;
+  referenceId?: string;
+  referenceSource?: string;
+  referenceCover?: string;
+  status: string;
+  statusId: string;
+  excerptCreatedBy: string;
+  tags: Tag[];
+  searchableTags: string;
+};
+
 // Excerpt Document Style View
 export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
   qb
@@ -45,7 +64,7 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
             )
           )::jsonb
         `.as("tags"),
-      searchableTags: sql`
+      searchableTags: sql<string>`
           string_agg(${tags.name}, ', ')
         `.as("tagsSearchable"),
     })
