@@ -1,3 +1,32 @@
+--- All indexes and extensions for reference;
+CREATE EXTENSION IF NOT EXISTS pg_search;
+ALTER EXTENSION pg_search UPDATE TO '0.15.26';
+
+create index excerpt_search_idx on excerpt
+using bm25 (id, title, body)
+with (key_field = 'id');
+
+create index desert_figure_search_idx on desert_figure
+using bm25 (id, full_name)
+with (key_field = 'id');
+
+create index tags_search_idx on tag
+using bm25 (id, name)
+with (key_field = 'id');
+
+
+--- indexes for excerpt_document
+
+create index excerpt_document_idx on excerpt_document
+    using bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", "desertFigureName", "referenceTitle")
+    with (key_field = 'excerptId');
+
+CREATE INDEX excerpt_document_tags_gin_idx
+ON excerpt_document
+USING GIN (tags jsonb_path_ops);
+
+---
+
 WITH vars AS (
     SELECT 'love'::text as search_term
 )
@@ -17,21 +46,8 @@ select *
 from desert_figure
 where desert_figure.id @@@ paradedb.match('full_name', 'saint anthony', distance => 2);
 
-create index excerpt_search_idx on excerpt
-using bm25 (id, title, body)
-with (key_field = 'id');
-
-create index desert_figure_search_idx on desert_figure
-using bm25 (id, full_name)
-with (key_field = 'id');
-
-create index tags_search_idx on tag
-using bm25 (id, name)
-with (key_field = 'id');
 
 --- After getting nowhere with Chatgpt it looks like the view route will not work, rewrite to above query to include status and reference
-
----
 
 select * from desert_figure
 order by similarity(full_name, 'amba antonious')
@@ -41,15 +57,8 @@ select * from tag
 order by similarity(name, 'borred') desc
 limit 5;
 
---- Create Indexes on excerptDocuments
+
 refresh materialized view excerpt_document;
-select * from excerpt_document;
-
-create index excerpt_document_idx on excerpt_document
-    using bm25 ("excerptId", body, "excerptTitle", "tagsSearchable", "desertFigureName", "referenceTitle")
-    with (key_field = 'excerptId');
-
-select * from excerpt_document;
 
 -- search query for excerpt documents
 WITH vars AS (
@@ -67,12 +76,3 @@ WHERE
     OR ed."excerptId" @@@ paradedb.match('tagsSearchable', v.search_term, distance => 1)
     OR ed."excerptId" @@@ paradedb.match('desertFigureName', v.search_term, distance => 1)
 ORDER BY score DESC;
-
-CREATE INDEX excerpt_document_tags_gin_idx
-  ON excerpt_document
-  USING GIN (tags jsonb_path_ops);
-
-select * from excerpt_document
-where tags @> '[{ "tagID": "55492daa-6368-411b-accc-a498e63a48e3" }]';
-
-select * from tag;
