@@ -8,6 +8,7 @@ import {
   NewDesertFigure,
 } from "../database/schema/desertFigures";
 import { DESERT_FIGURE_TITLE } from "../enums";
+import chroma from "chroma-js";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -68,4 +69,26 @@ export function generateUserInitials(name: string | null | undefined) {
   }
 
   return nameArray[0][0];
+}
+
+export function generateHash(str: string) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = str.charCodeAt(i) + ((h << 5) - h);
+  }
+  return Math.abs(h);
+}
+
+export function colourFromTag(name: string) {
+  let col: string;
+  let tries = 0;
+  do {
+    const hue = generateHash(name + tries) % 360; // rotate hue if contrast fails
+    col = chroma.hsl(hue, 0.55, 0.55).hex();
+    tries++;
+
+    //just in case of infinite loop
+    if (tries > 720) break;
+  } while (chroma.contrast(col, "#314158") < 4.5);
+  return col;
 }
