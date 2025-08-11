@@ -17,7 +17,7 @@ export default function TagBadgeLink({ tag, badgeClassName }: Props) {
     <Badge
       asChild
       className={cn(
-        "py-2 px-4 text-md text-slate-700 hover:brightness-75 transition-colors duration-200 ease-in-out",
+        "py-2 px-4 text-md text-slate-700 hover:brightness-90 transition-colors duration-200 ease-in-out",
         badgeClassName,
       )}
       style={{ backgroundColor: color }}
