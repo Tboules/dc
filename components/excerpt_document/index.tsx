@@ -1,7 +1,7 @@
 import type { ExcerptDocument, Tag } from "@/lib/database/schema/views";
 import TagBadgeLink from "../tag-badge-link";
 import ExcerptDocumentFooter from "./ed_footer_buttons";
-import { User } from "lucide-react";
+import { BookOpenText, User } from "lucide-react";
 import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
 
@@ -19,6 +19,7 @@ type ReferenceEDProps = {
   title?: string;
   cover?: string;
   source?: string;
+  id?: string;
 };
 
 export default async function ExcerptDocument({ excerptDocument }: Props) {
@@ -47,6 +48,7 @@ export default async function ExcerptDocument({ excerptDocument }: Props) {
           title={excerptDocument.referenceTitle}
           source={excerptDocument.referenceSource}
           cover={excerptDocument.referenceCover}
+          id={excerptDocument.referenceId}
         />
       </div>
       <ExcerptDocumentFooter />
@@ -86,7 +88,7 @@ function ExcerptDocumentDesertFigure({
             alt="Desert Figure Thumbnail"
           />
         ) : (
-          <div className="h-24 bg-accent flex px-4 items-center justify-center rounded">
+          <div className="h-24 bg-card flex px-4 items-center justify-center rounded">
             <User width={32} height={48} />
           </div>
         )}
@@ -96,7 +98,36 @@ function ExcerptDocumentDesertFigure({
   );
 }
 
-function ExcerptDocumentReference({ title, cover, source }: ReferenceEDProps) {
+function ExcerptDocumentReference({
+  title,
+  cover,
+  source,
+  id,
+}: ReferenceEDProps) {
+  // No Source Found
+  if (!id && !source) return;
+
+  // Article Found
+  if (!id && source) {
+    return (
+      <a
+        href={source}
+        target="_blank"
+        className="hover:brightness-90 transition-colors duration-200 ease-in-out"
+      >
+        <div className="bg-secondary rounded p-2 border border-border justify-end flex gap-4 items-center flex-1 sm:max-w-64">
+          <div className="text-right">
+            <h3 className="italic text-lg font-medium">Read the Article!</h3>
+          </div>
+          <div className="h-24 bg-card flex px-4 items-center justify-center rounded">
+            <BookOpenText width={32} height={48} />
+          </div>
+        </div>
+      </a>
+    );
+  }
+
+  // Book Found
   return (
     <a
       href={source}

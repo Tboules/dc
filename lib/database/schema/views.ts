@@ -49,7 +49,10 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
       ),
       referenceTitle: sql<string>`${references.title}`.as("referenceTitle"),
       referenceId: sql<string>`${references.id}`.as("referenceId"),
-      referenceSource: sql<string>`${references.source}`.as("referenceSource"),
+      referenceSource:
+        sql<string>`COALESCE(${references.source}, ${excerpts.articleUrl})`.as(
+          "referenceSource",
+        ),
       referenceCover: sql<string>`${references.cover}`.as("referenceCover"),
       status: sql<string>`${contentStatus.name}`.as("statusName"),
       statusId: sql<string>`${contentStatus.id}`.as("statusId"),

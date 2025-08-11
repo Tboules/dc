@@ -545,8 +545,26 @@ const main = async () => {
             "What is serious to men is often very trivial in the sight of God",
           desertFigureID: authorIds[7].id,
           createdBy: MARIANNE_ID,
-          statusId: statuses[1].id,
+          statusId: statuses[2].id,
           referenceId: referenceIds[5].id,
+        },
+        // 22 tags -- silence 48, patience 22, humility 4
+        {
+          body: "If our life is poured out in useless words, we will never hear anything, will never become anything, and, in the end, because we have said everything before we had anything to say, we shall be left speechless.",
+          title: "Silence Offers Us Something To Say",
+          desertFigureID: authorIds[7].id,
+          createdBy: MARIANNE_ID,
+          statusId: statuses[2].id,
+          articleUrl:
+            "https://blogs.sjcme.edu/theology/merton-on-silence-and-solitude/#_ednref3",
+        },
+        // 23 tags -- silence 48, stillness 21
+        {
+          body: "I am just beginning to really get grounded in solitude, so that if my life were to be on the way of ending now, this would be my one regret.  Loss of the years of solitude that might be possible.  Nothing else",
+          title: "The Freedom of Solitude",
+          desertFigureID: authorIds[7].id,
+          createdBy: MARIANNE_ID,
+          statusId: statuses[2].id,
         },
       ];
 
@@ -824,7 +842,7 @@ const main = async () => {
         {
           name: "holiness",
           createdBy: TONY_ID,
-          statusId: statuses[1].id,
+          statusId: statuses[2].id,
         },
         // 45
         {
@@ -836,19 +854,19 @@ const main = async () => {
         {
           name: "joy",
           createdBy: MARIANNE_ID,
-          statusId: statuses[1].id,
+          statusId: statuses[2].id,
         },
         // 47
         {
           name: "play",
           createdBy: MARIANNE_ID,
-          statusId: statuses[1].id,
+          statusId: statuses[2].id,
         },
         // 48
         {
           name: "silence",
           createdBy: MARIANNE_ID,
-          statusId: statuses[1].id,
+          statusId: statuses[2].id,
         },
       ];
 
@@ -1108,6 +1126,27 @@ const main = async () => {
         },
         {
           excerptId: excerptIds[21].id,
+          tagId: tagIds[48].id,
+        },
+        {
+          excerptId: excerptIds[22].id,
+          tagId: tagIds[22].id,
+        },
+        {
+          excerptId: excerptIds[22].id,
+          tagId: tagIds[4].id,
+        },
+        {
+          excerptId: excerptIds[22].id,
+          tagId: tagIds[48].id,
+        },
+        // 23 tags -- silence 48, stillness 21
+        {
+          excerptId: excerptIds[23].id,
+          tagId: tagIds[21].id,
+        },
+        {
+          excerptId: excerptIds[23].id,
           tagId: tagIds[48].id,
         },
       ];
