@@ -189,7 +189,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Macarius the Great",
           statusId: statuses[2].id,
           thumbnail:
-            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-antony-the-great.jpg",
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-macarius-the-great.jpg",
         },
         //2
         {
@@ -200,7 +200,7 @@ const main = async () => {
           fullName: DESERT_FIGURE_TITLE.SAINT + " Moses the Strong",
           statusId: statuses[2].id,
           thumbnail:
-            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/st-macarius-the-great.jpg",
+            "https://desert-collections-images.s3.us-west-1.amazonaws.com/saint_images/St-Moses-the-Strong-225x300.jpg",
         },
         //3
         {

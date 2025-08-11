@@ -2,7 +2,6 @@
 import { Badge } from "@/components/ui/badge";
 import { TagFromSelectTagsFunc } from "@/lib/database/handlers/tags";
 import Link from "next/link";
-import chroma from "chroma-js";
 import { RouteLiteral } from "nextjs-routes";
 import { colourFromTag, cn } from "@/lib/utils";
 import type { ClassValue } from "clsx";
