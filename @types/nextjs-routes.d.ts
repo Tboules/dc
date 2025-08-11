@@ -15,6 +15,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/api/auth/[...nextauth]", { "nextauth": string[] }>
     | StaticRoute<"/api/documents">
     | StaticRoute<"/desert-figures">
+    | DynamicRoute<"/desert-figures/[desertFigureId]", { "desertFigureId": string }>
     | StaticRoute<"/desert-figures/new">
     | StaticRoute<"/excerpt">
     | StaticRoute<"/excerpt/new">

@@ -2,6 +2,8 @@ import type { ExcerptDocument, Tag } from "@/lib/database/schema/views";
 import TagBadgeLink from "../tag-badge-link";
 import ExcerptDocumentFooter from "./ed_footer_buttons";
 import { User } from "lucide-react";
+import Link from "next/link";
+import { RouteLiteral } from "nextjs-routes";
 
 type Props = {
   excerptDocument: ExcerptDocument;
@@ -10,6 +12,7 @@ type Props = {
 type DesertFigureEDProps = {
   name: string;
   thumbnail?: string;
+  id: string;
 };
 
 type ReferenceEDProps = {
@@ -35,6 +38,7 @@ export default async function ExcerptDocument({ excerptDocument }: Props) {
 
       <div className="sm:flex justify-between p-4 gap-4 ">
         <ExcerptDocumentDesertFigure
+          id={excerptDocument.desertFigureId}
           thumbnail={excerptDocument.desertFigureThumbnail}
           name={excerptDocument.desertFigureName}
         />
@@ -64,35 +68,47 @@ function ExcerptDocumentTags({ tags }: { tags: Tag[] }) {
   );
 }
 
-function ExcerptDocumentDesertFigure({ thumbnail, name }: DesertFigureEDProps) {
+function ExcerptDocumentDesertFigure({
+  thumbnail,
+  name,
+  id,
+}: DesertFigureEDProps) {
   return (
-    <div className="bg-secondary rounded p-2 border border-border flex gap-4 items-center sm:mb-0 mb-4 flex-1 sm:max-w-64">
-      {thumbnail ? (
-        <img
-          className="h-24 border border-border rounded"
-          src={thumbnail}
-          alt="Desert Figure Thumbnail"
-        />
-      ) : (
-        <div className="h-24 bg-accent flex px-4 items-center justify-center rounded">
-          <User width={32} height={48} />
-        </div>
-      )}
-      <h3 className="italic text-lg font-medium">{name}</h3>
-    </div>
+    <Link
+      href={`/desert-figures/${id}` as RouteLiteral}
+      className="hover:brightness-90 transition-colors duration-200 ease-in-out"
+    >
+      <div className="bg-secondary rounded p-2 border border-border flex gap-4 items-center sm:mb-0 mb-4 flex-1 sm:max-w-64">
+        {thumbnail ? (
+          <img
+            className="h-24 border border-border rounded"
+            src={thumbnail}
+            alt="Desert Figure Thumbnail"
+          />
+        ) : (
+          <div className="h-24 bg-accent flex px-4 items-center justify-center rounded">
+            <User width={32} height={48} />
+          </div>
+        )}
+        <h3 className="italic text-lg font-medium">{name}</h3>
+      </div>
+    </Link>
   );
 }
 
 function ExcerptDocumentReference({ title, cover, source }: ReferenceEDProps) {
   return (
-    <div className="bg-secondary rounded p-2 border border-border justify-end flex gap-4 items-center flex-1 sm:max-w-64">
-      <div className="text-right">
-        <h3 className="italic text-lg font-medium">{title}</h3>
-        <a href={source} target="_blank" className="text-ring  hover:underline">
-          More Info
-        </a>
+    <a
+      href={source}
+      target="_blank"
+      className="hover:brightness-90 transition-colors duration-200 ease-in-out"
+    >
+      <div className="bg-secondary rounded p-2 border border-border justify-end flex gap-4 items-center flex-1 sm:max-w-64">
+        <div className="text-right">
+          <h3 className="italic text-lg font-medium">{title}</h3>
+        </div>
+        <img className="h-24" src={cover ?? ""} />
       </div>
-      <img className="h-24" src={cover ?? ""} />
-    </div>
+    </a>
   );
 }
