@@ -29,7 +29,7 @@ export default async function ExcerptDocument({ excerptDocument }: Props) {
       </div>
 
       <div
-        className="text-xl p-4"
+        className="text-xl p-4 my-8"
         dangerouslySetInnerHTML={{ __html: excerptDocument.excerptBody }}
       />
 

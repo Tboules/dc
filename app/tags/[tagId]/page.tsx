@@ -13,7 +13,9 @@ export default async function TagPage({
   return (
     <DefaultLayout>
       <section>
-        <h1 className="text-3xl mb-8 uppercase">{tagAndExcerpts.tag?.name} </h1>
+        <h1 className="text-3xl font-bold mb-8 uppercase">
+          {tagAndExcerpts.tag?.name}{" "}
+        </h1>
 
         <div className="flex flex-col gap-4">
           {tagAndExcerpts.excerpts.map((excerptDoc) => (
