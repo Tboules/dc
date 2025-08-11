@@ -14,7 +14,7 @@ export async function handleReferenceSearch(
   value: string,
 ): Promise<NewReference[]> {
   const res = await axios.get<GoogleBooksResponse>(
-    `https://www.googleapis.com/books/v1/volumes?q=${value}&key=${process.env.GOOGLE_BOOBKS_API_KEY}`,
+    `https://www.googleapis.com/books/v1/volumes?q=${value}&key=${process.env.GOOGLE_BOOKS_API_KEY}`,
   );
 
   const bookData = res.data?.items ?? [];
