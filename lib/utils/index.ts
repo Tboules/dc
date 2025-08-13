@@ -92,3 +92,15 @@ export function colourFromTag(name: string) {
   } while (chroma.contrast(col, "#314158") < 4.5);
   return col;
 }
+
+export function truncateString(string: string, maxLength: number) {
+  if (!string.length || string.length < maxLength) return string;
+
+  let beginningOfLastWord = maxLength;
+
+  while (string[beginningOfLastWord] != " ") {
+    beginningOfLastWord--;
+  }
+
+  return string.substring(0, beginningOfLastWord) + "...";
+}

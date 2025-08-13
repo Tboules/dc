@@ -18,6 +18,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/desert-figures/[desertFigureId]", { "desertFigureId": string }>
     | StaticRoute<"/desert-figures/new">
     | StaticRoute<"/excerpt">
+    | DynamicRoute<"/excerpt/[excerptId]", { "excerptId": string }>
     | StaticRoute<"/excerpt/new">
     | StaticRoute<"/icons">
     | StaticRoute<"/icons/new">

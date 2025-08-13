@@ -6,6 +6,7 @@ import { UserExcerpt } from "@/app/user/_components/columns";
 import { and, count, eq, sql } from "drizzle-orm";
 import { excerpts, excerptDocument } from "@/lib/database/schema";
 import { UserContentSearchParams } from "@/lib/utils/params";
+import { ExcerptDocument } from "../schema/views";
 
 export async function selectUserExcerptCount() {
   const session = await handleProtectedHandler();
@@ -67,4 +68,16 @@ export async function selectUserExcerpts({
     .offset(page * pageLimit);
 
   return excerptRows;
+}
+
+// grab a excerpt document by id
+export async function handleSelectExcerptById(
+  exceptId: string,
+): Promise<ExcerptDocument> {
+  const res = await db
+    .select()
+    .from(excerptDocument)
+    .where(eq(excerptDocument.excerptId, exceptId));
+
+  return res[0];
 }

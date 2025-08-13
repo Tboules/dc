@@ -4,6 +4,7 @@ import ExcerptDocumentFooter from "./ed_footer_buttons";
 import { BookOpenText, User } from "lucide-react";
 import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   excerptDocument: ExcerptDocument;
@@ -32,10 +33,21 @@ export default async function ExcerptDocument({ excerptDocument }: Props) {
         <ExcerptDocumentTags tags={excerptDocument.tags} />
       </div>
 
-      <div
-        className="text-xl p-4 my-8"
-        dangerouslySetInnerHTML={{ __html: excerptDocument.excerptBody }}
-      />
+      <div className="my-8">
+        <div
+          className="text-xl p-4"
+          dangerouslySetInnerHTML={{ __html: excerptDocument.excerptBody }}
+        />
+
+        <Button asChild variant="link" className="p-4">
+          <Link
+            className=""
+            href={`/excerpt/${excerptDocument.excerptId}` as RouteLiteral}
+          >
+            Read More
+          </Link>
+        </Button>
+      </div>
 
       <div className="sm:flex justify-between p-4 gap-4 ">
         <ExcerptDocumentDesertFigure

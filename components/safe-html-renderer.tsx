@@ -4,6 +4,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { truncateString } from "@/lib/utils";
 
 const HTML_STRING_MAX_LENGTH = 100;
 
@@ -14,10 +15,7 @@ export default function SafeHtmlRenderer({
   htmlString: string;
   title: string;
 }) {
-  const truncatedString =
-    htmlString.length > HTML_STRING_MAX_LENGTH
-      ? htmlString.substring(0, HTML_STRING_MAX_LENGTH) + "..."
-      : htmlString;
+  const truncatedString = truncateString(htmlString, HTML_STRING_MAX_LENGTH);
 
   const markup = {
     __html: truncatedString,
