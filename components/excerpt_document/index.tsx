@@ -5,6 +5,7 @@ import { BookOpenText, User } from "lucide-react";
 import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
 import { Button } from "@/components/ui/button";
+import { truncateString } from "@/lib/utils";
 
 type Props = {
   excerptDocument: ExcerptDocument;
@@ -24,6 +25,8 @@ type ReferenceEDProps = {
 };
 
 export default async function ExcerptDocument({ excerptDocument }: Props) {
+  const truncatedBody = truncateString(excerptDocument.excerptBody, 300);
+
   return (
     <div className="bg-card rounded text-card-foreground border border-border">
       <div className="sm:flex p-4 justify-between items-center bg-secondary border-b border-border">
@@ -36,7 +39,7 @@ export default async function ExcerptDocument({ excerptDocument }: Props) {
       <div className="my-8">
         <div
           className="text-xl p-4"
-          dangerouslySetInnerHTML={{ __html: excerptDocument.excerptBody }}
+          dangerouslySetInnerHTML={{ __html: truncatedBody }}
         />
 
         <Button asChild variant="link" className="p-4">

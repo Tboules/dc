@@ -9,6 +9,7 @@ import {
 } from "../database/schema/desertFigures";
 import { DESERT_FIGURE_TITLE } from "../enums";
 import chroma from "chroma-js";
+import { max } from "drizzle-orm";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -94,13 +95,13 @@ export function colourFromTag(name: string) {
 }
 
 export function truncateString(string: string, maxLength: number) {
-  if (!string.length || string.length < maxLength) return string;
+  if (!string || string.length < maxLength) return string;
 
-  let beginningOfLastWord = maxLength;
+  let cutLength = string.lastIndexOf(" ", maxLength);
 
-  while (string[beginningOfLastWord] != " ") {
-    beginningOfLastWord--;
+  if (cutLength == -1) {
+    cutLength = maxLength;
   }
 
-  return string.substring(0, beginningOfLastWord) + "...";
+  return string.substring(0, cutLength) + "...";
 }
