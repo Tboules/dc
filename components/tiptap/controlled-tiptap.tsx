@@ -1,4 +1,9 @@
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import {
+  Editor,
+  EditorContent,
+  useEditor,
+  useEditorState,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import { Button } from "../ui/button";
@@ -39,16 +44,26 @@ export default function ControlledTipTap({ field }: Props) {
 
   return (
     <div>
-      <MenuBar editor={editor} />
+      {editor && <MenuBar editor={editor} />}
       <EditorContent editor={editor} />
     </div>
   );
 }
 
-function MenuBar({ editor }: { editor: Editor | null }) {
-  if (!editor) {
-    return null;
-  }
+function MenuBar({ editor }: { editor: Editor }) {
+  const editorState = useEditorState({
+    editor,
+    selector: (ctx) => {
+      return {
+        isBold: ctx.editor.isActive("bold"),
+        isItalic: ctx.editor.isActive("italic"),
+        isLeft: ctx.editor.isActive({ textAlign: "left" }),
+        isRight: ctx.editor.isActive({ textAlign: "right" }),
+        isCenter: ctx.editor.isActive({ textAlign: "center" }),
+        isJustify: ctx.editor.isActive({ textAlign: "justify" }),
+      };
+    },
+  });
 
   return (
     <div className="flex flex-wrap gap-1 py-1 justify-between">
@@ -57,7 +72,7 @@ function MenuBar({ editor }: { editor: Editor | null }) {
           variant="outline"
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={cn("px-2", editor.isActive("bold") ? "bg-secondary" : "")}
+          className={cn("px-2", editorState.isBold ? "bg-secondary!" : "")}
         >
           <Bold />
         </Button>
@@ -65,10 +80,7 @@ function MenuBar({ editor }: { editor: Editor | null }) {
           variant="outline"
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={cn(
-            "px-2",
-            editor.isActive("italic") ? "bg-secondary" : "",
-          )}
+          className={cn("px-2", editorState.isItalic ? "bg-secondary!" : "")}
         >
           <Italic />
         </Button>
@@ -79,10 +91,7 @@ function MenuBar({ editor }: { editor: Editor | null }) {
           variant="outline"
           type="button"
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          className={cn(
-            "px-2",
-            editor.isActive({ textAlign: "left" }) ? "bg-secondary" : "",
-          )}
+          className={cn("px-2", editorState.isLeft ? "bg-secondary!" : "")}
         >
           <AlignLeft />
         </Button>
@@ -90,10 +99,7 @@ function MenuBar({ editor }: { editor: Editor | null }) {
           variant="outline"
           type="button"
           onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          className={cn(
-            "px-2",
-            editor.isActive({ textAlign: "center" }) ? "bg-secondary" : "",
-          )}
+          className={cn("px-2", editorState.isCenter ? "bg-secondary!" : "")}
         >
           <AlignCenter />
         </Button>
@@ -101,10 +107,7 @@ function MenuBar({ editor }: { editor: Editor | null }) {
           variant="outline"
           type="button"
           onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          className={cn(
-            "px-2",
-            editor.isActive({ textAlign: "right" }) ? "bg-secondary" : "",
-          )}
+          className={cn("px-2", editorState.isRight ? "bg-secondary!" : "")}
         >
           <AlignRight />
         </Button>
@@ -112,10 +115,7 @@ function MenuBar({ editor }: { editor: Editor | null }) {
           variant="outline"
           type="button"
           onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-          className={cn(
-            "px-2",
-            editor.isActive({ textAlign: "justify" }) ? "bg-secondary" : "",
-          )}
+          className={cn("px-2", editorState.isJustify ? "bg-secondary!" : "")}
         >
           <AlignJustify />
         </Button>
