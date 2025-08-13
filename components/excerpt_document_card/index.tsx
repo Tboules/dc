@@ -24,7 +24,7 @@ type ReferenceEDProps = {
   id?: string;
 };
 
-export default async function ExcerptDocument({ excerptDocument }: Props) {
+export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
   const truncatedBody = truncateString(excerptDocument.excerptBody, 300);
 
   return (

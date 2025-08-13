@@ -1,4 +1,4 @@
-import ExcerptDocument from "@/components/excerpt_document";
+import ExcerptDocumentCard from "@/components/excerpt_document_card";
 import DefaultLayout from "@/components/layouts/default-layout";
 import { selectTagExcerpts } from "@/lib/database/handlers/tags";
 
@@ -19,7 +19,7 @@ export default async function TagPage({
 
         <div className="flex flex-col gap-4">
           {tagAndExcerpts.excerpts.map((excerptDoc) => (
-            <ExcerptDocument
+            <ExcerptDocumentCard
               excerptDocument={excerptDoc}
               key={excerptDoc.excerptId}
             />

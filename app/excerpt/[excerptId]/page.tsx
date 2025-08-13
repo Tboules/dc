@@ -1,4 +1,4 @@
-import ExcerptDocument from "@/components/excerpt_document";
+import ExcerptDocumentCard from "@/components/excerpt_document_card";
 import DefaultLayout from "@/components/layouts/default-layout";
 import { handleSelectExcerptById } from "@/lib/database/handlers/excerpts";
 
@@ -13,7 +13,7 @@ export default async function ExcerptPage({
 
   return (
     <DefaultLayout>
-      <ExcerptDocument excerptDocument={excerpt} />
+      <ExcerptDocumentCard excerptDocument={excerpt} />
     </DefaultLayout>
   );
 }
