@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const edActionButtonVariants = cva("flex p-4", {
+const edActionButtonVariants = cva("flex", {
   variants: {
     variant: {
-      card: "justify-between border-t border-border",
+      card: "justify-between border-t border-border p-4",
       page: "gap-2",
     },
   },

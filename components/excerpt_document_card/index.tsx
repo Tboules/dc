@@ -1,4 +1,9 @@
-import type { ExcerptDocument, Tag } from "@/lib/database/schema/views";
+import type {
+  ExcerptDocument,
+  ExcerptDocumentDesertFigure,
+  ExcerptDocumentReference,
+  Tag,
+} from "@/lib/database/schema/views";
 import TagBadgeLink from "../tag-badge-link";
 import { BookOpenText, User } from "lucide-react";
 import Link from "next/link";
@@ -9,19 +14,6 @@ import ExcerptDocumentActionButtons from "./ed_action_buttons";
 
 type Props = {
   excerptDocument: ExcerptDocument;
-};
-
-type DesertFigureEDProps = {
-  name: string;
-  thumbnail?: string;
-  id: string;
-};
-
-type ReferenceEDProps = {
-  title?: string;
-  cover?: string;
-  source?: string;
-  id?: string;
 };
 
 export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
@@ -43,35 +35,23 @@ export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
         />
 
         <Button asChild variant="link" className="p-4">
-          <Link
-            className=""
-            href={`/excerpt/${excerptDocument.excerptId}` as RouteLiteral}
-          >
+          <Link href={`/excerpt/${excerptDocument.excerptId}` as RouteLiteral}>
             Read More
           </Link>
         </Button>
       </div>
 
       <div className="sm:flex justify-between p-4 gap-4 ">
-        <ExcerptDocumentDesertFigure
-          id={excerptDocument.desertFigureId}
-          thumbnail={excerptDocument.desertFigureThumbnail}
-          name={excerptDocument.desertFigureName}
-        />
+        <ExcerptDocumentDesertFigure {...excerptDocument} />
 
-        <ExcerptDocumentReference
-          title={excerptDocument.referenceTitle}
-          source={excerptDocument.referenceSource}
-          cover={excerptDocument.referenceCover}
-          id={excerptDocument.referenceId}
-        />
+        <ExcerptDocumentReference {...excerptDocument} />
       </div>
       <ExcerptDocumentActionButtons />
     </div>
   );
 }
 
-function ExcerptDocumentTags({ tags }: { tags: Tag[] }) {
+export function ExcerptDocumentTags({ tags }: { tags: Tag[] }) {
   return (
     <div className="flex gap-2 flex-wrap">
       {tags.map((t) => (
@@ -86,20 +66,20 @@ function ExcerptDocumentTags({ tags }: { tags: Tag[] }) {
 }
 
 function ExcerptDocumentDesertFigure({
-  thumbnail,
-  name,
-  id,
-}: DesertFigureEDProps) {
+  desertFigureThumbnail,
+  desertFigureName,
+  desertFigureId,
+}: ExcerptDocumentDesertFigure) {
   return (
     <Link
-      href={`/desert-figures/${id}` as RouteLiteral}
+      href={`/desert-figures/${desertFigureId}` as RouteLiteral}
       className="hover:brightness-90 transition-colors duration-200 ease-in-out"
     >
       <div className="bg-secondary rounded p-2 border border-border flex gap-4 items-center sm:mb-0 mb-4 flex-1 sm:max-w-64">
-        {thumbnail ? (
+        {desertFigureThumbnail ? (
           <img
             className="h-24 border border-border rounded"
-            src={thumbnail}
+            src={desertFigureThumbnail}
             alt="Desert Figure Thumbnail"
           />
         ) : (
@@ -107,26 +87,26 @@ function ExcerptDocumentDesertFigure({
             <User width={32} height={48} />
           </div>
         )}
-        <h3 className="italic text-lg font-medium">{name}</h3>
+        <h3 className="italic text-lg font-medium">{desertFigureName}</h3>
       </div>
     </Link>
   );
 }
 
 function ExcerptDocumentReference({
-  title,
-  cover,
-  source,
-  id,
-}: ReferenceEDProps) {
+  referenceTitle,
+  referenceCover,
+  referenceSource,
+  referenceId,
+}: ExcerptDocumentReference) {
   // No Source Found
-  if (!id && !source) return;
+  if (!referenceId && !referenceSource) return;
 
   // Article Found
-  if (!id && source) {
+  if (!referenceId && referenceSource) {
     return (
       <a
-        href={source}
+        href={referenceSource}
         target="_blank"
         className="hover:brightness-90 transition-colors duration-200 ease-in-out"
       >
@@ -145,15 +125,15 @@ function ExcerptDocumentReference({
   // Book Found
   return (
     <a
-      href={source}
+      href={referenceSource}
       target="_blank"
       className="hover:brightness-90 transition-colors duration-200 ease-in-out"
     >
       <div className="bg-secondary rounded p-2 border border-border justify-end flex gap-4 items-center flex-1 sm:max-w-64">
         <div className="text-right">
-          <h3 className="italic text-lg font-medium">{title}</h3>
+          <h3 className="italic text-lg font-medium">{referenceTitle}</h3>
         </div>
-        <img className="h-24" src={cover ?? ""} />
+        <img className="h-24" src={referenceCover ?? ""} />
       </div>
     </a>
   );

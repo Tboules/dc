@@ -32,6 +32,16 @@ export type ExcerptDocument = {
   searchableTags: string;
 };
 
+export type ExcerptDocumentDesertFigure = Pick<
+  ExcerptDocument,
+  "desertFigureName" | "desertFigureId" | "desertFigureThumbnail"
+>;
+
+export type ExcerptDocumentReference = Pick<
+  ExcerptDocument,
+  "referenceTitle" | "referenceId" | "referenceSource" | "referenceCover"
+>;
+
 // Excerpt Document Style View
 export const excerptDocument = pgMaterializedView("excerpt_document").as((qb) =>
   qb
