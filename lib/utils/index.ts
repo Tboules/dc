@@ -9,7 +9,6 @@ import {
 } from "../database/schema/desertFigures";
 import { DESERT_FIGURE_TITLE } from "../enums";
 import chroma from "chroma-js";
-import { max } from "drizzle-orm";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

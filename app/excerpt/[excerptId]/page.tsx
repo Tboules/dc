@@ -2,8 +2,13 @@ import { ExcerptDocumentTags } from "@/components/excerpt_document_card";
 import ExcerptDocumentActionButtons from "@/components/excerpt_document_card/ed_action_buttons";
 import { Separator } from "@/components/ui/separator";
 import { handleSelectExcerptById } from "@/lib/database/handlers/excerpts";
-import type { ExcerptDocumentDesertFigure } from "@/lib/database/schema/views";
-import { NAV_HEIGHT } from "@/lib/utils/constants";
+import type {
+  ExcerptDocumentDesertFigure,
+  ExcerptDocumentReference,
+} from "@/lib/database/schema/views";
+import Link from "next/link";
+import { RouteLiteral } from "nextjs-routes";
+import { BookOpenText } from "lucide-react";
 
 export default async function ExcerptPage({
   params,
@@ -41,13 +46,14 @@ export default async function ExcerptPage({
           <h3 className="text-xl font-medium mb-4">Tags:</h3>
           <ExcerptDocumentTags tags={excerpt.tags} />
         </div>
+
         <div>
           <h3 className="text-xl font-medium mb-4">Desert Figure:</h3>
           <ExcerptPageDesertFigure {...excerpt} />
         </div>
         <div>
           <h3 className="text-xl font-medium mb-4">Reference:</h3>
-          <ExcerptDocumentTags tags={excerpt.tags} />
+          <ExcerptPageReference {...excerpt} />
         </div>
       </section>
     </div>
@@ -58,7 +64,7 @@ function ResponsiveSeperators() {
   return (
     <>
       <Separator
-        className={`hidden md:block h-[calc(100vh-${NAV_HEIGHT})]! w-1`}
+        className="hidden md:block h-[calc(100lvh-var(--nav-height))]!"
         orientation="vertical"
       />
       <Separator className="block md:hidden" />
@@ -68,9 +74,52 @@ function ResponsiveSeperators() {
 
 function ExcerptPageDesertFigure(df: ExcerptDocumentDesertFigure) {
   return (
-    <div>
-      <img src={df.desertFigureThumbnail ?? ""} alt="Desert Figure Thumbnail" />
-      <h4>{df.desertFigureName}</h4>
-    </div>
+    <Link
+      href={`/desert-figures/${df.desertFigureId}` as RouteLiteral}
+      className="border border-border rounded overflow-hidden bg-card block hover:bg-accent max-w-96"
+    >
+      <img
+        className="w-full"
+        src={df.desertFigureThumbnail ?? ""}
+        alt="Desert Figure Thumbnail"
+      />
+      <h4 className="py-4 px-2 text-lg text-center font-medium">
+        {df.desertFigureName}
+      </h4>
+    </Link>
+  );
+}
+
+function ExcerptPageReference(ref: ExcerptDocumentReference) {
+  if (!ref.referenceId && !ref.referenceSource) return;
+
+  if (!ref.referenceId && ref.referenceSource) {
+    return (
+      <a
+        href={ref.referenceSource}
+        target="_blank"
+        className="bg-card hover:bg-accent rounded p-2 border border-border flex gap-4 items-center max-w-96"
+      >
+        <div className="h-24 bg-background border border-border flex px-4 items-center justify-center rounded">
+          <BookOpenText width={32} height={48} />
+        </div>
+        <div>
+          <h3 className="italic text-lg font-medium">Read the Article!</h3>
+        </div>
+      </a>
+    );
+  }
+
+  return (
+    <a
+      href={ref.referenceSource}
+      target="_blank"
+      className="bg-card hover:bg-accent rounded p-2 border border-border flex gap-4 items-center max-w-96"
+    >
+      <img className="h-32" src={ref.referenceCover ?? ""} />
+      <div>
+        <h3 className="italic text-lg font-medium">{ref.referenceTitle}</h3>
+      </div>
+    </a>
   );
 }
