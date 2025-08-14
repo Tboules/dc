@@ -1,0 +1,46 @@
+"use client";
+
+import { Flag, Heart, Share } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+const edActionButtonVariants = cva("flex p-4", {
+  variants: {
+    variant: {
+      card: "justify-between border-t border-border",
+      page: "gap-2",
+    },
+  },
+  defaultVariants: {
+    variant: "card",
+  },
+});
+
+export default function ExcerptDocumentActionButtons({
+  className,
+  variant,
+  ...props
+}: React.ComponentProps<"div"> & VariantProps<typeof edActionButtonVariants>) {
+  return (
+    <div
+      className={cn(edActionButtonVariants({ className, variant }))}
+      {...props}
+    >
+      <Button
+        onClick={() => console.log("clicked")}
+        size="icon"
+        variant="secondary"
+        className="size-8"
+      >
+        <Heart />
+      </Button>
+      <Button size="icon" variant="secondary" className="size-8">
+        <Flag />
+      </Button>
+      <Button size="icon" variant="secondary" className="size-8">
+        <Share />
+      </Button>
+    </div>
+  );
+}

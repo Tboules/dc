@@ -1,11 +1,11 @@
 import type { ExcerptDocument, Tag } from "@/lib/database/schema/views";
 import TagBadgeLink from "../tag-badge-link";
-import ExcerptDocumentFooter from "./ed_footer_buttons";
 import { BookOpenText, User } from "lucide-react";
 import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
 import { Button } from "@/components/ui/button";
 import { truncateString } from "@/lib/utils";
+import ExcerptDocumentActionButtons from "./ed_action_buttons";
 
 type Props = {
   excerptDocument: ExcerptDocument;
@@ -66,7 +66,7 @@ export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
           id={excerptDocument.referenceId}
         />
       </div>
-      <ExcerptDocumentFooter />
+      <ExcerptDocumentActionButtons />
     </div>
   );
 }
