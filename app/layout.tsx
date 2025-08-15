@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import NavMenu from "@/components/nav/NavMenu";
 import Providers from "@/components/providers";
+import { SITE_BASE_URL } from "@/lib/constants";
 
 const fontSans = FontSans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -14,7 +15,8 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "Desert Collections",
-  description: "Christian Wisdom from the Deserts",
+  description: "Christian Wisdom from the Desert",
+  metadataBase: new URL(SITE_BASE_URL),
 };
 
 export default async function RootLayout({

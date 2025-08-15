@@ -9,15 +9,54 @@ import type {
 import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
 import { BookOpenText } from "lucide-react";
+import { cache } from "react";
+import { convert } from "html-to-text";
+import { SITE_BASE_URL } from "@/lib/constants";
 
-export default async function ExcerptPage({
-  params,
-}: {
+type PageProps = {
   params: Promise<{ excerptId: string }>;
-}) {
+};
+
+const getExcerptByIdCached = cache((id: string) => handleSelectExcerptById(id));
+
+// Look up how ISR works and if it's a good fit for these pages?
+export const revalidate = 3600;
+
+export async function generateMetadata({ params }: PageProps) {
+  const { excerptId } = await params;
+  const excerpt = await getExcerptByIdCached(excerptId);
+
+  const title = "Desert Fathers and Mothers | " + excerpt.excerptTitle;
+  const description = convert(excerpt.excerptBody).slice(0, 160);
+  const ogImage = excerpt.desertFigureThumbnail;
+  const canonical = `/excerpt/${excerptId}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      locale: "en_US",
+      type: "article",
+      images: ogImage ? [ogImage] : undefined,
+      tags: excerpt.tags.map((t) => t.tag),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImage ? [ogImage] : undefined,
+    },
+  };
+}
+
+export default async function ExcerptPage({ params }: PageProps) {
   const { excerptId } = await params;
 
-  const excerpt = await handleSelectExcerptById(excerptId);
+  const excerpt = await getExcerptByIdCached(excerptId);
 
   return (
     <div className="flex flex-col md:flex-row max-w-(--breakpoint-lg) mx-auto relative">
