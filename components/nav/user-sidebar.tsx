@@ -44,7 +44,7 @@ const USER_SIDE_BAR_NAV_ITEMS: SideBarMenu[] = [
 export default function UserSidebar() {
   const { setOpenMobile } = useSidebar();
   return (
-    <Sidebar className="p-2 bg-sidebar">
+    <Sidebar className="p-2 mt-18 bg-sidebar">
       <SidebarHeader className="py-2 text-lg font-medium">
         User Content
       </SidebarHeader>
