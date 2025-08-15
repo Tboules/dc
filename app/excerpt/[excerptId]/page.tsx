@@ -61,9 +61,9 @@ export default async function ExcerptPage({ params }: PageProps) {
   return (
     <div className="flex flex-col md:flex-row max-w-(--breakpoint-lg) mx-auto relative">
       {/*Section Containing Title, Action Buttons, Body*/}
-      <section className="p-4 flex-3">
+      <section className="p-4 mt-4 flex-3">
         <div className="md:flex justify-between mb-8">
-          <h1 className="font-bold text-2xl mr-8 mb-4 md:mb-0">
+          <h1 className="font-bold text-3xl mr-8 mb-4 md:mb-0">
             {excerpt.excerptTitle}
           </h1>
           <div className="max-w-40">
@@ -72,7 +72,7 @@ export default async function ExcerptPage({ params }: PageProps) {
         </div>
 
         <div
-          className="text-lg"
+          className="text-xl/8 font-normal tracking-wide"
           dangerouslySetInnerHTML={{ __html: excerpt.excerptBody }}
         />
       </section>
@@ -80,7 +80,7 @@ export default async function ExcerptPage({ params }: PageProps) {
       <ResponsiveSeperators />
 
       {/*Section Containing Tags, Desert Figure, and Reference*/}
-      <section className="flex-1 p-4 flex flex-col gap-8">
+      <section className="flex-1 p-4 mt-4 flex flex-col gap-8">
         <div>
           <h3 className="text-xl font-medium mb-4">Tags:</h3>
           <ExcerptDocumentTags tags={excerpt.tags} />

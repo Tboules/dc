@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { generateUserInitials } from "@/lib/utils";
+import DesertCollectionsLogo from "../svg/dc-logo";
 
 interface NavMenuItem {
   route: Exclude<Route, { query: any }>["pathname"];
@@ -65,11 +66,21 @@ const SUB_MENU_ITEMS: SubMenuItem[] = [
   { route: "/icons/new", name: "Icon", icon: "image" },
 ];
 
+export function LogoWrap() {
+  return (
+    <div className="flex justify-start items-center gap-2 flex-1">
+      <DesertCollectionsLogo width={42} height={42} />
+      <h1 className="text-lg font-semibold">Dessert Collections</h1>
+    </div>
+  );
+}
+
 export default function NavMenu() {
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-b-border/60">
       <div className="p-4 text-secondary-foreground w-full max-w-(--breakpoint-2xl) m-auto flex items-center gap-4">
-        <h1 className="text-lg font-semibold flex-1">Desert Collections</h1>
+        {/* <h1 className="text-lg font-semibold flex-1">Desert Collections</h1> */}
+        <LogoWrap />
 
         {/* navigation menu */}
         <NavigationMenu className="hidden sm:block">
