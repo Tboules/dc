@@ -10,23 +10,23 @@ const DesertCollectionsLogo = (props: SVGProps<SVGSVGElement>) => (
     fill="none"
     {...props}
   >
-    <circle cx={61.5} cy={61.5} r={60.5} stroke="#fff" strokeWidth={2} />
+    <circle cx={61.5} cy={61.5} r={58.5} stroke="#fff" strokeWidth={6} />
     <path
       stroke="#fff"
-      strokeWidth={2}
-      d="M120.5 71.53c-4.5 15-20.5 16.5-29 11.5C86.896 80.322 79.359 76 70 73.084c-7.92-2.468-17.145-3.93-27-2.554-21.5 3-39 12-39 12"
+      strokeWidth={4}
+      d="M119 71.568c-4.403 15.38-20.06 16.918-28.378 11.792-4.505-2.777-11.88-7.208-21.038-10.198-7.75-2.53-16.777-4.029-26.42-2.619C22.123 73.62 5 82.847 5 82.847"
     />
     <path
       stroke="#fff"
-      strokeWidth={2}
-      d="M77.5 75.5c19.5-9 30.511-8.702 43.5-3M24 109c22.672-2.077 43.724-14.822 66-9.863"
+      strokeWidth={4}
+      d="M78 76c18.828-10.198 29.459-9.86 42-3.4M26 109c21.985-2.077 42.399-14.822 64-9.863"
     />
     <path
       stroke="#fff"
-      strokeWidth={2}
-      d="M12 96.864c36-18.18 55.5 0 75.5 1.948S117.513 81.802 119 81"
+      strokeWidth={4}
+      d="M12 96.906c35.664-18.228 54.981 0 74.794 1.953C106.607 100.812 116.527 81.804 118 81"
     />
-    <path stroke="#fff" strokeWidth={3} d="M61.5 71V20M41 34.5h42" />
+    <path stroke="#fff" strokeWidth={6} d="M63 70V19M43 33h42" />
   </svg>
 );
 export default DesertCollectionsLogo;

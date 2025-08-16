@@ -3,20 +3,17 @@
     .fav-stroke {
       stroke: white;
     }
-
     @media (prefers-color-scheme: light) {
       .fav-stroke {
         stroke: black;
       }
     }
-    
   </style>
-  
-  <circle cx="61.5" cy="61.5" r="60.5" class="fav-stroke" stroke-width="2"/>
-  <path d="M120.5 71.5297C116 86.5297 100 88.0297 91.5 83.0297C86.8962 80.3216 79.3588 75.9999 70 73.0838C62.0798 70.6159 52.855 69.1546 43 70.5297C21.5 73.5298 4 82.5297 4 82.5297" class="fav-stroke" stroke-width="2"/>
-  <path d="M77.5 75.5C97 66.5 108.011 66.7976 121 72.5" class="fav-stroke" stroke-width="2"/>
-  <path d="M24 109C46.6718 106.923 67.7237 94.1784 90 99.1366" class="fav-stroke" stroke-width="2"/>
-  <path d="M12 96.8639C48 78.6845 67.5 96.8639 87.5 98.8117C107.5 100.76 117.513 81.8023 119 81" class="fav-stroke" stroke-width="2"/>
-  <line x1="61.5" y1="71" x2="61.5" y2="20" class="fav-stroke" stroke-width="3"/>
-  <line x1="41" y1="34.5" x2="83" y2="34.5" class="fav-stroke" stroke-width="3"/>
+  <circle cx="61.5" cy="61.5" r="58.5" class="fav-stroke" stroke-width="6"/>
+  <path d="M119 71.5684C114.597 86.9483 98.9399 88.4863 90.6223 83.3597C86.1173 80.5829 78.7416 76.1519 69.5837 73.1619C61.8334 70.6315 52.8066 69.1332 43.1631 70.5431C22.1245 73.6192 5 82.847 5 82.847" class="fav-stroke" stroke-width="4"/>
+  <path d="M78 76C96.8276 65.8022 107.459 66.1394 120 72.6007" class="fav-stroke" stroke-width="4"/>
+  <path d="M26 109C47.9848 106.923 68.3987 94.1784 90 99.1366" class="fav-stroke" stroke-width="4"/>
+  <path d="M12 96.9063C47.6636 78.6783 66.9813 96.9063 86.7944 98.8593C106.607 100.812 116.527 81.8044 118 81" class="fav-stroke" stroke-width="4"/>
+  <line x1="63" y1="70" x2="63" y2="19" class="fav-stroke" stroke-width="6"/>
+  <line x1="43" y1="33" x2="85" y2="33" class="fav-stroke" stroke-width="6"/>
 </svg>
