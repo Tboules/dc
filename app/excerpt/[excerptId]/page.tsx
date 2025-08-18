@@ -38,10 +38,11 @@ export async function generateMetadata({ params }: PageProps) {
     openGraph: {
       title,
       description,
+      siteName: "Desert Collections",
       url: canonical,
       locale: "en_US",
       type: "article",
-      images: ogImage ? [ogImage] : undefined,
+      images: ogImage ? [{ url: ogImage }] : undefined,
       tags: excerpt.tags.map((t) => t.tag),
     },
     twitter: {
