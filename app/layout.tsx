@@ -4,7 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import NavMenu from "@/components/nav/NavMenu";
 import Providers from "@/components/providers";
-import { SITE_BASE_URL } from "@/lib/constants";
+import { DEFAULT_OG_PATH, SITE_BASE_URL } from "@/lib/constants";
 
 const fontSans = FontSans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -17,6 +17,26 @@ export const metadata: Metadata = {
   title: "Desert Collections",
   description: "Christian Wisdom from the Desert",
   metadataBase: new URL(SITE_BASE_URL),
+  openGraph: {
+    title: "Desert Collections",
+    description: "Christian Wisdom from the Desert",
+    url: "/", // resolved against metadataBase
+    siteName: "Desert Collections",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: DEFAULT_OG_PATH,
+        width: 1200,
+        height: 1200,
+        alt: "Desert Collections",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [DEFAULT_OG_PATH],
+  },
 };
 
 export default async function RootLayout({

@@ -11,7 +11,7 @@ import { RouteLiteral } from "nextjs-routes";
 import { BookOpenText } from "lucide-react";
 import { cache } from "react";
 import { convert } from "html-to-text";
-import { SITE_BASE_URL } from "@/lib/constants";
+import { DEFAULT_OG_PATH, SITE_BASE_URL } from "@/lib/constants";
 
 type PageProps = {
   params: Promise<{ excerptId: string }>;
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   const title = "Desert Fathers and Mothers | " + excerpt.excerptTitle;
   const description = convert(excerpt.excerptBody).slice(0, 160);
-  const ogImage = excerpt.desertFigureThumbnail;
+  const ogImage = excerpt.desertFigureThumbnail ?? DEFAULT_OG_PATH;
   const canonical = `/excerpt/${excerptId}`;
 
   return {
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps) {
       locale: "en_US",
       type: "article",
       images: ogImage
-        ? [{ url: ogImage, width: 1200, height: 630 }]
+        ? [{ url: ogImage, width: 1200, height: 1200 }]
         : undefined,
       tags: excerpt.tags.map((t) => t.tag),
     },
