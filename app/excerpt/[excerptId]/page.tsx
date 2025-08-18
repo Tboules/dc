@@ -67,7 +67,13 @@ export default async function ExcerptPage({ params }: PageProps) {
             {excerpt.excerptTitle}
           </h1>
           <div className="max-w-40">
-            <ExcerptDocumentActionButtons variant={"page"} />
+            <ExcerptDocumentActionButtons
+              variant={"page"}
+              shareData={{
+                title: excerpt.excerptTitle,
+                url: `${SITE_BASE_URL}/excerpt/${excerptId}`,
+              }}
+            />
           </div>
         </div>
 
