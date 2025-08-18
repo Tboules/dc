@@ -42,7 +42,9 @@ export async function generateMetadata({ params }: PageProps) {
       url: canonical,
       locale: "en_US",
       type: "article",
-      images: ogImage ? [{ url: ogImage }] : undefined,
+      images: ogImage
+        ? [{ url: ogImage, width: 1200, height: 630 }]
+        : undefined,
       tags: excerpt.tags.map((t) => t.tag),
     },
     twitter: {
