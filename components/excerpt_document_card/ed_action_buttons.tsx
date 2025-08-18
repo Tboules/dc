@@ -47,7 +47,7 @@ export default function ExcerptDocumentActionButtons({
 }
 
 function EDShareButton({ url }: ShareData) {
-  const navigatorAvailable = navigator?.canShare({ url });
+  // const navigatorAvailable = navigator?.canShare({ url });
 
   async function share() {
     try {

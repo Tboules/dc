@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps) {
       locale: "en_US",
       type: "article",
       images: ogImage
-        ? [{ url: ogImage, width: 1200, height: 1200 }]
+        ? [{ url: ogImage, alt: "Desert Figure Image" }]
         : undefined,
       tags: excerpt.tags.map((t) => t.tag),
     },

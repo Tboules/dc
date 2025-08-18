@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Desert Collections",
     description: "Christian Wisdom from the Desert",
-    url: "/", // resolved against metadataBase
+    url: "/",
     siteName: "Desert Collections",
     locale: "en_US",
     type: "website",
