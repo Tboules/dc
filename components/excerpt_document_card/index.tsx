@@ -11,7 +11,6 @@ import { RouteLiteral } from "nextjs-routes";
 import { Button } from "@/components/ui/button";
 import { truncateString } from "@/lib/utils";
 import ExcerptDocumentActionButtons from "./ed_action_buttons";
-import { SITE_BASE_URL } from "@/lib/constants";
 
 type Props = {
   excerptDocument: ExcerptDocument;
@@ -49,7 +48,7 @@ export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
       </div>
       <ExcerptDocumentActionButtons
         shareData={{
-          url: `${SITE_BASE_URL}/excerpt/${excerptDocument.excerptId}`,
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptDocument.excerptId}`,
         }}
       />
     </div>

@@ -11,7 +11,7 @@ import { RouteLiteral } from "nextjs-routes";
 import { BookOpenText } from "lucide-react";
 import { cache } from "react";
 import { convert } from "html-to-text";
-import { DEFAULT_OG_PATH, SITE_BASE_URL } from "@/lib/constants";
+import { DEFAULT_OG_PATH } from "@/lib/constants";
 
 type PageProps = {
   params: Promise<{ excerptId: string }>;
@@ -74,7 +74,7 @@ export default async function ExcerptPage({ params }: PageProps) {
               variant={"page"}
               shareData={{
                 title: excerpt.excerptTitle,
-                url: `${SITE_BASE_URL}/excerpt/${excerptId}`,
+                url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptId}`,
               }}
             />
           </div>

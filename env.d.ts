@@ -11,5 +11,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_AWS_S3_URL: string;
     NEXTAUTH_SECRET: string;
     NEXTAUTH_URL: string;
+    NEXT_PUBLIC_SITE_URL: string;
   }
 }

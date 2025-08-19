@@ -4,7 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import NavMenu from "@/components/nav/NavMenu";
 import Providers from "@/components/providers";
-import { DEFAULT_OG_PATH, SITE_BASE_URL } from "@/lib/constants";
+import { DEFAULT_OG_PATH } from "@/lib/constants";
 
 const fontSans = FontSans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -16,7 +16,7 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "Desert Collections",
   description: "Christian Wisdom from the Desert",
-  metadataBase: new URL(SITE_BASE_URL),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL),
   openGraph: {
     title: "Desert Collections",
     description: "Christian Wisdom from the Desert",
