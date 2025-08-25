@@ -9,6 +9,14 @@ import {
 } from "../database/schema/desertFigures";
 import { DESERT_FIGURE_TITLE } from "../enums";
 import chroma from "chroma-js";
+import { Linkedin, Mail } from "lucide-react";
+import {
+  FacebookLogo,
+  GoogleLogo,
+  IMessageLogo,
+  TwitterLogo,
+  WhatsAppLogo,
+} from "@/components/svg/share-button-logos";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -103,4 +111,54 @@ export function truncateString(string: string, maxLength: number) {
   }
 
   return string.substring(0, cutLength) + "...";
+}
+
+type BuildShareButtonProps = {
+  url: string;
+  title: string;
+  isIOS: boolean;
+};
+
+export function buildShareButtons({
+  url,
+  title,
+  isIOS,
+}: BuildShareButtonProps) {
+  const u = encodeURIComponent(url);
+  const uriTitle = encodeURIComponent(title);
+
+  const smsHref = isIOS ? `sms:&body=${u}` : `sms:?body=${uriTitle}%20${u}`;
+
+  return [
+    {
+      icon: isIOS ? IMessageLogo : GoogleLogo,
+      href: smsHref,
+      name: "Messages",
+    },
+    {
+      icon: Mail,
+      href: `mailto:?subject=${uriTitle}&body=${u}`,
+      name: "Email",
+    },
+    {
+      icon: WhatsAppLogo,
+      href: `https://wa.me/?text=${uriTitle}%20${u}`,
+      name: "What's App",
+    },
+    {
+      icon: FacebookLogo,
+      href: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
+      name: "Facebook",
+    },
+    {
+      icon: TwitterLogo,
+      href: `https://twitter.com/intent/tweet?text=${uriTitle}&url=${u}`,
+      name: "Twitter",
+    },
+    {
+      icon: Linkedin,
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`,
+      name: "Linked In",
+    },
+  ];
 }
