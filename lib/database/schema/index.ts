@@ -3,6 +3,7 @@ export * from "./desertFigures";
 export * from "./tags";
 export * from "./references";
 export * from "./excerptTags";
+export * from "./excerptLove";
 export * from "./icons";
 export * from "./accounts";
 export * from "./users";

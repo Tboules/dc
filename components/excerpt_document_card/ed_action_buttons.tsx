@@ -1,12 +1,19 @@
 "use client";
 
-import { Flag, Heart, Share } from "lucide-react";
+import { Flag, Heart, Linkedin, Mail, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cva, type VariantProps } from "class-variance-authority";
-import { buildShareButtons, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import React from "react";
 import { PopoverTrigger, Popover, PopoverContent } from "../ui/popover";
 import useIsIOS from "@/hooks/use-is-ios";
+import {
+  FacebookLogo,
+  GoogleLogo,
+  IMessageLogo,
+  TwitterLogo,
+  WhatsAppLogo,
+} from "../svg/share-button-logos";
 
 const edActionButtonVariants = cva("flex", {
   variants: {
@@ -82,12 +89,7 @@ function EDShareButton({ url, title }: ShareData) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          onClick={() => console.log("fire fox sucks hehe")}
-          size="icon"
-          variant="secondary"
-          className="size-8"
-        >
+        <Button size="icon" variant="secondary" className="size-8">
           <Share />
         </Button>
       </PopoverTrigger>
@@ -102,4 +104,54 @@ function EDShareButton({ url, title }: ShareData) {
       </PopoverContent>
     </Popover>
   );
+}
+
+type BuildShareButtonProps = {
+  url: string;
+  title: string;
+  isIOS: boolean;
+};
+
+export function buildShareButtons({
+  url,
+  title,
+  isIOS,
+}: BuildShareButtonProps) {
+  const u = encodeURIComponent(url);
+  const uriTitle = encodeURIComponent(title);
+
+  const smsHref = isIOS ? `sms:&body=${u}` : `sms:?body=${uriTitle}%20${u}`;
+
+  return [
+    {
+      icon: isIOS ? IMessageLogo : GoogleLogo,
+      href: smsHref,
+      name: "Messages",
+    },
+    {
+      icon: Mail,
+      href: `mailto:?subject=${uriTitle}&body=${u}`,
+      name: "Email",
+    },
+    {
+      icon: WhatsAppLogo,
+      href: `https://wa.me/?text=${uriTitle}%20${u}`,
+      name: "What's App",
+    },
+    {
+      icon: FacebookLogo,
+      href: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
+      name: "Facebook",
+    },
+    {
+      icon: TwitterLogo,
+      href: `https://twitter.com/intent/tweet?text=${uriTitle}&url=${u}`,
+      name: "Twitter",
+    },
+    {
+      icon: Linkedin,
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`,
+      name: "Linked In",
+    },
+  ];
 }
