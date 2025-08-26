@@ -54,6 +54,15 @@ CREATE TABLE IF NOT EXISTS "excerpt_tag" (
 	CONSTRAINT "excerpt_tag_tag_id_excerpt_id_pk" PRIMARY KEY("tag_id","excerpt_id")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "excerpt_love" (
+	"excerpt_id" uuid NOT NULL,
+	"user_id" text NOT NULL,
+	"date_added" timestamp DEFAULT now() NOT NULL,
+	"last_updated" timestamp DEFAULT now() NOT NULL,
+	"active" boolean DEFAULT true NOT NULL,
+	CONSTRAINT "excerpt_love_excerpt_id_user_id_pk" PRIMARY KEY("excerpt_id","user_id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "icon" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"file" text NOT NULL,
@@ -176,6 +185,18 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "excerpt_love" ADD CONSTRAINT "excerpt_love_excerpt_id_excerpt_id_fk" FOREIGN KEY ("excerpt_id") REFERENCES "public"."excerpt"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "excerpt_love" ADD CONSTRAINT "excerpt_love_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "icon" ADD CONSTRAINT "icon_desert_figure_id_desert_figure_id_fk" FOREIGN KEY ("desert_figure_id") REFERENCES "public"."desert_figure"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -214,4 +235,11 @@ CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" a
           )::jsonb
          as "tags", 
           string_agg("tag"."name", ', ')
-         as "tagsSearchable" from "excerpt" left join "desert_figure" on "desert_figure"."id" = "excerpt"."desert_figure_id" left join "reference" on "reference"."id" = "excerpt"."reference_id" left join "content_status" on "content_status"."id" = "excerpt"."status_id" left join "excerpt_tag" on "excerpt_tag"."excerpt_id" = "excerpt"."id" left join "tag" on "excerpt_tag"."tag_id" = "tag"."id" group by "excerpt"."id", "excerpt"."body", "excerpt"."title", "desert_figure"."full_name", "desert_figure"."id", "reference"."title", "reference"."id", "reference"."source", "reference"."cover", "content_status"."name", "content_status"."id");
+         as "tagsSearchable", 
+            COALESCE((
+              SELECT COUNT(*) 
+              FROM "excerpt_love" el 
+              WHERE el.excerpt_id = "excerpt"."id" 
+                AND el.active = true 
+            ),0)
+           as "loveCount" from "excerpt" left join "desert_figure" on "desert_figure"."id" = "excerpt"."desert_figure_id" left join "reference" on "reference"."id" = "excerpt"."reference_id" left join "content_status" on "content_status"."id" = "excerpt"."status_id" left join "excerpt_tag" on "excerpt_tag"."excerpt_id" = "excerpt"."id" left join "tag" on "excerpt_tag"."tag_id" = "tag"."id" group by "excerpt"."id", "excerpt"."body", "excerpt"."title", "desert_figure"."full_name", "desert_figure"."id", "reference"."title", "reference"."id", "reference"."source", "reference"."cover", "content_status"."name", "content_status"."id");

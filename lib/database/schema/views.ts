@@ -65,23 +65,9 @@ export const excerptDocumentsWithLovedByMe = (
     );
 };
 
-export const excerptLoveCount = (qb: QueryBuilder) => {
-  return qb
-    .select({
-      excerptId: excerptLove.excerptId,
-      loveCount: sql<number>`Count(*)`.as("loveCount"),
-    })
-    .from(excerptLove)
-    .where(eq(excerptLove.active, true))
-    .groupBy(excerptLove.excerptId)
-    .as("likes");
-};
-
 // Excerpt Document Style View
 export const excerptDocument = pgMaterializedView("excerpt_document").as(
   (qb) => {
-    const L = excerptLoveCount(qb);
-
     return qb
       .select({
         excerptId: sql<string>`${excerpts.id}`.as("excerptId"),
@@ -120,7 +106,14 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as(
         searchableTags: sql<string>`
           string_agg(${tags.name}, ', ')
         `.as("tagsSearchable"),
-        loveCount: sql<number>`COALESCE(${L.loveCount}, 0)`.as("loveCount"),
+        loveCount: sql<number>`
+            COALESCE((
+              SELECT COUNT(*) 
+              FROM "excerpt_love" el 
+              WHERE el.excerpt_id = ${excerpts.id} 
+                AND el.active = true 
+            ),0)
+          `.as("loveCount"),
       })
       .from(excerpts)
       .leftJoin(desertFigures, eq(desertFigures.id, excerpts.desertFigureID))
@@ -128,7 +121,6 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as(
       .leftJoin(contentStatus, eq(contentStatus.id, excerpts.statusId))
       .leftJoin(excerptTags, eq(excerptTags.excerptId, excerpts.id))
       .leftJoin(tags, eq(excerptTags.tagId, tags.id))
-      .leftJoin(L, eq(excerpts.id, L.excerptId))
       .groupBy(
         excerpts.id,
         excerpts.body,
