@@ -6,6 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import React from "react";
 import EDShareButton from "@/components/excerpt_document_action_buttons/share-button";
+import LoveButton from "./love-button";
 
 const edActionButtonVariants = cva("flex", {
   variants: {
@@ -19,26 +20,31 @@ const edActionButtonVariants = cva("flex", {
   },
 });
 
+export type LovedInfo = {
+  loveCount: number;
+  lovedByUser: boolean;
+};
+
+type EDABProps = {
+  shareData: ShareData;
+  lovedInfo: LovedInfo;
+};
+
 export default function ExcerptDocumentActionButtons({
   className,
   variant,
   shareData,
   ...props
 }: React.ComponentProps<"div"> &
-  VariantProps<typeof edActionButtonVariants> & { shareData: ShareData }) {
+  VariantProps<typeof edActionButtonVariants> &
+  EDABProps) {
   return (
     <div
       className={cn(edActionButtonVariants({ className, variant }))}
       {...props}
     >
-      <Button
-        onClick={() => console.log("clicked")}
-        size="icon"
-        variant="secondary"
-        className="size-8"
-      >
-        <Heart />
-      </Button>
+      <LoveButton loveCount={0} lovedByUser={true} />
+
       <Button size="icon" variant="secondary" className="size-8">
         <Flag />
       </Button>
