@@ -13,7 +13,8 @@
     "gen_migration": "rm -rf ./lib/database/drizzle && pnpm drizzle-kit generate",
     "db:studio": "pnpm drizzle-kit studio",
     "gen_route_types": "npx nextjs-routes",
-    "refresh_views": "npx tsx ./lib/database/refresh-views.ts"
+    "refresh_views": "npx tsx ./lib/database/refresh-views.ts",
+    "type_check": "npx tsc --noEmit"
   },
   "dependencies": {
     "@auth/core": "^0.37.3",

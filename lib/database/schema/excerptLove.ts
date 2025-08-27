@@ -9,7 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { excerpts } from "@/lib/database/schema/excerpts";
 import { users } from "@/lib/database/schema/users";
-import { eq, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 
 export const excerptLove = pgTable(
   "excerpt_love",

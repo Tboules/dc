@@ -10,7 +10,7 @@ import Link from "next/link";
 import { RouteLiteral } from "nextjs-routes";
 import { Button } from "@/components/ui/button";
 import { truncateString } from "@/lib/utils";
-import ExcerptDocumentActionButtons from "./ed_action_buttons";
+import ExcerptDocumentActionButtons from "@/components/excerpt_document_action_buttons";
 
 type Props = {
   excerptDocument: ExcerptDocument;

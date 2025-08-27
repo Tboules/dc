@@ -1,5 +1,5 @@
 import { ExcerptDocumentTags } from "@/components/excerpt_document_card";
-import ExcerptDocumentActionButtons from "@/components/excerpt_document_card/ed_action_buttons";
+import ExcerptDocumentActionButtons from "@/components/excerpt_document_action_buttons";
 import { Separator } from "@/components/ui/separator";
 import { handleSelectExcerptById } from "@/lib/database/handlers/excerpts";
 import type {
