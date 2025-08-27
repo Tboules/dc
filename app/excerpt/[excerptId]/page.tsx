@@ -71,6 +71,10 @@ export default async function ExcerptPage({ params }: PageProps) {
           </h1>
           <div className="max-w-40">
             <ExcerptDocumentActionButtons
+              lovedInfo={{
+                loveCount: excerpt.loveCount,
+                lovedByUser: excerpt.lovedByUser,
+              }}
               variant={"page"}
               shareData={{
                 title: excerpt.excerptTitle,

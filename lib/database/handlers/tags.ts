@@ -2,13 +2,14 @@ import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
 import { count, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
-import { handleProtectedHandler } from "@/lib/utils/auth";
+import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
 import {
   GlobalSearchParams,
   UserContentSearchParams,
 } from "@/lib/utils/params";
-import { contentStatus, excerptDocument } from "../schema";
+import { contentStatus } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
+import { selectEDWithLoveInfo } from "./excerpt-documents";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(
@@ -96,14 +97,14 @@ export type TagFromSelectTagsFunc = Awaited<
 
 // FUNCTION TO QUERY A SINGLE TAG
 export async function selectTagExcerpts(id: string) {
+  const session = await serverAuthSession();
   const tag = await db.query.tags.findFirst({
     where: (t, { eq }) => eq(t.id, id),
   });
 
-  const queryResults = await db
-    .select()
-    .from(excerptDocument)
-    .where(sql`tags @> ${JSON.stringify([{ tagID: id }])}::jsonb`);
+  const queryResults = await selectEDWithLoveInfo(session?.user.id ?? "").where(
+    sql`tags @> ${JSON.stringify([{ tagID: id }])}::jsonb`,
+  );
 
   return {
     tag,

@@ -34,6 +34,7 @@ export default function ExcerptDocumentActionButtons({
   className,
   variant,
   shareData,
+  lovedInfo,
   ...props
 }: React.ComponentProps<"div"> &
   VariantProps<typeof edActionButtonVariants> &
@@ -43,7 +44,7 @@ export default function ExcerptDocumentActionButtons({
       className={cn(edActionButtonVariants({ className, variant }))}
       {...props}
     >
-      <LoveButton loveCount={0} lovedByUser={true} />
+      <LoveButton {...lovedInfo} />
 
       <Button size="icon" variant="secondary" className="size-8">
         <Flag />

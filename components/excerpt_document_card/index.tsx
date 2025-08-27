@@ -1,5 +1,4 @@
 import type {
-  ExcerptDocument,
   ExcerptDocumentDesertFigure,
   ExcerptDocumentReference,
   Tag,
@@ -11,9 +10,10 @@ import { RouteLiteral } from "nextjs-routes";
 import { Button } from "@/components/ui/button";
 import { truncateString } from "@/lib/utils";
 import ExcerptDocumentActionButtons from "@/components/excerpt_document_action_buttons";
+import { ExcerptDocumentWithLovedInfo } from "@/lib/database/handlers/excerpt-documents";
 
 type Props = {
-  excerptDocument: ExcerptDocument;
+  excerptDocument: ExcerptDocumentWithLovedInfo;
 };
 
 export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
@@ -47,6 +47,10 @@ export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
         <ExcerptDocumentReference {...excerptDocument} />
       </div>
       <ExcerptDocumentActionButtons
+        lovedInfo={{
+          loveCount: excerptDocument.loveCount,
+          lovedByUser: excerptDocument.lovedByUser,
+        }}
         shareData={{
           url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptDocument.excerptId}`,
         }}

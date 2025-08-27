@@ -1,6 +1,12 @@
 import { excerptDocument, excerptLove } from "@/lib/database/schema";
 import db from "@/lib/database";
 import { sql, eq } from "drizzle-orm";
+import { ExcerptDocument } from "../schema/views";
+
+export interface ExcerptDocumentWithLovedInfo extends ExcerptDocument {
+  loveCount: number;
+  lovedByUser: boolean;
+}
 
 export const selectEDWithLoveInfo = (userId: string) => {
   const lovedSubQuery = db
