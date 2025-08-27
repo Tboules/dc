@@ -226,7 +226,9 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "excerpt"."date_added" as "excerptDateAdded", "desert_figure"."full_name" as "desertFigureName", "desert_figure"."id" as "desertFigureId", "desert_figure"."thumbnail" as "desertFigureThumbnail", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", COALESCE("reference"."source", "excerpt"."article_url") as "referenceSource", "reference"."cover" as "referenceCover", "content_status"."name" as "statusName", "content_status"."id" as "statusId", "excerpt"."added_by" as "excerptCreatedBy", 
+CREATE INDEX IF NOT EXISTS "excerpt_love_excerpt_active_idx" ON "excerpt_love" USING btree ("excerpt_id") WHERE "excerpt_love"."active" IS TRUE;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "excerpt_love_user_active_idx" ON "excerpt_love" USING btree ("user_id") WHERE "excerpt_love"."active" IS TRUE;--> statement-breakpoint
+CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "excerpt"."date_added" as "excerptDateAdded", "excerpt"."added_by" as "excerptCreatedBy", "desert_figure"."full_name" as "desertFigureName", "desert_figure"."id" as "desertFigureId", "desert_figure"."thumbnail" as "desertFigureThumbnail", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", COALESCE("reference"."source", "excerpt"."article_url") as "referenceSource", "reference"."cover" as "referenceCover", "content_status"."name" as "statusName", "content_status"."id" as "statusId", 
           json_agg(
             json_build_object(
               'tagID', "tag"."id",

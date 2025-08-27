@@ -10,7 +10,7 @@
     "add_comp": "pnpm dlx shadcn@latest add",
     "db_push": "npx tsx ./lib/database/pre-migration.ts && npx tsx ./lib/database/migration.ts && npx tsx ./lib/database/post-migration.ts",
     "db_seed": "npx tsx ./lib/database/seed.ts",
-    "gen_migration": "pnpm drizzle-kit generate",
+    "gen_migration": "rm -rf ./lib/database/drizzle && pnpm drizzle-kit generate",
     "db:studio": "pnpm drizzle-kit studio",
     "gen_route_types": "npx nextjs-routes",
     "refresh_views": "npx tsx ./lib/database/refresh-views.ts"

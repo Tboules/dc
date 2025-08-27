@@ -6,7 +6,8 @@ import { UserExcerpt } from "@/app/user/_components/columns";
 import { and, count, eq, sql } from "drizzle-orm";
 import { excerpts, excerptDocument } from "@/lib/database/schema";
 import { UserContentSearchParams } from "@/lib/utils/params";
-import { ExcerptDocument, selectEDWithLoveInfo } from "../schema/views";
+import { ExcerptDocument } from "@/lib/database/schema/views";
+import { selectEDWithLoveInfo } from "@/lib/database/handlers/excerpt-documents";
 
 export async function selectUserExcerptCount() {
   const session = await handleProtectedHandler();

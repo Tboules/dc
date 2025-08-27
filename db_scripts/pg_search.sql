@@ -97,3 +97,4 @@ select
     ) as lovedByUser,
     *
 from excerpt_document as ed
+order by (select count(*) from excerpt_love where ed."excerptId" = excerpt_love.excerpt_id) DESC

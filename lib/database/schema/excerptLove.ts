@@ -9,6 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { excerpts } from "@/lib/database/schema/excerpts";
 import { users } from "@/lib/database/schema/users";
+import { eq, sql } from "drizzle-orm";
 
 export const excerptLove = pgTable(
   "excerpt_love",
@@ -23,5 +24,13 @@ export const excerptLove = pgTable(
     lastUpdated: timestamp("last_updated").defaultNow().notNull(),
     active: boolean("active").default(true).notNull(),
   },
-  (el) => [primaryKey({ columns: [el.excerptId, el.userId] })],
+  (el) => [
+    primaryKey({ columns: [el.excerptId, el.userId] }),
+    index("excerpt_love_excerpt_active_idx")
+      .on(el.excerptId)
+      .where(sql`${el.active} IS TRUE`),
+    index("excerpt_love_user_active_idx")
+      .on(el.userId)
+      .where(sql`${el.active} IS TRUE`),
+  ],
 );

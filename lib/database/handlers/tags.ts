@@ -1,6 +1,6 @@
 import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
-import { count, sql, eq, getTableColumns } from "drizzle-orm";
+import { count, sql, eq } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
 import { handleProtectedHandler } from "@/lib/utils/auth";
 import {
@@ -9,7 +9,6 @@ import {
 } from "@/lib/utils/params";
 import { contentStatus, excerptDocument } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
-import { ExcerptDocument, excerptDocumentsWithLoveInfo } from "../schema/views";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(

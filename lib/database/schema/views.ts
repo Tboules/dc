@@ -4,11 +4,8 @@ import { references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
 import { contentStatus } from "@/lib/database/schema/content_status";
 import { tags } from "@/lib/database/schema/tags";
-
-import { pgMaterializedView, QueryBuilder } from "drizzle-orm/pg-core";
-import { and, eq, sql } from "drizzle-orm";
-import { excerptLove } from "./excerptLove";
-import db from "..";
+import { eq, sql } from "drizzle-orm";
+import { pgMaterializedView } from "drizzle-orm/pg-core";
 
 export type Tag = {
   tag: string;
@@ -43,59 +40,6 @@ export type ExcerptDocumentReference = Pick<
   ExcerptDocument,
   "referenceTitle" | "referenceId" | "referenceSource" | "referenceCover"
 >;
-
-export const selectEDWithLoveInfo = (userId: string) => {
-  const lovedSubQuery = db
-    .select({
-      excerptId: excerptLove.excerptId,
-      loveCount: sql<number>`COUNT(*)`.as("loveCount"),
-      lovedByUser: sql<boolean>`BOOL_OR(${excerptLove.userId} = ${userId})`.as(
-        "lovedByUser",
-      ),
-    })
-    .from(excerptLove)
-    .where(eq(excerptLove.active, true))
-    .groupBy(excerptLove.excerptId)
-    .as("love_sub");
-
-  return db
-    .select({
-      excerptId: excerptDocument.excerptId,
-      excerptBody: excerptDocument.excerptBody,
-      excerptTitle: excerptDocument.excerptTitle,
-      excerptDateAdded: excerptDocument.excerptDateAdded,
-
-      desertFigureName: excerptDocument.desertFigureName,
-      desertFigureId: excerptDocument.desertFigureId,
-      desertFigureThumbnail: excerptDocument.desertFigureThumbnail,
-
-      referenceTitle: excerptDocument.referenceTitle,
-      referenceId: excerptDocument.referenceId,
-      referenceSource: excerptDocument.referenceSource,
-      referenceCover: excerptDocument.referenceCover,
-
-      status: excerptDocument.status,
-      statusId: excerptDocument.statusId,
-      excerptCreatedBy: excerptDocument.excerptCreatedBy,
-
-      tags: excerptDocument.tags,
-      searchableTags: excerptDocument.searchableTags,
-
-      loveCount: sql<number>`COALESCE(${lovedSubQuery.loveCount}, 0)`.as(
-        "loveCount",
-      ),
-      lovedByUser:
-        sql<boolean>`COALESCE(${lovedSubQuery.lovedByUser}, false)`.as(
-          "lovedByUser",
-        ),
-    })
-    .from(excerptDocument)
-    .leftJoin(
-      lovedSubQuery,
-      eq(lovedSubQuery.excerptId, excerptDocument.excerptId),
-    )
-    .$dynamic();
-};
 
 // Excerpt Document Style View
 export const excerptDocument = pgMaterializedView("excerpt_document").as(
