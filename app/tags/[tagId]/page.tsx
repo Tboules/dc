@@ -10,8 +10,6 @@ export default async function TagPage({
   const { tagId } = await params;
   const tagAndExcerpts = await selectTagExcerpts(tagId);
 
-  console.log(tagAndExcerpts);
-
   return (
     <DefaultLayout>
       <section>
@@ -22,8 +20,8 @@ export default async function TagPage({
         <div className="flex flex-col gap-4">
           {tagAndExcerpts.excerpts.map((excerptDoc) => (
             <ExcerptDocumentCard
-              excerptDocument={excerptDoc.excerpt_document}
-              key={excerptDoc.excerpt_document.excerptId}
+              excerptDocument={excerptDoc}
+              key={excerptDoc.excerptId}
             />
           ))}
         </div>

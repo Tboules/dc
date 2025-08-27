@@ -1,12 +1,12 @@
 "use server";
 
 import db from "@/lib/database";
-import { handleProtectedHandler } from "@/lib/utils/auth";
+import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
 import { and, count, eq, sql } from "drizzle-orm";
 import { excerpts, excerptDocument } from "@/lib/database/schema";
 import { UserContentSearchParams } from "@/lib/utils/params";
-import { ExcerptDocument } from "../schema/views";
+import { ExcerptDocument, selectEDWithLoveInfo } from "../schema/views";
 
 export async function selectUserExcerptCount() {
   const session = await handleProtectedHandler();
@@ -74,10 +74,12 @@ export async function selectUserExcerpts({
 export async function handleSelectExcerptById(
   exceptId: string,
 ): Promise<ExcerptDocument> {
-  const res = await db
-    .select()
-    .from(excerptDocument)
-    .where(eq(excerptDocument.excerptId, exceptId));
+  const session = await serverAuthSession();
+  const userId = session?.user.id ?? "no user id found";
+
+  const res = await selectEDWithLoveInfo(userId).where(
+    eq(excerptDocument.excerptId, exceptId),
+  );
 
   return res[0];
 }

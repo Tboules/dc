@@ -44,8 +44,8 @@ export type ExcerptDocumentReference = Pick<
   "referenceTitle" | "referenceId" | "referenceSource" | "referenceCover"
 >;
 
-export const excerptDocumentsWithLoveInfo = (userId: string) => {
-  return db
+export const selectEDWithLoveInfo = (userId: string) => {
+  const lovedSubQuery = db
     .select({
       excerptId: excerptLove.excerptId,
       loveCount: sql<number>`COUNT(*)`.as("loveCount"),
@@ -58,22 +58,43 @@ export const excerptDocumentsWithLoveInfo = (userId: string) => {
     .groupBy(excerptLove.excerptId)
     .as("love_sub");
 
-  // return qb
-  //   .select({
-  //     ...excerptDocument._.selectedFields,
-  //     loveCount: sql<number>`COALESCE(${lovedSubquery.loveCount}, 0)`.as(
-  //       "loveCount",
-  //     ),
-  //     lovedByUser:
-  //       sql<boolean>`COALESCE(${lovedSubquery.lovedByUser}, false)`.as(
-  //         "lovedByUser",
-  //       ),
-  //   })
-  //   .from(excerptDocument)
-  //   .leftJoin(
-  //     lovedSubquery,
-  //     eq(lovedSubquery.excerptId, excerptDocument.excerptId),
-  //   );
+  return db
+    .select({
+      excerptId: excerptDocument.excerptId,
+      excerptBody: excerptDocument.excerptBody,
+      excerptTitle: excerptDocument.excerptTitle,
+      excerptDateAdded: excerptDocument.excerptDateAdded,
+
+      desertFigureName: excerptDocument.desertFigureName,
+      desertFigureId: excerptDocument.desertFigureId,
+      desertFigureThumbnail: excerptDocument.desertFigureThumbnail,
+
+      referenceTitle: excerptDocument.referenceTitle,
+      referenceId: excerptDocument.referenceId,
+      referenceSource: excerptDocument.referenceSource,
+      referenceCover: excerptDocument.referenceCover,
+
+      status: excerptDocument.status,
+      statusId: excerptDocument.statusId,
+      excerptCreatedBy: excerptDocument.excerptCreatedBy,
+
+      tags: excerptDocument.tags,
+      searchableTags: excerptDocument.searchableTags,
+
+      loveCount: sql<number>`COALESCE(${lovedSubQuery.loveCount}, 0)`.as(
+        "loveCount",
+      ),
+      lovedByUser:
+        sql<boolean>`COALESCE(${lovedSubQuery.lovedByUser}, false)`.as(
+          "lovedByUser",
+        ),
+    })
+    .from(excerptDocument)
+    .leftJoin(
+      lovedSubQuery,
+      eq(lovedSubQuery.excerptId, excerptDocument.excerptId),
+    )
+    .$dynamic();
 };
 
 // Excerpt Document Style View
@@ -81,12 +102,18 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as(
   (qb) => {
     return qb
       .select({
+        //excerpt data
         excerptId: sql<string>`${excerpts.id}`.as("excerptId"),
         excerptBody: excerpts.body,
         excerptTitle: sql<string>`${excerpts.title}`.as("excerptTitle"),
         excerptDateAdded: sql<Date>`${excerpts.dateAdded}`.as(
           "excerptDateAdded",
         ),
+        excerptCreatedBy: sql<string>`${excerpts.createdBy}`.as(
+          "excerptCreatedBy",
+        ),
+
+        //desert figure data
         desertFigureName: sql<string>`${desertFigures.fullName}`.as(
           "desertFigureName",
         ),
@@ -94,6 +121,8 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as(
         desertFigureThumbnail: sql<string>`${desertFigures.thumbnail}`.as(
           "desertFigureThumbnail",
         ),
+
+        //reference data
         referenceTitle: sql<string>`${references.title}`.as("referenceTitle"),
         referenceId: sql<string>`${references.id}`.as("referenceId"),
         referenceSource:
@@ -101,11 +130,12 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as(
             "referenceSource",
           ),
         referenceCover: sql<string>`${references.cover}`.as("referenceCover"),
+
+        //excerpt status info
         status: sql<string>`${contentStatus.name}`.as("statusName"),
         statusId: sql<string>`${contentStatus.id}`.as("statusId"),
-        excerptCreatedBy: sql<string>`${excerpts.createdBy}`.as(
-          "excerptCreatedBy",
-        ),
+
+        //tag data
         tags: sql<Tag[]>`
           json_agg(
             json_build_object(

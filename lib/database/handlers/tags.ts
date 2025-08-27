@@ -101,13 +101,9 @@ export async function selectTagExcerpts(id: string) {
     where: (t, { eq }) => eq(t.id, id),
   });
 
-  const lovedSub = excerptDocumentsWithLoveInfo("123");
-
-  // subquery not working because I can't spread results from the query might need to do inline queries for this data
   const queryResults = await db
     .select()
     .from(excerptDocument)
-    .leftJoin(lovedSub, eq(lovedSub.excerptId, excerptDocument.excerptId))
     .where(sql`tags @> ${JSON.stringify([{ tagID: id }])}::jsonb`);
 
   return {

@@ -76,3 +76,24 @@ WHERE
     OR ed."excerptId" @@@ paradedb.match('tagsSearchable', v.search_term, distance => 1)
     OR ed."excerptId" @@@ paradedb.match('desertFigureName', v.search_term, distance => 1)
 ORDER BY score DESC;
+
+---
+-- loved by info example queries
+select
+    (
+        select count(*) from excerpt_love where ed."excerptId" = excerpt_love.excerpt_id
+    ) as count ,
+    (
+        select
+            case when exists (
+                select *
+                from excerpt_love
+                where ed."excerptId" = excerpt_love.excerpt_id
+                  and excerpt_love.user_id = 'b589d35a-fbd8-4a04-ad79-14fba097b930'
+            )
+                then true
+                else false
+            end
+    ) as lovedByUser,
+    *
+from excerpt_document as ed
