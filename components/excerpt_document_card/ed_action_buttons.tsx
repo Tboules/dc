@@ -96,7 +96,7 @@ function EDShareButton({ url, title }: ShareData) {
       <PopoverContent className="p-4 w-40 justify-center items-center grid grid-cols-3 gap-4">
         {buildShareButtons({ url: url ?? "", title: title ?? "", isIOS }).map(
           (button) => (
-            <a key={title} target="_blank" rel="noreferrer" href={button.href}>
+            <a key={url} target="_blank" rel="noreferrer" href={button.href}>
               <button.icon />
             </a>
           ),

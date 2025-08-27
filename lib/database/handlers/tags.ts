@@ -1,6 +1,6 @@
 import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
-import { count, sql, eq } from "drizzle-orm";
+import { count, sql, eq, getTableColumns } from "drizzle-orm";
 import { Option } from "@/components/ui/multi-select";
 import { handleProtectedHandler } from "@/lib/utils/auth";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@/lib/utils/params";
 import { contentStatus, excerptDocument } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
-import { ExcerptDocument } from "../schema/views";
+import { ExcerptDocument, excerptDocumentsWithLoveInfo } from "../schema/views";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(
@@ -101,9 +101,13 @@ export async function selectTagExcerpts(id: string) {
     where: (t, { eq }) => eq(t.id, id),
   });
 
+  const lovedSub = excerptDocumentsWithLoveInfo("123");
+
+  // subquery not working because I can't spread results from the query might need to do inline queries for this data
   const queryResults = await db
     .select()
     .from(excerptDocument)
+    .leftJoin(lovedSub, eq(lovedSub.excerptId, excerptDocument.excerptId))
     .where(sql`tags @> ${JSON.stringify([{ tagID: id }])}::jsonb`);
 
   return {

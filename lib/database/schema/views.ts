@@ -8,6 +8,7 @@ import { tags } from "@/lib/database/schema/tags";
 import { pgMaterializedView, QueryBuilder } from "drizzle-orm/pg-core";
 import { and, eq, sql } from "drizzle-orm";
 import { excerptLove } from "./excerptLove";
+import db from "..";
 
 export type Tag = {
   tag: string;
@@ -43,26 +44,36 @@ export type ExcerptDocumentReference = Pick<
   "referenceTitle" | "referenceId" | "referenceSource" | "referenceCover"
 >;
 
-export const excerptDocumentsWithLovedByMe = (
-  qb: QueryBuilder,
-  userId: string,
-) => {
-  return qb
+export const excerptDocumentsWithLoveInfo = (userId: string) => {
+  return db
     .select({
-      ...excerptDocument._.selectedFields, // all fields from MV
-      likedByMe: sql<boolean>`(${excerptLove.userId} IS NOT NULL)`.as(
-        "likedByMe",
+      excerptId: excerptLove.excerptId,
+      loveCount: sql<number>`COUNT(*)`.as("loveCount"),
+      lovedByUser: sql<boolean>`BOOL_OR(${excerptLove.userId} = ${userId})`.as(
+        "lovedByUser",
       ),
     })
-    .from(excerptDocument)
-    .leftJoin(
-      excerptLove,
-      and(
-        eq(excerptLove.excerptId, excerptDocument.excerptId),
-        eq(excerptLove.userId, userId),
-        eq(excerptLove.active, true),
-      ),
-    );
+    .from(excerptLove)
+    .where(eq(excerptLove.active, true))
+    .groupBy(excerptLove.excerptId)
+    .as("love_sub");
+
+  // return qb
+  //   .select({
+  //     ...excerptDocument._.selectedFields,
+  //     loveCount: sql<number>`COALESCE(${lovedSubquery.loveCount}, 0)`.as(
+  //       "loveCount",
+  //     ),
+  //     lovedByUser:
+  //       sql<boolean>`COALESCE(${lovedSubquery.lovedByUser}, false)`.as(
+  //         "lovedByUser",
+  //       ),
+  //   })
+  //   .from(excerptDocument)
+  //   .leftJoin(
+  //     lovedSubquery,
+  //     eq(lovedSubquery.excerptId, excerptDocument.excerptId),
+  //   );
 };
 
 // Excerpt Document Style View
@@ -106,14 +117,6 @@ export const excerptDocument = pgMaterializedView("excerpt_document").as(
         searchableTags: sql<string>`
           string_agg(${tags.name}, ', ')
         `.as("tagsSearchable"),
-        loveCount: sql<number>`
-            COALESCE((
-              SELECT COUNT(*) 
-              FROM "excerpt_love" el 
-              WHERE el.excerpt_id = ${excerpts.id} 
-                AND el.active = true 
-            ),0)
-          `.as("loveCount"),
       })
       .from(excerpts)
       .leftJoin(desertFigures, eq(desertFigures.id, excerpts.desertFigureID))
