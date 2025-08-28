@@ -17,8 +17,12 @@ import {
   Popover,
   PopoverContent,
 } from "@/components/ui/popover";
+import { useExcerptActionButtonContext } from "@/hooks/use-excerpt-action-button-context";
 
-export default function EDShareButton({ url, title }: ShareData) {
+export default function EDShareButton() {
+  const {
+    shareData: { url, title },
+  } = useExcerptActionButtonContext();
   const [canShare, setCanShare] = React.useState(false);
   const isIOS = useIsIOS();
 

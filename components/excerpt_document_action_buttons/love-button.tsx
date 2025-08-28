@@ -1,10 +1,14 @@
 "use client";
 
-import { LovedInfo } from "@/components/excerpt_document_action_buttons";
 import { Button } from "@/components/ui/button";
+import { useExcerptActionButtonContext } from "@/hooks/use-excerpt-action-button-context";
 import { Heart } from "lucide-react";
 
-export default function LoveButton({ loveCount, lovedByUser }: LovedInfo) {
+export default function LoveButton() {
+  const {
+    lovedInfo: { loveCount, lovedByUser },
+  } = useExcerptActionButtonContext();
+
   return (
     <Button
       onClick={() => console.log("clicked")}

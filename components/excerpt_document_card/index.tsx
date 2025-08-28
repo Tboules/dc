@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { truncateString } from "@/lib/utils";
 import ExcerptDocumentActionButtons from "@/components/excerpt_document_action_buttons";
 import { ExcerptDocumentWithLovedInfo } from "@/lib/database/handlers/excerpt-documents";
+import ExcerptActionButtonProvider from "@/hooks/use-excerpt-action-button-context";
 
 type Props = {
   excerptDocument: ExcerptDocumentWithLovedInfo;
@@ -46,15 +47,19 @@ export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
 
         <ExcerptDocumentReference {...excerptDocument} />
       </div>
-      <ExcerptDocumentActionButtons
-        lovedInfo={{
-          loveCount: excerptDocument.loveCount,
-          lovedByUser: excerptDocument.lovedByUser,
+      <ExcerptActionButtonProvider
+        value={{
+          lovedInfo: {
+            loveCount: excerptDocument.loveCount,
+            lovedByUser: excerptDocument.lovedByUser,
+          },
+          shareData: {
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptDocument.excerptId}`,
+          },
         }}
-        shareData={{
-          url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptDocument.excerptId}`,
-        }}
-      />
+      >
+        <ExcerptDocumentActionButtons />
+      </ExcerptActionButtonProvider>
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { BookOpenText } from "lucide-react";
 import { cache } from "react";
 import { convert } from "html-to-text";
 import { DEFAULT_OG_PATH } from "@/lib/constants";
+import ExcerptActionButtonProvider from "@/hooks/use-excerpt-action-button-context";
 
 type PageProps = {
   params: Promise<{ excerptId: string }>;
@@ -70,17 +71,20 @@ export default async function ExcerptPage({ params }: PageProps) {
             {excerpt.excerptTitle}
           </h1>
           <div className="max-w-40">
-            <ExcerptDocumentActionButtons
-              lovedInfo={{
-                loveCount: excerpt.loveCount,
-                lovedByUser: excerpt.lovedByUser,
+            <ExcerptActionButtonProvider
+              value={{
+                lovedInfo: {
+                  loveCount: excerpt.loveCount,
+                  lovedByUser: excerpt.lovedByUser,
+                },
+                shareData: {
+                  title: excerpt.excerptTitle,
+                  url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptId}`,
+                },
               }}
-              variant={"page"}
-              shareData={{
-                title: excerpt.excerptTitle,
-                url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptId}`,
-              }}
-            />
+            >
+              <ExcerptDocumentActionButtons variant={"page"} />
+            </ExcerptActionButtonProvider>
           </div>
         </div>
 

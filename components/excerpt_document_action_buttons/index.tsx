@@ -1,6 +1,6 @@
 "use client";
 
-import { Flag, Heart } from "lucide-react";
+import { Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
@@ -20,36 +20,22 @@ const edActionButtonVariants = cva("flex", {
   },
 });
 
-export type LovedInfo = {
-  loveCount: number;
-  lovedByUser: boolean;
-};
-
-type EDABProps = {
-  shareData: ShareData;
-  lovedInfo: LovedInfo;
-};
-
 export default function ExcerptDocumentActionButtons({
   className,
   variant,
-  shareData,
-  lovedInfo,
   ...props
-}: React.ComponentProps<"div"> &
-  VariantProps<typeof edActionButtonVariants> &
-  EDABProps) {
+}: React.ComponentProps<"div"> & VariantProps<typeof edActionButtonVariants>) {
   return (
     <div
       className={cn(edActionButtonVariants({ className, variant }))}
       {...props}
     >
-      <LoveButton {...lovedInfo} />
+      <LoveButton />
 
       <Button size="icon" variant="secondary" className="size-8">
         <Flag />
       </Button>
-      <EDShareButton {...shareData} />
+      <EDShareButton />
     </div>
   );
 }
