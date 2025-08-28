@@ -87,7 +87,7 @@ export function serverAuthSession(
 export async function handleProtectedHandler(role: UserRole = 1) {
   const session = await serverAuthSession();
 
-  if (!session) {
+  if (!session || !session.user?.id) {
     redirect(`/api/auth/signin`);
   }
 
