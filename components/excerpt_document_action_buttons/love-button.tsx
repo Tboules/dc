@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useExcerptActionButtonContext } from "@/hooks/use-excerpt-action-button-context";
 import { Heart } from "lucide-react";
 import { useServerAction } from "zsa-react";
-import { useSession } from "next-auth/react";
 import useUpdatedSession from "@/hooks/use-updated-session";
+import ErrorModal, { useErrorModal } from "@/components/error/error-modal";
 
 export default function LoveButton() {
   const { data: session } = useUpdatedSession();
@@ -15,44 +15,52 @@ export default function LoveButton() {
     lovedInfo: { loveCount, lovedByUser },
     toggleLoveInfo,
   } = useExcerptActionButtonContext();
-
-  const { isPending, execute, data } = useServerAction(upsertExcerptLove);
+  const { isPending, execute } = useServerAction(upsertExcerptLove);
+  const { isError, errorState, closeErrorModal, openErrorModal } =
+    useErrorModal();
 
   return (
-    <Button
-      disabled={isPending}
-      onClick={async () => {
-        console.log(session);
-        if (!session || !session.user?.id) {
-          // redirect user
-          // need a client side session handler (useProtectedSession)
-          // put it in that above updated session func
-          return;
-        }
+    <>
+      <Button
+        disabled={isPending}
+        onClick={async () => {
+          console.log(session);
+          if (!session || !session.user?.id) {
+            return openErrorModal(
+              "You need to be logged in to love an excerpt.",
+              () => alert("Redirect User"),
+            );
+          }
 
-        console.log(session.user.id);
+          const [data, err] = await execute({
+            userId: session?.user.id,
+            excerptId,
+            active: !lovedByUser,
+          });
+          if (err) {
+            openErrorModal(err.message);
+            return;
+          }
 
-        const [data, err] = await execute({
-          userId: session?.user.id,
-          excerptId,
-          active: !lovedByUser,
-        });
-        if (err) {
-          console.log(err);
-          return;
-        }
+          toggleLoveInfo(data.active);
+          console.log(data);
+        }}
+        size="icon"
+        variant="secondary"
+        className="h-8 w-min px-2"
+      >
+        <div className="flex gap-2 items-center">
+          <Heart color={lovedByUser ? "#ffa2a2" : undefined} />
+          <p className={lovedByUser ? "text-red-300" : ""}>{loveCount}</p>{" "}
+        </div>
+      </Button>
 
-        toggleLoveInfo(data.active);
-        console.log(data);
-      }}
-      size="icon"
-      variant="secondary"
-      className="h-8 w-min px-2"
-    >
-      <div className="flex gap-2 items-center">
-        <Heart color={lovedByUser ? "#ffa2a2" : undefined} />
-        <p className={lovedByUser ? "text-red-300" : ""}>{loveCount}</p>{" "}
-      </div>
-    </Button>
+      <ErrorModal
+        isError={isError}
+        closeModal={closeErrorModal}
+        message={errorState.message ?? ""}
+        resolutionCallback={errorState.resolutionCallback}
+      />
+    </>
   );
 }
