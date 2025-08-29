@@ -2,36 +2,22 @@
 
 import db from "@/lib/database";
 import { handleProtectedHandler } from "@/lib/utils/auth";
-import { excerptLove } from "../schema";
+import { excerptLove, ExcerptLoveUpsert } from "../schema";
 import { and, eq, sql } from "drizzle-orm";
 
-export async function postExcerptLove(excerptId: string, lovedByUser: boolean) {
+export async function postExcerptLove(elUpsert: ExcerptLoveUpsert) {
   const session = await handleProtectedHandler();
-  const userId = session.user.id ?? "";
+  const userId = session.user.id;
 
-  // If loved already, then set love to false
-  if (lovedByUser) {
-    return await db
-      .update(excerptLove)
-      .set({ active: false, lastUpdated: sql`now()` })
-      .where(
-        and(
-          eq(excerptLove.excerptId, excerptId),
-          eq(excerptLove.userId, userId),
-        ),
-      );
-  }
+  if (!userId) throw new Error("User ID not found");
 
-  // if never loved before, create record
-  // if record found, update back to loved
+  // Not going to handle the toggle logic here
+  // state of active handled by the client
   return await db
     .insert(excerptLove)
-    .values({
-      excerptId,
-      userId,
-    })
+    .values(elUpsert)
     .onConflictDoUpdate({
       target: [excerptLove.excerptId, excerptLove.userId],
-      set: { active: true, lastUpdated: sql`now()` },
+      set: { ...elUpsert, lastUpdated: sql`now()` },
     });
 }
