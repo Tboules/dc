@@ -7,6 +7,7 @@ import { Heart } from "lucide-react";
 import { useServerAction } from "zsa-react";
 import useUpdatedSession from "@/hooks/use-updated-session";
 import ErrorModal, { useErrorModal } from "@/components/error/error-modal";
+import { signIn } from "next-auth/react";
 
 export default function LoveButton() {
   const { data: session } = useUpdatedSession();
@@ -24,11 +25,10 @@ export default function LoveButton() {
       <Button
         disabled={isPending}
         onClick={async () => {
-          console.log(session);
           if (!session || !session.user?.id) {
             return openErrorModal(
               "You need to be logged in to love an excerpt.",
-              () => alert("Redirect User"),
+              () => signIn(undefined, { callbackUrl: `/excerpt/${excerptId}` }),
             );
           }
 
@@ -43,7 +43,6 @@ export default function LoveButton() {
           }
 
           toggleLoveInfo(data.active);
-          console.log(data);
         }}
         size="icon"
         variant="secondary"
