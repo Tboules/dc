@@ -22,7 +22,6 @@ export default function LoveButton() {
     <Button
       disabled={isPending}
       onClick={async () => {
-        console.log("clicked the button");
         console.log(session);
         if (!session || !session.user?.id) {
           // redirect user

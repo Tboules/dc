@@ -27,7 +27,7 @@ export default function ExcerptActionButtonProvider({
     loveCount: excerptDoc.loveCount,
     lovedByUser: excerptDoc.lovedByUser,
   });
-  const [shareData, setShareDate] = useState<ShareData>({
+  const [shareData, _] = useState<ShareData>({
     title: excerptDoc.excerptTitle,
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptDoc.excerptId}`,
   });
