@@ -56,6 +56,13 @@ export const nextAuthConfig = {
     strategy: "jwt",
   },
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.userId = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
     async session({ session, token }) {
       if (token.userId) {
         session.user.id = token.userId;
@@ -63,13 +70,6 @@ export const nextAuthConfig = {
       }
       // the idea is to pass permissions here
       return session;
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.userId = user.id;
-        token.role = user.role;
-      }
-      return token;
     },
   },
 } satisfies AuthOptions;
@@ -109,6 +109,7 @@ export async function handleProtectedRoute(
       `/api/auth/signin?callbackUrl=${encodeURIComponent(callbackRoute ?? "/")}`,
     );
   }
+  console.log(session.user);
 
   if (role == USER_ROLES.admin && session.user.role != USER_ROLES.admin) {
     throw new Error("You are not an admin");

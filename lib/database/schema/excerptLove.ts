@@ -10,6 +10,9 @@ import {
 import { excerpts } from "@/lib/database/schema/excerpts";
 import { users } from "@/lib/database/schema/users";
 import { sql } from "drizzle-orm";
+import { WithRequired } from "@/@types/helper-types";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
 
 export const excerptLove = pgTable(
   "excerpt_love",
@@ -34,3 +37,9 @@ export const excerptLove = pgTable(
       .where(sql`${el.active} IS TRUE`),
   ],
 );
+
+export const excerptUpsertSchema = createInsertSchema(excerptLove).extend({
+  active: z.boolean(),
+});
+
+export type ExcerptLoveUpsert = z.infer<typeof excerptUpsertSchema>;

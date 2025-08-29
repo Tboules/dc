@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, PropsWithChildren, useContext } from "react";
+import { ExcerptDocumentWithLovedInfo } from "@/lib/database/handlers/excerpt-documents";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 
 export type LovedInfo = {
   loveCount: number;
@@ -8,8 +9,10 @@ export type LovedInfo = {
 };
 
 type ExcerptActionButtonCtx = {
+  doc: ExcerptDocumentWithLovedInfo;
   lovedInfo: LovedInfo;
   shareData: ShareData;
+  toggleLoveInfo: (active: boolean) => void;
 };
 
 const ExcerptActionButtonCtx = createContext<ExcerptActionButtonCtx | null>(
@@ -18,10 +21,42 @@ const ExcerptActionButtonCtx = createContext<ExcerptActionButtonCtx | null>(
 
 export default function ExcerptActionButtonProvider({
   children,
-  value,
-}: PropsWithChildren & { value: ExcerptActionButtonCtx }) {
+  excerptDoc,
+}: PropsWithChildren & { excerptDoc: ExcerptDocumentWithLovedInfo }) {
+  const [lovedInfo, setLovedInfo] = useState<LovedInfo>({
+    loveCount: excerptDoc.loveCount,
+    lovedByUser: excerptDoc.lovedByUser,
+  });
+  const [shareData, setShareDate] = useState<ShareData>({
+    title: excerptDoc.excerptTitle,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptDoc.excerptId}`,
+  });
+
+  function toggleLoveInfo(active: boolean) {
+    if (active) {
+      setLovedInfo((v) => ({
+        loveCount: v.loveCount + 1,
+        lovedByUser: active,
+      }));
+    }
+
+    if (!active) {
+      setLovedInfo((v) => ({
+        loveCount: v.loveCount - 1,
+        lovedByUser: active,
+      }));
+    }
+  }
+
   return (
-    <ExcerptActionButtonCtx.Provider value={value}>
+    <ExcerptActionButtonCtx.Provider
+      value={{
+        doc: excerptDoc,
+        lovedInfo,
+        shareData,
+        toggleLoveInfo,
+      }}
+    >
       {children}
     </ExcerptActionButtonCtx.Provider>
   );

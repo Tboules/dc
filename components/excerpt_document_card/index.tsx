@@ -47,17 +47,7 @@ export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
 
         <ExcerptDocumentReference {...excerptDocument} />
       </div>
-      <ExcerptActionButtonProvider
-        value={{
-          lovedInfo: {
-            loveCount: excerptDocument.loveCount,
-            lovedByUser: excerptDocument.lovedByUser,
-          },
-          shareData: {
-            url: `${process.env.NEXT_PUBLIC_SITE_URL}/excerpt/${excerptDocument.excerptId}`,
-          },
-        }}
-      >
+      <ExcerptActionButtonProvider excerptDoc={excerptDocument}>
         <ExcerptDocumentActionButtons />
       </ExcerptActionButtonProvider>
     </div>

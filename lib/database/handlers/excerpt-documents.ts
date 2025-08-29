@@ -45,7 +45,7 @@ export const selectEDWithLoveInfo = (userId: string) => {
       tags: excerptDocument.tags,
       searchableTags: excerptDocument.searchableTags,
 
-      loveCount: sql<number>`COALESCE(${lovedSubQuery.loveCount}, 0)`.as(
+      loveCount: sql<number>`COALESCE(${lovedSubQuery.loveCount}, 0)::int`.as(
         "loveCount",
       ),
       lovedByUser:
