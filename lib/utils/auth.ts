@@ -109,7 +109,6 @@ export async function handleProtectedRoute(
       `/api/auth/signin?callbackUrl=${encodeURIComponent(callbackRoute ?? "/")}`,
     );
   }
-  console.log(session.user);
 
   if (role == USER_ROLES.admin && session.user.role != USER_ROLES.admin) {
     throw new Error("You are not an admin");

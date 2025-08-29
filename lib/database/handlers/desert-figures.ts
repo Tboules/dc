@@ -8,7 +8,11 @@ import {
 import { handleProtectedHandler } from "@/lib/utils/auth";
 import { count, eq, sql } from "drizzle-orm";
 import { contentStatus } from "../schema";
-import { UserContentSearchParams } from "@/lib/utils/params";
+import {
+  GlobalSearchParams,
+  UserContentSearchParams,
+} from "@/lib/utils/params";
+import { CONTENT_STATUS } from "@/lib/enums";
 
 export async function selectDesertFigureById(figureId: string | undefined) {
   if (!figureId) return;
@@ -101,7 +105,6 @@ export async function selectUserDesertFigures({
 }
 
 // function for grabbing Desert Figure Count by user
-
 export async function selectUserDesertFigureCount(): Promise<number> {
   const session = await handleProtectedHandler();
 
@@ -111,4 +114,29 @@ export async function selectUserDesertFigureCount(): Promise<number> {
     .where(eq(desertFigures.createdBy, session.user.id ?? ""));
 
   return countQueryResult[0].count;
+}
+
+// grab all Desert Figure with params
+export async function selectDesertFigures(params: GlobalSearchParams) {
+  console.log(params);
+
+  const hasSearch = params.q.trim().length > 0;
+
+  let baseQuery = db
+    .select({
+      fullName: desertFigures.fullName,
+      id: desertFigures.id,
+      thumbnail: desertFigures.thumbnail,
+    })
+    .from(desertFigures)
+    .leftJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId))
+    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED));
+
+  if (hasSearch) {
+    baseQuery
+      .orderBy(sql`similarity(${desertFigures.fullName}, ${params.q}) DESC`)
+      .limit(5);
+  }
+
+  return await baseQuery;
 }

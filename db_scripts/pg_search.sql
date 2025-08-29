@@ -50,7 +50,7 @@ where desert_figure.id @@@ paradedb.match('full_name', 'saint anthony', distance
 --- After getting nowhere with Chatgpt it looks like the view route will not work, rewrite to above query to include status and reference
 
 select * from desert_figure
-order by similarity(full_name, 'amba antonious')
+order by similarity(full_name, 'Anthony')
         desc limit 5;
 
 select * from tag

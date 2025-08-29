@@ -34,7 +34,6 @@ export const postDesertFigureZsaAction = createServerAction()
     }
 
     //upload file to s3
-    console.log(input.thumbnail, typeof input.thumbnail, "thumbnail weirdness");
     //@ts-ignore
     if (input.thumbnail?.length && input.thumbnail[0].size != 0) {
       const fileId = uuid();
