@@ -10,12 +10,12 @@ export default async function DesertFiguresRoot({
 }: PagePropsWithParams) {
   const params = await globalSearchParamsLoader(searchParams);
 
-  const df = await selectDesertFigures(params);
+  const desertFigures = await selectDesertFigures(params);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 place-items-center hover:brightness-90">
-      {df.map((d) => (
-        <DesertFigureCard key={d.id} {...d} />
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(288px,1fr))] gap-8 place-items-center">
+      {desertFigures.map((desertFigure) => (
+        <DesertFigureCard key={desertFigure.id} {...desertFigure} />
       ))}
     </div>
   );

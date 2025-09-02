@@ -11,7 +11,7 @@ export default function LayoutWithSearch({
 }: LayoutWithSearchProps) {
   return (
     <DefaultLayout>
-      <div className="p-4 md:p-16 ">
+      <div className="px-4 py-8 md:p-16">
         <h1 className="text-3xl mb-4">{title}</h1>
         <GlobalSearchInput />
       </div>

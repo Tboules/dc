@@ -5,14 +5,15 @@ import {
   desertFigures,
   desertFigureSchema,
 } from "@/lib/database/schema/desertFigures";
-import { handleProtectedHandler } from "@/lib/utils/auth";
+import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
 import { count, eq, sql } from "drizzle-orm";
-import { contentStatus } from "../schema";
+import { contentStatus, excerptDocument } from "@/lib/database/schema";
 import {
   GlobalSearchParams,
   UserContentSearchParams,
 } from "@/lib/utils/params";
 import { CONTENT_STATUS } from "@/lib/enums";
+import { selectEDWithLoveInfo } from "@/lib/database/handlers/excerpt-documents";
 
 export async function selectDesertFigureById(figureId: string | undefined) {
   if (!figureId) return;
@@ -118,8 +119,6 @@ export async function selectUserDesertFigureCount(): Promise<number> {
 
 // grab all Desert Figure with params
 export async function selectDesertFigures(params: GlobalSearchParams) {
-  console.log(params);
-
   const hasSearch = params.q.trim().length > 0;
 
   let baseQuery = db
@@ -139,4 +138,24 @@ export async function selectDesertFigures(params: GlobalSearchParams) {
   }
 
   return await baseQuery;
+}
+
+// grab desert figure by ID with quotes
+export async function selectDesertFigureDetails(
+  desertFigureId: string,
+  // params: GlobalSearchParams,
+) {
+  const session = await serverAuthSession();
+  const desertFigure = await db.query.desertFigures.findFirst({
+    where: (d, { eq }) => eq(d.id, desertFigureId),
+  });
+
+  const desertFigureExcerpts = await selectEDWithLoveInfo(
+    session?.user.id ?? "",
+  ).where(eq(excerptDocument.desertFigureId, desertFigureId));
+
+  return {
+    desertFigure,
+    desertFigureExcerpts,
+  };
 }

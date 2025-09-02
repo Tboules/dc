@@ -63,7 +63,7 @@ export default async function ExcerptPage({ params }: PageProps) {
   const excerpt = await getExcerptByIdCached(excerptId);
 
   return (
-    <div className="flex flex-col md:flex-row max-w-(--breakpoint-lg) mx-auto relative">
+    <div className="flex flex-col md:flex-row max-w-(--breakpoint-lg) mx-auto relative mb-20">
       {/*Section Containing Title, Action Buttons, Body*/}
       <section className="p-4 mt-4 flex-3">
         <div className="md:flex justify-between mb-8">

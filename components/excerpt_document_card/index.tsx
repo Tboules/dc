@@ -15,9 +15,13 @@ import ExcerptActionButtonProvider from "@/hooks/use-excerpt-action-button-conte
 
 type Props = {
   excerptDocument: ExcerptDocumentWithLovedInfo;
+  showFigure?: boolean;
 };
 
-export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
+export default async function ExcerptDocumentCard({
+  excerptDocument,
+  showFigure = true,
+}: Props) {
   const truncatedBody = truncateString(excerptDocument.excerptBody, 300);
 
   return (
@@ -43,7 +47,7 @@ export default async function ExcerptDocumentCard({ excerptDocument }: Props) {
       </div>
 
       <div className="sm:flex justify-between p-4 gap-4 ">
-        <ExcerptDocumentDesertFigure {...excerptDocument} />
+        {showFigure && <ExcerptDocumentDesertFigure {...excerptDocument} />}
 
         <ExcerptDocumentReference {...excerptDocument} />
       </div>
