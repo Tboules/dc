@@ -54,7 +54,7 @@ interface SubMenuItem extends NavMenuItem {
 }
 
 const NAV_MENU_ITEMS: NavMenuItem[] = [
-  { route: "/", name: "Dashboard" },
+  // { route: "/", name: "Dashboard" },
   { route: "/desert-figures", name: "Desert Figures" },
   { route: "/tags", name: "Tags" },
   // { route: "/icons", name: "Icons" },
@@ -63,15 +63,18 @@ const NAV_MENU_ITEMS: NavMenuItem[] = [
 const SUB_MENU_ITEMS: SubMenuItem[] = [
   { route: "/excerpt/new", name: "Excerpt", icon: "quote" },
   { route: "/desert-figures/new", name: "Desert Figure", icon: "user" },
-  { route: "/icons/new", name: "Icon", icon: "image" },
+  // { route: "/icons/new", name: "Icon", icon: "image" },
 ];
 
 export function LogoWrap() {
   return (
-    <div className="flex justify-start items-center gap-2 flex-1">
+    <Link
+      href="/"
+      className="flex justify-start items-center gap-2 mr-auto cursor-pointer"
+    >
       <DesertCollectionsLogo width={42} height={42} />
-      <h1 className="text-lg font-semibold">Dessert Collections</h1>
-    </div>
+      <h1 className="text-lg font-semibold">Dessert Collections </h1>
+    </Link>
   );
 }
 
@@ -206,7 +209,18 @@ function MobileMenu() {
         </SheetTrigger>
         <SheetContent className="max-w-[400px] w-full">
           <SheetHeader className="h-full">
-            <SheetTitle>Desert Collections</SheetTitle>
+            <SheetTitle>
+              <Link href="/">
+                <SheetClose asChild>
+                  <Button
+                    variant="ghost"
+                    className=" w-[calc(100%-3rem)] justify-start"
+                  >
+                    Dessert Collections
+                  </Button>
+                </SheetClose>
+              </Link>
+            </SheetTitle>
             <ul className="pt-4">
               {NAV_MENU_ITEMS.map((item) => (
                 <li key={item.name} className="w-full text-start py-2">
