@@ -5,12 +5,16 @@ import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
 import { and, count, eq, sql } from "drizzle-orm";
 import { excerpts, excerptDocument } from "@/lib/database/schema";
-import { UserContentSearchParams } from "@/lib/utils/params";
+import {
+  GlobalSearchParams,
+  UserContentSearchParams,
+} from "@/lib/utils/params";
 import { ExcerptDocument } from "@/lib/database/schema/views";
 import {
   ExcerptDocumentWithLovedInfo,
   selectEDWithLoveInfo,
 } from "@/lib/database/handlers/excerpt-documents";
+import { CONTENT_STATUS } from "@/lib/enums";
 
 export async function selectUserExcerptCount() {
   const session = await handleProtectedHandler();
@@ -86,4 +90,35 @@ export async function handleSelectExcerptById(
   );
 
   return res[0];
+}
+
+export async function selectRandomExcerptsForDashboard({
+  q,
+}: GlobalSearchParams) {
+  const session = await serverAuthSession();
+  const userId = session?.user.id ?? "no user id found";
+  const hasSearch = q.trim().length > 0;
+
+  const searchQuery = hasSearch
+    ? sql`
+        ${excerptDocument.excerptId} @@@ paradedb.match('body', ${q}, distance => 1)
+         OR ${excerptDocument.excerptId} @@@ paradedb.match('excerptTitle', ${q}, distance => 1)
+        OR ${excerptDocument.excerptId} @@@ paradedb.match('referenceTitle', ${q}, distance => 1)
+        OR ${excerptDocument.excerptId} @@@ paradedb.match('tagsSearchable', ${q}, distance => 1)
+        OR ${excerptDocument.excerptId} @@@ paradedb.match('desertFigureName', ${q}, distance => 1)
+    `
+    : sql`true`;
+
+  const orderQuery = hasSearch
+    ? sql`paradedb.score(${excerptDocument.excerptId}) DESC`
+    : sql`RANDOM()`;
+
+  const res = await selectEDWithLoveInfo(userId)
+    .where(
+      and(eq(excerptDocument.status, CONTENT_STATUS.PUBLISHED), searchQuery),
+    )
+    .orderBy(orderQuery)
+    .limit(5);
+
+  return res;
 }

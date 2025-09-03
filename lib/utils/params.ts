@@ -46,3 +46,18 @@ export const GLOBAL_SEARCH_PARAMS = {
 export type GlobalSearchParams = inferParserType<typeof GLOBAL_SEARCH_PARAMS>;
 
 export const globalSearchParamsLoader = createLoader(GLOBAL_SEARCH_PARAMS);
+
+// shallow search params for client comps
+export const SHALLOW_GLOBAL_SEARCH_PARAMS = {
+  q: parseAsString.withDefault("").withOptions({
+    shallow: true,
+    history: "push",
+  }),
+};
+export type ShallowGlobalSearchParams = inferParserType<
+  typeof SHALLOW_GLOBAL_SEARCH_PARAMS
+>;
+
+export const shallowGlobalSearchParamsLoader = createLoader(
+  SHALLOW_GLOBAL_SEARCH_PARAMS,
+);

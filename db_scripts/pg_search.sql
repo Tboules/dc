@@ -62,7 +62,7 @@ refresh materialized view excerpt_document;
 
 -- search query for excerpt documents
 WITH vars AS (
-    SELECT 'love'::text as search_term
+    SELECT 'prayer'::text as search_term
 )
 SELECT
     paradedb.score(ed."excerptId") AS score,
@@ -100,3 +100,8 @@ from excerpt_document as ed
 order by (select count(*) from excerpt_love where ed."excerptId" = excerpt_love.excerpt_id) DESC
 
 select * from excerpt_love;
+
+--- Dashboard query with 5 Random Records and searchable limit to 5
+select * from excerpt_document
+order by random()
+limit 5;
