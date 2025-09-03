@@ -73,7 +73,7 @@ export function LogoWrap() {
       className="flex justify-start items-center gap-2 mr-auto cursor-pointer"
     >
       <DesertCollectionsLogo width={42} height={42} />
-      <h1 className="text-lg font-semibold">Dessert Collections </h1>
+      <h1 className="text-lg font-semibold">Desert Collections </h1>
     </Link>
   );
 }
@@ -216,7 +216,7 @@ function MobileMenu() {
                     variant="ghost"
                     className=" w-[calc(100%-3rem)] justify-start"
                   >
-                    Dessert Collections
+                    Desert Collections
                   </Button>
                 </SheetClose>
               </Link>

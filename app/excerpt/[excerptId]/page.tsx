@@ -1,6 +1,5 @@
 import { ExcerptDocumentTags } from "@/components/excerpt_document_card";
 import ExcerptDocumentActionButtons from "@/components/excerpt_document_action_buttons";
-import { Separator } from "@/components/ui/separator";
 import { handleSelectExcerptById } from "@/lib/database/handlers/excerpts";
 import type {
   ExcerptDocumentDesertFigure,
@@ -13,6 +12,7 @@ import { cache } from "react";
 import { convert } from "html-to-text";
 import { DEFAULT_OG_PATH } from "@/lib/constants";
 import ExcerptActionButtonProvider from "@/hooks/use-excerpt-action-button-context";
+import { ResponsiveSeperators } from "@/components/responsive-seperators";
 
 type PageProps = {
   params: Promise<{ excerptId: string }>;
@@ -102,18 +102,6 @@ export default async function ExcerptPage({ params }: PageProps) {
         </div>
       </section>
     </div>
-  );
-}
-
-function ResponsiveSeperators() {
-  return (
-    <>
-      <Separator
-        className="hidden md:block h-[calc(100lvh-var(--nav-height))]!"
-        orientation="vertical"
-      />
-      <Separator className="block md:hidden" />
-    </>
   );
 }
 
