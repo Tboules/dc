@@ -24,7 +24,7 @@ export default async function Home({ searchParams }: PagePropsWithParams) {
 
   return (
     <div className="flex md:flex-row flex-col">
-      <section className="hidden lg:block flex-1 min-w-80">
+      <section className="hidden lg:block flex-1 min-w-80 overflow-x-scroll">
         <DesertFigureDashboard />
       </section>
       <Separator
@@ -42,7 +42,7 @@ export default async function Home({ searchParams }: PagePropsWithParams) {
         orientation="vertical"
         className="hidden md:block h-[calc(100lvh-var(--nav-height))]!"
       />
-      <section className="hidden md:block flex-1 min-w-80">
+      <section className="hidden md:block flex-1 min-w-80 overflow-x-scroll">
         <TagsDashboard />
       </section>
     </div>
