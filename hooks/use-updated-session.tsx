@@ -5,7 +5,9 @@ export default function useUpdatedSession() {
   const s = useSession();
 
   useEffect(() => {
-    s.update();
+    if (!s.data?.user.id) {
+      s.update();
+    }
   }, []);
 
   return s;

@@ -24,15 +24,15 @@ export default async function Home({ searchParams }: PagePropsWithParams) {
 
   return (
     <div className="flex md:flex-row flex-col">
-      <section className="hidden lg:block flex-1 min-w-80 overflow-x-scroll">
+      <section className="hidden lg:block flex-1 min-w-80 mb-12">
         <DesertFigureDashboard />
       </section>
       <Separator
         orientation="vertical"
-        className="hidden lg:block h-[calc(100lvh-var(--nav-height))]!"
+        className="hidden lg:block h-auto! min-h-[calc(100lvh-var(--nav-height))]!"
       />
 
-      <section className="flex-3 overflow-x-scroll">
+      <section className="flex-3 mb-12">
         <HydrationBoundary state={dehydrate(queryClient)}>
           <ExcerptDashboardClient />
         </HydrationBoundary>
@@ -40,9 +40,9 @@ export default async function Home({ searchParams }: PagePropsWithParams) {
 
       <Separator
         orientation="vertical"
-        className="hidden md:block h-[calc(100lvh-var(--nav-height))]!"
+        className="hidden md:block h-auto! min-h-[calc(100lvh-var(--nav-height))]!"
       />
-      <section className="hidden md:block flex-1 min-w-80 overflow-x-scroll">
+      <section className="hidden md:block flex-1 min-w-80 mb-12">
         <TagsDashboard />
       </section>
     </div>

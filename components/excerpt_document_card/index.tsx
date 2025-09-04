@@ -18,7 +18,7 @@ type Props = {
   showFigure?: boolean;
 };
 
-export default async function ExcerptDocumentCard({
+export default function ExcerptDocumentCard({
   excerptDocument,
   showFigure = true,
 }: Props) {
