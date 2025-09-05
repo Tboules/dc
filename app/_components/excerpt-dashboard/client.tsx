@@ -32,7 +32,7 @@ export function ExcerptDashboardClient() {
   }, [input]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-4xl m-auto">
       <div className="mb-12">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-medium">Explore Our Collection</h1>

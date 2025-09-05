@@ -1,3 +1,4 @@
+"use server";
 import db from "@/lib/database";
 import { tags } from "@/lib/database/schema/tags";
 import { count, sql, eq } from "drizzle-orm";
@@ -89,6 +90,22 @@ export async function selectTags({ q }: GlobalSearchParams) {
   }
 
   return await queryResults;
+}
+
+// Select Random Tags for Dashboard
+export async function selectRandomTagsForDashbaord() {
+  const results = await db
+    .select({
+      name: tags.name,
+      id: tags.id,
+    })
+    .from(tags)
+    .leftJoin(contentStatus, eq(tags.statusId, contentStatus.id))
+    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED))
+    .orderBy(sql`RANDOM()`)
+    .limit(33);
+
+  return results;
 }
 
 export type TagFromSelectTagsFunc = Awaited<
