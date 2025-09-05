@@ -1,6 +1,7 @@
 import { NextPageProps } from "@/@types/next-types";
 import FormHeader from "@/components/forms/form-header";
 import NewExcerptForm from "@/components/forms/new-excerpt-form";
+import DefaultLayout from "@/components/layouts/default-layout";
 import { selectDesertFigureById } from "@/lib/database/handlers/desert-figures";
 import { handleProtectedRoute } from "@/lib/utils/auth";
 
@@ -13,10 +14,10 @@ export default async function NewExcerptFormPage({
   const figure = await selectDesertFigureById(desertFigure as string);
 
   return (
-    <div>
+    <DefaultLayout>
       <FormHeader title="Add an Excerpt" />
 
       <NewExcerptForm desertFigure={figure} />
-    </div>
+    </DefaultLayout>
   );
 }

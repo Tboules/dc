@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { RefreshCw } from "lucide-react";
 
 export function TagsDashboardClient() {
-  const { data, isError, isLoading, refetch, error } = useQuery({
+  const { data, isError, isLoading, refetch } = useQuery({
     queryKey: ["tags"],
     queryFn: () => selectRandomTagsForDashbaord(),
   });

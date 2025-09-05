@@ -159,3 +159,20 @@ export async function selectDesertFigureDetails(
     desertFigureExcerpts,
   };
 }
+
+// random desert figures for dashboard
+export async function selectRandomDesertFiguresForDashboard() {
+  const res = await db
+    .select({
+      fullName: desertFigures.fullName,
+      id: desertFigures.id,
+      thumbnail: desertFigures.thumbnail,
+    })
+    .from(desertFigures)
+    .leftJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId))
+    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED))
+    .orderBy(sql`RANDOM()`)
+    .limit(5);
+
+  return res;
+}
