@@ -3,18 +3,21 @@
 import db from "@/lib/database";
 import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
-import { and, count, eq, sql } from "drizzle-orm";
-import { excerpts, excerptDocument } from "@/lib/database/schema";
+import { and, count, eq, ne, sql, desc } from "drizzle-orm";
+import {
+  excerpts,
+  excerptDocument,
+  liveExcerptsView,
+} from "@/lib/database/schema";
 import {
   GlobalSearchParams,
   UserContentSearchParams,
 } from "@/lib/utils/params";
-import { ExcerptDocument } from "@/lib/database/schema/views";
 import {
   ExcerptDocumentWithLovedInfo,
   selectEDWithLoveInfo,
 } from "@/lib/database/handlers/excerpt-documents";
-import { CONTENT_STATUS } from "@/lib/enums";
+import { CONTENT_STATUS, USER_ROLES } from "@/lib/enums";
 
 export async function selectUserExcerptCount() {
   const session = await handleProtectedHandler();
@@ -38,36 +41,36 @@ export async function selectUserExcerpts({
 
   const searchQuery = hasSearch
     ? sql`
-      ${excerptDocument.excerptCreatedBy} = ${session.user.id ?? ""} AND
+      ${liveExcerptsView.excerptCreatedBy} = ${session.user.id ?? ""} AND
       (
-        ${excerptDocument.excerptId} @@@ paradedb.match('body', ${q}, distance => 1)
-         OR ${excerptDocument.excerptId} @@@ paradedb.match('excerptTitle', ${q}, distance => 1)
-        OR ${excerptDocument.excerptId} @@@ paradedb.match('referenceTitle', ${q}, distance => 1)
-        OR ${excerptDocument.excerptId} @@@ paradedb.match('tagsSearchable', ${q}, distance => 1)
-        OR ${excerptDocument.excerptId} @@@ paradedb.match('desertFigureName', ${q}, distance => 1)
+        ${liveExcerptsView.excerptId} @@@ paradedb.match('body', ${q}, distance => 1)
+         OR ${liveExcerptsView.excerptId} @@@ paradedb.match('excerptTitle', ${q}, distance => 1)
+        OR ${liveExcerptsView.excerptId} @@@ paradedb.match('referenceTitle', ${q}, distance => 1)
+        OR ${liveExcerptsView.excerptId} @@@ paradedb.match('tagsSearchable', ${q}, distance => 1)
+        OR ${liveExcerptsView.excerptId} @@@ paradedb.match('desertFigureName', ${q}, distance => 1)
       )
     `
     : sql`true`;
 
   const orderQuery = hasSearch
-    ? sql`paradedb.score(${excerptDocument.excerptId}) DESC`
-    : sql`${excerptDocument.excerptDateAdded} DESC`; //
+    ? sql`paradedb.score(${liveExcerptsView.excerptId}) DESC`
+    : sql`${liveExcerptsView.excerptDateAdded} DESC`; //
 
   const excerptRows = await db
     .select({
-      id: excerptDocument.excerptId,
-      title: excerptDocument.excerptTitle,
-      body: excerptDocument.excerptBody,
-      dateAdded: excerptDocument.excerptDateAdded,
-      desertFigureName: excerptDocument.desertFigureName,
-      status: excerptDocument.status,
-      tags: excerptDocument.tags,
-      reference: excerptDocument.referenceTitle,
+      id: liveExcerptsView.excerptId,
+      title: liveExcerptsView.excerptTitle,
+      body: liveExcerptsView.excerptBody,
+      dateAdded: liveExcerptsView.excerptDateAdded,
+      desertFigureName: liveExcerptsView.desertFigureName,
+      status: liveExcerptsView.status,
+      tags: liveExcerptsView.tags,
+      reference: liveExcerptsView.referenceTitle,
     })
-    .from(excerptDocument)
+    .from(liveExcerptsView)
     .where(
       and(
-        eq(excerptDocument.excerptCreatedBy, session.user.id ?? ""),
+        eq(liveExcerptsView.excerptCreatedBy, session.user.id ?? ""),
         searchQuery,
       ),
     )
@@ -119,6 +122,18 @@ export async function selectRandomExcerptsForDashboard({
     )
     .orderBy(orderQuery)
     .limit(5);
+
+  return res;
+}
+
+export async function selectUnpublishedExcerpts() {
+  await handleProtectedHandler(USER_ROLES.admin);
+
+  const res = await db
+    .select()
+    .from(liveExcerptsView)
+    .where(ne(liveExcerptsView.status, CONTENT_STATUS.PUBLISHED))
+    .orderBy(desc(liveExcerptsView.excerptDateAdded));
 
   return res;
 }

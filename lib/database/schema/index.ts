@@ -11,4 +11,4 @@ export * from "./sessions";
 export * from "./verificationTokens";
 export * from "./content_status";
 export * from "./relations";
-export { excerptDocument } from "./views";
+export { excerptDocument, liveExcerptsView } from "./views";

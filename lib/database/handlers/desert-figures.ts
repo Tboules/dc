@@ -32,10 +32,8 @@ export async function selectDesertFigureById(figureId: string | undefined) {
 
 export async function searchForDesertFigure(searchValue: string) {
   const res = await db
-    .select({ ...getTableColumns(desertFigures) })
+    .select()
     .from(desertFigures)
-    .leftJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId))
-    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED))
     .orderBy(sql`similarity(${desertFigures.fullName}, ${searchValue}) DESC`)
     .limit(5);
 

@@ -228,6 +228,17 @@ END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "excerpt_love_excerpt_active_idx" ON "excerpt_love" USING btree ("excerpt_id") WHERE "excerpt_love"."active" IS TRUE;--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "excerpt_love_user_active_idx" ON "excerpt_love" USING btree ("user_id") WHERE "excerpt_love"."active" IS TRUE;--> statement-breakpoint
+CREATE VIEW "public"."live_excerpts_view" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "excerpt"."date_added" as "excerptDateAdded", "excerpt"."added_by" as "excerptCreatedBy", "desert_figure"."full_name" as "desertFigureName", "desert_figure"."id" as "desertFigureId", "desert_figure"."thumbnail" as "desertFigureThumbnail", "desert_figure"."status_id" as "desertFigureStatus", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", COALESCE("reference"."source", "excerpt"."article_url") as "referenceSource", "reference"."cover" as "referenceCover", "content_status"."name" as "statusName", "content_status"."id" as "statusId", 
+          json_agg(
+            json_build_object(
+              'tagID', "tag"."id",
+              'tag', "tag"."name",
+              'tagStatus', "tag"."status_id"
+            )
+          )::jsonb
+         as "tags", 
+          string_agg("tag"."name", ', ')
+         as "tagsSearchable" from "excerpt" left join "desert_figure" on "desert_figure"."id" = "excerpt"."desert_figure_id" left join "reference" on "reference"."id" = "excerpt"."reference_id" left join "content_status" on "content_status"."id" = "excerpt"."status_id" left join "excerpt_tag" on "excerpt_tag"."excerpt_id" = "excerpt"."id" left join "tag" on "excerpt_tag"."tag_id" = "tag"."id" group by "excerpt"."id", "excerpt"."body", "excerpt"."title", "desert_figure"."full_name", "desert_figure"."id", "reference"."title", "reference"."id", "reference"."source", "reference"."cover", "content_status"."name", "content_status"."id");--> statement-breakpoint
 CREATE MATERIALIZED VIEW "public"."excerpt_document" AS (select "excerpt"."id" as "excerptId", "excerpt"."body", "excerpt"."title" as "excerptTitle", "excerpt"."date_added" as "excerptDateAdded", "excerpt"."added_by" as "excerptCreatedBy", "desert_figure"."full_name" as "desertFigureName", "desert_figure"."id" as "desertFigureId", "desert_figure"."thumbnail" as "desertFigureThumbnail", "reference"."title" as "referenceTitle", "reference"."id" as "referenceId", COALESCE("reference"."source", "excerpt"."article_url") as "referenceSource", "reference"."cover" as "referenceCover", "content_status"."name" as "statusName", "content_status"."id" as "statusId", 
           json_agg(
             json_build_object(
