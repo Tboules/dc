@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LiveExcerptsView } from "@/lib/database/schema/views";
+import { User } from "lucide-react";
+import { publishExcerptAction } from "../admin/action";
+import AdminExcerptActionButtons from "./admin_excerpt_action_buttons";
 
 export default function AdminExcerptDocCard(doc: LiveExcerptsView) {
   return (
@@ -34,21 +37,32 @@ export default function AdminExcerptDocCard(doc: LiveExcerptsView) {
 
       <SectionTitle name="Desert Figure" />
       <div className="flex justify-between items-center gap-8">
-        <h4 className="text-lg font-medium">{doc.desertFigureName}</h4>
+        <div className="mt-2">
+          {doc.desertFigureThumbnail ? (
+            <img
+              className="w-40 h-52 object-cover object-top rounded border border-border"
+              src={doc.desertFigureThumbnail}
+            />
+          ) : (
+            <div className="h-52 w-40 flex justify-center items-center bg-accent rounded border border-border">
+              <User height={80} width={80} />
+            </div>
+          )}
+          <h4 className="mt-2 text-lg font-medium">{doc.desertFigureName}</h4>
+        </div>
         <StatusDisplay status={doc.desertFigureStatus} />
       </div>
       <Separator className="my-4" />
 
       <SectionTitle name="Reference" />
-      <h4 className="text-lg font-medium">{doc.referenceTitle}</h4>
+      {doc.referenceSource ? (
+        <h4 className="text-lg font-medium">{doc.referenceTitle}</h4>
+      ) : (
+        <p>No Reference Added</p>
+      )}
       <Separator className="my-4" />
 
-      <div className="flex gap-4 w-full">
-        <Button variant="secondary" className="flex-1">
-          Reject
-        </Button>
-        <Button className="flex-1">Accept</Button>
-      </div>
+      <AdminExcerptActionButtons />
     </div>
   );
 }

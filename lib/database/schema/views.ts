@@ -6,6 +6,7 @@ import { contentStatus } from "@/lib/database/schema/content_status";
 import { tags } from "@/lib/database/schema/tags";
 import { eq, sql } from "drizzle-orm";
 import { alias, pgMaterializedView, pgView } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 
 export type Tag = {
   tag: string;
