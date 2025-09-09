@@ -4,9 +4,8 @@ import { references } from "@/lib/database/schema/references";
 import { excerptTags } from "@/lib/database/schema/excerptTags";
 import { contentStatus } from "@/lib/database/schema/content_status";
 import { tags } from "@/lib/database/schema/tags";
-import { eq, ne, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { alias, pgMaterializedView, pgView } from "drizzle-orm/pg-core";
-import { CONTENT_STATUS } from "@/lib/enums";
 
 export type Tag = {
   tag: string;
@@ -181,10 +180,10 @@ export const liveExcerptsView = pgView("live_excerpts_view").as((qb) => {
     .leftJoin(desertFigures, eq(desertFigures.id, excerpts.desertFigureID))
     .leftJoin(references, eq(references.id, excerpts.referenceId))
     .leftJoin(contentStatus, eq(contentStatus.id, excerpts.statusId))
-    .leftJoin(dfStatus, eq(dfStatus.id, excerpts.statusId))
-    .leftJoin(tagStatus, eq(tagStatus.id, excerpts.statusId))
     .leftJoin(excerptTags, eq(excerptTags.excerptId, excerpts.id))
     .leftJoin(tags, eq(excerptTags.tagId, tags.id))
+    .leftJoin(dfStatus, eq(dfStatus.id, desertFigures.statusId))
+    .leftJoin(tagStatus, eq(tagStatus.id, tags.statusId))
     .groupBy(
       excerpts.id,
       excerpts.body,

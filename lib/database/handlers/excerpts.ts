@@ -3,7 +3,7 @@
 import db from "@/lib/database";
 import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
-import { and, count, eq, ne, sql, desc } from "drizzle-orm";
+import { and, count, eq, ne, sql, desc, or } from "drizzle-orm";
 import {
   excerpts,
   excerptDocument,
@@ -132,7 +132,12 @@ export async function selectUnpublishedExcerpts() {
   const res = await db
     .select()
     .from(liveExcerptsView)
-    .where(ne(liveExcerptsView.status, CONTENT_STATUS.PUBLISHED))
+    .where(
+      or(
+        eq(liveExcerptsView.status, CONTENT_STATUS.DRAFT),
+        eq(liveExcerptsView.status, CONTENT_STATUS.FLAGGED),
+      ),
+    )
     .orderBy(desc(liveExcerptsView.excerptDateAdded));
 
   return res;
