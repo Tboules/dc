@@ -5,13 +5,13 @@ import { excerptTags } from "@/lib/database/schema/excerptTags";
 import { contentStatus } from "@/lib/database/schema/content_status";
 import { tags } from "@/lib/database/schema/tags";
 import { eq, ne, sql } from "drizzle-orm";
-import { pgMaterializedView, pgView } from "drizzle-orm/pg-core";
+import { alias, pgMaterializedView, pgView } from "drizzle-orm/pg-core";
 import { CONTENT_STATUS } from "@/lib/enums";
 
 export type Tag = {
   tag: string;
   tagID: string;
-  statusId?: string;
+  tagStatus?: string;
 };
 
 export type ExcerptDocument = {
@@ -123,6 +123,9 @@ export type LiveExcerptsView = ExcerptDocument & {
   desertFigureStatus: string;
 };
 
+const dfStatus = alias(contentStatus, "df_status");
+const tagStatus = alias(contentStatus, "tag_status");
+
 export const liveExcerptsView = pgView("live_excerpts_view").as((qb) => {
   return qb
     .select({
@@ -143,7 +146,7 @@ export const liveExcerptsView = pgView("live_excerpts_view").as((qb) => {
       desertFigureThumbnail: sql<string>`${desertFigures.thumbnail}`.as(
         "desertFigureThumbnail",
       ),
-      desertFigureStatus: sql<string>`${desertFigures.statusId}`.as(
+      desertFigureStatus: sql<string>`${dfStatus.name}`.as(
         "desertFigureStatus",
       ),
 
@@ -166,7 +169,7 @@ export const liveExcerptsView = pgView("live_excerpts_view").as((qb) => {
             json_build_object(
               'tagID', ${tags.id},
               'tag', ${tags.name},
-              'tagStatus', ${tags.statusId}
+              'tagStatus', ${tagStatus.name} 
             )
           )::jsonb
         `.as("tags"),
@@ -178,6 +181,8 @@ export const liveExcerptsView = pgView("live_excerpts_view").as((qb) => {
     .leftJoin(desertFigures, eq(desertFigures.id, excerpts.desertFigureID))
     .leftJoin(references, eq(references.id, excerpts.referenceId))
     .leftJoin(contentStatus, eq(contentStatus.id, excerpts.statusId))
+    .leftJoin(dfStatus, eq(dfStatus.id, excerpts.statusId))
+    .leftJoin(tagStatus, eq(tagStatus.id, excerpts.statusId))
     .leftJoin(excerptTags, eq(excerptTags.excerptId, excerpts.id))
     .leftJoin(tags, eq(excerptTags.tagId, tags.id))
     .groupBy(
@@ -192,5 +197,6 @@ export const liveExcerptsView = pgView("live_excerpts_view").as((qb) => {
       references.cover,
       contentStatus.name,
       contentStatus.id,
+      dfStatus.name,
     );
 });

@@ -14,6 +14,7 @@ const main = async () => {
     console.log("Premigration Script Running ----->");
     const db = drizzle(connection);
     await db.execute(sql`DROP MATERIALIZED VIEW IF EXISTS excerpt_document;`);
+    await db.execute(sql`DROP VIEW IF EXISTS live_excerpts_view;`);
 
     console.log("----> Onto the Migration");
   } catch (error) {
