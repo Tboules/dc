@@ -11,6 +11,7 @@ import {
 import { contentStatus } from "../schema";
 import { CONTENT_STATUS } from "@/lib/enums";
 import { selectEDWithLoveInfo } from "./excerpt-documents";
+import { getStatusId } from "./content-status";
 
 export async function searchForTagHandler(searchValue: string) {
   const results = await db.execute(
@@ -71,6 +72,7 @@ export async function selectUserTagsCount(): Promise<number> {
 // FUNCTION TO QUERY ALL TAGS
 
 export async function selectTags({ q }: GlobalSearchParams) {
+  const publishedStatusId = await getStatusId(CONTENT_STATUS.PUBLISHED);
   const hasSearch = q.trim().length > 0;
 
   let queryResults = db
@@ -79,8 +81,7 @@ export async function selectTags({ q }: GlobalSearchParams) {
       id: tags.id,
     })
     .from(tags)
-    .leftJoin(contentStatus, eq(tags.statusId, contentStatus.id))
-    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED))
+    .where(eq(tags.statusId, publishedStatusId))
     .$dynamic();
 
   if (hasSearch) {
@@ -94,14 +95,15 @@ export async function selectTags({ q }: GlobalSearchParams) {
 
 // Select Random Tags for Dashboard
 export async function selectRandomTagsForDashbaord() {
+  const publishedStatusId = await getStatusId(CONTENT_STATUS.PUBLISHED);
+
   const results = await db
     .select({
       name: tags.name,
       id: tags.id,
     })
     .from(tags)
-    .leftJoin(contentStatus, eq(tags.statusId, contentStatus.id))
-    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED))
+    .where(eq(tags.statusId, publishedStatusId))
     .orderBy(sql`RANDOM()`)
     .limit(33);
 

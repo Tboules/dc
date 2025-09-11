@@ -27,7 +27,10 @@ export const getContentStatuses = unstable_cache(
 
 export async function getStatusId(name: string) {
   const { nameToId } = await getContentStatuses();
-  return nameToId[name] ?? null;
+
+  if (!nameToId[name]) throw new Error("Status could not be found");
+
+  return nameToId[name];
 }
 
 export async function getStatusName(id: string) {

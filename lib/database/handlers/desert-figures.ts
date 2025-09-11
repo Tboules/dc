@@ -3,7 +3,7 @@
 import db from "@/lib/database";
 import { desertFigures } from "@/lib/database/schema/desertFigures";
 import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
-import { count, eq, sql } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
 import { contentStatus, excerptDocument } from "@/lib/database/schema";
 import {
   GlobalSearchParams,
@@ -11,6 +11,7 @@ import {
 } from "@/lib/utils/params";
 import { CONTENT_STATUS } from "@/lib/enums";
 import { selectEDWithLoveInfo } from "@/lib/database/handlers/excerpt-documents";
+import { getStatusId } from "./content-status";
 
 export async function selectDesertFigureById(figureId: string | undefined) {
   if (!figureId) return;
@@ -90,6 +91,7 @@ export async function selectUserDesertFigureCount(): Promise<number> {
 
 // grab all Desert Figure with params
 export async function selectDesertFigures(params: GlobalSearchParams) {
+  const publishedStatusId = await getStatusId(CONTENT_STATUS.PUBLISHED);
   const hasSearch = params.q.trim().length > 0;
 
   let baseQuery = db
@@ -99,8 +101,7 @@ export async function selectDesertFigures(params: GlobalSearchParams) {
       thumbnail: desertFigures.thumbnail,
     })
     .from(desertFigures)
-    .leftJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId))
-    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED));
+    .where(eq(desertFigures.statusId, publishedStatusId));
 
   if (hasSearch) {
     baseQuery
@@ -117,6 +118,7 @@ export async function selectDesertFigureDetails(
   // params: GlobalSearchParams,
 ) {
   const session = await serverAuthSession();
+  const publishedStatusId = await getStatusId(CONTENT_STATUS.PUBLISHED);
   const desertFigure = await db.query.desertFigures.findFirst({
     where: (d, { eq }) => eq(d.id, desertFigureId),
   });
@@ -124,7 +126,12 @@ export async function selectDesertFigureDetails(
   // TODO make sure to bring in published records
   const desertFigureExcerpts = await selectEDWithLoveInfo(
     session?.user.id ?? "",
-  ).where(eq(excerptDocument.desertFigureId, desertFigureId));
+  ).where(
+    and(
+      eq(excerptDocument.desertFigureId, desertFigureId),
+      eq(excerptDocument.statusId, publishedStatusId),
+    ),
+  );
 
   return {
     desertFigure,
@@ -134,6 +141,8 @@ export async function selectDesertFigureDetails(
 
 // random desert figures for dashboard
 export async function selectRandomDesertFiguresForDashboard() {
+  const publishedStatusId = await getStatusId(CONTENT_STATUS.PUBLISHED);
+
   const res = await db
     .select({
       fullName: desertFigures.fullName,
@@ -141,8 +150,7 @@ export async function selectRandomDesertFiguresForDashboard() {
       thumbnail: desertFigures.thumbnail,
     })
     .from(desertFigures)
-    .leftJoin(contentStatus, eq(contentStatus.id, desertFigures.statusId))
-    .where(eq(contentStatus.name, CONTENT_STATUS.PUBLISHED))
+    .where(eq(desertFigures.statusId, publishedStatusId))
     .orderBy(sql`RANDOM()`)
     .limit(5);
 

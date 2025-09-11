@@ -103,13 +103,13 @@ export async function selectRandomExcerptsForDashboard({
   const hasSearch = q.trim().length > 0;
 
   const searchQuery = hasSearch
-    ? sql`
+    ? sql`(
         ${excerptDocument.excerptId} @@@ paradedb.match('body', ${q}, distance => 1)
          OR ${excerptDocument.excerptId} @@@ paradedb.match('excerptTitle', ${q}, distance => 1)
         OR ${excerptDocument.excerptId} @@@ paradedb.match('referenceTitle', ${q}, distance => 1)
         OR ${excerptDocument.excerptId} @@@ paradedb.match('tagsSearchable', ${q}, distance => 1)
         OR ${excerptDocument.excerptId} @@@ paradedb.match('desertFigureName', ${q}, distance => 1)
-    `
+    )`
     : sql`true`;
 
   const orderQuery = hasSearch
@@ -122,6 +122,8 @@ export async function selectRandomExcerptsForDashboard({
     )
     .orderBy(orderQuery)
     .limit(5);
+
+  console.log(res);
 
   return res;
 }
