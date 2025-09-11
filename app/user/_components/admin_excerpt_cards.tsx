@@ -62,7 +62,7 @@ export default function AdminExcerptDocCard(doc: LiveExcerptsView) {
       )}
       <Separator className="my-4" />
 
-      <AdminExcerptActionButtons />
+      <AdminExcerptActionButtons {...doc} />
     </div>
   );
 }

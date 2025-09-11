@@ -62,6 +62,6 @@ export const CONTENT_STATUS = {
   PRIVATE: "Private",
   FLAGGED: "Flagged",
   DELETED: "Deleted",
-};
+} as const;
 
 export type ContentStatus = ObjectValues<typeof CONTENT_STATUS>;

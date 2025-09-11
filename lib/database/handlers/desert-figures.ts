@@ -1,12 +1,9 @@
 "use server";
 
 import db from "@/lib/database";
-import {
-  desertFigures,
-  desertFigureSchema,
-} from "@/lib/database/schema/desertFigures";
+import { desertFigures } from "@/lib/database/schema/desertFigures";
 import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
-import { count, eq, getTableColumns, sql } from "drizzle-orm";
+import { count, eq, sql } from "drizzle-orm";
 import { contentStatus, excerptDocument } from "@/lib/database/schema";
 import {
   GlobalSearchParams,
@@ -124,6 +121,7 @@ export async function selectDesertFigureDetails(
     where: (d, { eq }) => eq(d.id, desertFigureId),
   });
 
+  // TODO make sure to bring in published records
   const desertFigureExcerpts = await selectEDWithLoveInfo(
     session?.user.id ?? "",
   ).where(eq(excerptDocument.desertFigureId, desertFigureId));
