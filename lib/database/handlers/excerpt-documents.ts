@@ -2,6 +2,8 @@ import { excerptDocument, excerptLove } from "@/lib/database/schema";
 import db from "@/lib/database";
 import { sql, eq } from "drizzle-orm";
 import { ExcerptDocument } from "../schema/views";
+import { handleProtectedHandler } from "@/lib/utils/auth";
+import { USER_ROLES } from "@/lib/enums";
 
 export interface ExcerptDocumentWithLovedInfo extends ExcerptDocument {
   loveCount: number;
@@ -60,3 +62,8 @@ export const selectEDWithLoveInfo = (userId: string) => {
     )
     .$dynamic();
 };
+
+export async function refreshExcerptDocuments() {
+  await handleProtectedHandler(USER_ROLES.admin);
+  await db.refreshMaterializedView(excerptDocument);
+}

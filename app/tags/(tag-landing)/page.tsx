@@ -9,6 +9,7 @@ export default async function TagsRoot({ searchParams }: PagePropsWithParams) {
   const params = await globalSearchParamsLoader(searchParams);
 
   const tags = await selectTags(params);
+  console.log(tags);
 
   return (
     <section>

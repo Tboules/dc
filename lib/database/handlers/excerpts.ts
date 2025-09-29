@@ -123,8 +123,6 @@ export async function selectRandomExcerptsForDashboard({
     .orderBy(orderQuery)
     .limit(5);
 
-  console.log(res);
-
   return res;
 }
 

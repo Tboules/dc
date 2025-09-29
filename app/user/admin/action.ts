@@ -2,6 +2,7 @@
 
 import db from "@/lib/database";
 import { getStatusId } from "@/lib/database/handlers/content-status";
+import { refreshExcerptDocuments } from "@/lib/database/handlers/excerpt-documents";
 import { desertFigures, excerpts, tags } from "@/lib/database/schema";
 import { CONTENT_STATUS, USER_ROLES } from "@/lib/enums";
 import { publishExcerptSchema } from "@/lib/schemas";
@@ -49,3 +50,7 @@ export const publishExcerptAction = createServerAction()
 
     return revalidatePath("/user/admin");
   });
+
+export async function refreshDocs() {
+  await refreshExcerptDocuments();
+}
