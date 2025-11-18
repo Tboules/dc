@@ -18,6 +18,7 @@ import {
   NewExcerptTag,
   excerptTags,
   NewReference,
+  excerptLove,
 } from "./schema";
 dotenv.config({ path: ".env.local" });
 
@@ -39,6 +40,7 @@ const main = async () => {
     await db.transaction(async (tx) => {
       await tx.delete(excerptTags);
       await tx.delete(tags);
+      await tx.delete(excerptLove);
       await tx.delete(excerpts);
       await tx.delete(references);
       await tx.delete(desertFigures);
@@ -88,6 +90,11 @@ const main = async () => {
           name: "Deleted",
           description:
             "This content has been removed from the site and no one can see it.",
+        },
+        {
+          name: "Revise",
+          description:
+            "A user is suggesting that this content should be revised.",
         },
       ];
 

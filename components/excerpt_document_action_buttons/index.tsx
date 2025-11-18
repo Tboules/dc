@@ -1,12 +1,11 @@
 "use client";
 
-import { Flag } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import React from "react";
 import EDShareButton from "@/components/excerpt_document_action_buttons/share-button";
-import LoveButton from "./love-button";
+import LoveButton from "@/components/excerpt_document_action_buttons/love-button";
+import FlagButton from "@/components/excerpt_document_action_buttons/flag-button";
 
 const edActionButtonVariants = cva("flex", {
   variants: {
@@ -31,10 +30,7 @@ export default function ExcerptDocumentActionButtons({
       {...props}
     >
       <LoveButton />
-
-      <Button size="icon" variant="secondary" className="size-8">
-        <Flag />
-      </Button>
+      <FlagButton />
       <EDShareButton />
     </div>
   );

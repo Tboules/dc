@@ -10,7 +10,6 @@ import {
 import { excerpts } from "@/lib/database/schema/excerpts";
 import { users } from "@/lib/database/schema/users";
 import { sql } from "drizzle-orm";
-import { WithRequired } from "@/@types/helper-types";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
