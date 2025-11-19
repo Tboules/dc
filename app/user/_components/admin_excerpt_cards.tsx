@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LiveExcerptsView } from "@/lib/database/schema/views";
 import { User } from "lucide-react";
-import { publishExcerptAction } from "../admin/action";
 import AdminExcerptActionButtons from "./admin_excerpt_action_buttons";
 
 export default function AdminExcerptDocCard(doc: LiveExcerptsView) {

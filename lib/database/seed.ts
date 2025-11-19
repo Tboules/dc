@@ -96,6 +96,10 @@ const main = async () => {
           description:
             "A user is suggesting that this content should be revised.",
         },
+        {
+          name: "Rejected",
+          description: "This content has been rejected by an administrator.",
+        },
       ];
 
       const statuses = await tx

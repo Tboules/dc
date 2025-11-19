@@ -17,11 +17,13 @@ export const publishExcerptAction = createServerAction()
     await handleProtectedHandler(USER_ROLES.admin);
 
     // TODO create a rejected status
-    if (input.status == CONTENT_STATUS.PRIVATE) {
-      const privateStatusId = await getStatusId(CONTENT_STATUS.PRIVATE);
+    if (input.status == CONTENT_STATUS.REJECTED) {
+      const rejectedStatusID = await getStatusId(CONTENT_STATUS.REJECTED);
+      console.log(rejectedStatusID);
+
       await db
         .update(excerpts)
-        .set({ statusId: privateStatusId })
+        .set({ statusId: rejectedStatusID })
         .where(eq(excerpts.id, input.excerptId));
       return revalidatePath("/user/admin");
     }

@@ -31,7 +31,7 @@ export default function AdminExcerptActionButtons(doc: LiveExcerptsView) {
   return (
     <div className="flex gap-4 w-full">
       <Button
-        onClick={() => execute({ ...actionInput, status: "Private" })}
+        onClick={() => execute({ ...actionInput, status: "Rejected" })}
         variant="secondary"
         className="flex-1"
       >

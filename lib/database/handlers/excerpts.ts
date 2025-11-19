@@ -140,5 +140,7 @@ export async function selectUnpublishedExcerpts() {
     )
     .orderBy(desc(liveExcerptsView.excerptDateAdded));
 
+  console.log(res);
+
   return res;
 }

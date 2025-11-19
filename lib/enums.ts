@@ -63,6 +63,7 @@ export const CONTENT_STATUS = {
   FLAGGED: "Flagged",
   DELETED: "Deleted",
   REVISE: "Revise",
+  REJECTED: "Rejected",
 } as const;
 
 export type ContentStatus = ObjectValues<typeof CONTENT_STATUS>;
