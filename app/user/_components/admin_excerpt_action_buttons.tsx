@@ -26,7 +26,7 @@ export default function AdminExcerptActionButtons(doc: LiveExcerptsView) {
     };
   }, []);
 
-  const { status, isPending, execute } = useServerAction(publishExcerptAction);
+  const { execute } = useServerAction(publishExcerptAction);
 
   return (
     <div className="flex gap-4 w-full">
