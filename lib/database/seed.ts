@@ -19,6 +19,7 @@ import {
   excerptTags,
   NewReference,
   excerptLove,
+  revisionRequest,
 } from "./schema";
 dotenv.config({ path: ".env.local" });
 
@@ -38,6 +39,7 @@ const main = async () => {
     );
 
     await db.transaction(async (tx) => {
+      await tx.delete(revisionRequest);
       await tx.delete(excerptTags);
       await tx.delete(tags);
       await tx.delete(excerptLove);
