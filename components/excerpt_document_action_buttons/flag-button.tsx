@@ -11,8 +11,29 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import { useForm } from "react-hook-form";
+
+type RevisionRequestForm = {
+  revisionDescription: string;
+  revise: boolean;
+};
 
 export default function FlagButton() {
+  const form = useForm<RevisionRequestForm>({
+    defaultValues: {
+      revise: true,
+    },
+  });
+
+  async function onRevise(formData: RevisionRequestForm) {
+    console.log(formData);
+  }
+  async function onDelete(formData: RevisionRequestForm) {
+    formData.revise = false;
+    console.log(formData);
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,9 +51,28 @@ export default function FlagButton() {
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2 mt-8">
-          <Textarea placeholder="Please explain why you wish to remove or revise this excerpt" />
-          <Button>Revise Excerpt</Button>
-          <Button variant="destructive">Take Down Excerpt Completely</Button>
+          <Form {...form}>
+            <form>
+              <FormField
+                control={form.control}
+                name="revisionDescription"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Please explain why you wish to remove or revise this excerpt"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+          <Button onClick={form.handleSubmit(onRevise)}>Revise Excerpt</Button>
+          <Button onClick={form.handleSubmit(onDelete)} variant="destructive">
+            Take Down Excerpt Completely
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
