@@ -39,5 +39,5 @@ export async function getStatusName(id: string) {
 }
 
 export async function invalidateContentStatuses() {
-  revalidateTag("content-statuses");
+  revalidateTag("content-statuses", "tag");
 }
