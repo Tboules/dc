@@ -90,11 +90,12 @@ export default function NavMenu() {
           <NavigationMenuList>
             {NAV_MENU_ITEMS.map((item) => (
               <NavigationMenuItem key={item.name}>
-                <Link href={item.route} passHref legacyBehavior>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {item.name}
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href={item.route}>{item.name}</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>
@@ -124,12 +125,16 @@ function AddMenu() {
           <NavigationMenuContent>
             <div className="min-w-32">
               {SUB_MENU_ITEMS.map((item) => (
-                <Link key={item.name} href={item.route} legacyBehavior passHref>
-                  <NavigationMenuLink className="w-full border border-border p-4 rounded hover:bg-secondary transition mb-2">
+                <NavigationMenuLink
+                  className="w-full border border-border p-4 rounded hover:bg-secondary transition mb-2"
+                  asChild
+                  key={item.name}
+                >
+                  <Link href={item.route}>
                     <NavIconSwitcher name={item.icon} />
                     <p className="mt-2">{item.name}</p>
-                  </NavigationMenuLink>
-                </Link>
+                  </Link>
+                </NavigationMenuLink>
               ))}
             </div>
           </NavigationMenuContent>
