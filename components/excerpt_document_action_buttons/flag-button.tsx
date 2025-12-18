@@ -18,36 +18,32 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   NewRevisionRequest,
   newRevisionRequestSchema,
-  RevisionType,
 } from "@/lib/database/schema";
-
-type RevisionRequestForm = {
-  docId: string;
-  revisionDescription: string;
-  revise: boolean;
-};
+import { useServerAction } from "zsa-react";
+import { postRevisionRequest } from "@/app/excerpt/[excerptId]/action";
 
 export default function FlagButton() {
   const { doc } = useExcerptActionButtonContext();
+  const action = useServerAction(postRevisionRequest);
   const form = useForm<NewRevisionRequest>({
     resolver: zodResolver(newRevisionRequestSchema),
     defaultValues: {
-      type: RevisionType.EXCERPT,
+      revise: true,
       targetId: doc.excerptId,
     },
   });
 
   async function onRevise(formData: NewRevisionRequest) {
+    await action.execute(formData);
     //1 create the proper schema in order to upload the revision request
     //2 upload the request in the DB
     //3 set the status of the excerpt to REVISE
     //4 refresh the excerpt docs table
     //5 reload page
-    console.log(formData);
   }
   async function onDelete(formData: NewRevisionRequest) {
     formData.revise = false;
-    console.log(formData);
+    await action.execute(formData);
   }
 
   return (
@@ -71,7 +67,7 @@ export default function FlagButton() {
             <form>
               <FormField
                 control={form.control}
-                name="revisionDescription"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

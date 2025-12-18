@@ -5,6 +5,7 @@ import {
   excerptUpsertSchema,
   newRevisionRequestSchema,
 } from "@/lib/database/schema";
+import { handleProtectedHandler, handleProtectedRoute } from "@/lib/utils/auth";
 import { createServerAction } from "zsa";
 
 export const upsertExcerptLove = createServerAction()
@@ -19,5 +20,7 @@ export const upsertExcerptLove = createServerAction()
 export const postRevisionRequest = createServerAction()
   .input(newRevisionRequestSchema)
   .handler(async ({ input }) => {
+    const session = await handleProtectedHandler();
+    input.createdBy = session.user.id;
     console.log(input);
   });

@@ -10,9 +10,7 @@ export enum RevisionType {
 
 export const revisionRequest = pgTable("revision_request", {
   id: uuid("id").defaultRandom().primaryKey(),
-  createdBy: text("added_by")
-    .references(() => users.id)
-    .notNull(),
+  createdBy: text("added_by").references(() => users.id),
   targetId: uuid("target_id").notNull(),
   description: text("description").notNull(),
   type: smallint("type").default(1).notNull(),
