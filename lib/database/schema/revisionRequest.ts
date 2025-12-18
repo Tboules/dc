@@ -1,4 +1,4 @@
-import { pgTable, smallint, text, uuid } from "drizzle-orm/pg-core";
+import { boolean, pgTable, smallint, text, uuid } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -16,6 +16,7 @@ export const revisionRequest = pgTable("revision_request", {
   targetId: uuid("target_id").notNull(),
   description: text("description").notNull(),
   type: smallint("type").default(1).notNull(),
+  revise: boolean().default(true).notNull(),
 });
 
 export const revisionRequestSchema = createSelectSchema(revisionRequest);

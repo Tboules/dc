@@ -114,7 +114,8 @@ CREATE TABLE IF NOT EXISTS "revision_request" (
 	"added_by" text NOT NULL,
 	"target_id" uuid NOT NULL,
 	"description" text NOT NULL,
-	"type" smallint DEFAULT 1 NOT NULL
+	"type" smallint DEFAULT 1 NOT NULL,
+	"revise" boolean DEFAULT true NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verificationToken" (

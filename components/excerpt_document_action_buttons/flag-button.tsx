@@ -13,23 +13,39 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useForm } from "react-hook-form";
+import { useExcerptActionButtonContext } from "@/hooks/use-excerpt-action-button-context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  NewRevisionRequest,
+  newRevisionRequestSchema,
+  RevisionType,
+} from "@/lib/database/schema";
 
 type RevisionRequestForm = {
+  docId: string;
   revisionDescription: string;
   revise: boolean;
 };
 
 export default function FlagButton() {
-  const form = useForm<RevisionRequestForm>({
+  const { doc } = useExcerptActionButtonContext();
+  const form = useForm<NewRevisionRequest>({
+    resolver: zodResolver(newRevisionRequestSchema),
     defaultValues: {
-      revise: true,
+      type: RevisionType.EXCERPT,
+      targetId: doc.excerptId,
     },
   });
 
-  async function onRevise(formData: RevisionRequestForm) {
+  async function onRevise(formData: NewRevisionRequest) {
+    //1 create the proper schema in order to upload the revision request
+    //2 upload the request in the DB
+    //3 set the status of the excerpt to REVISE
+    //4 refresh the excerpt docs table
+    //5 reload page
     console.log(formData);
   }
-  async function onDelete(formData: RevisionRequestForm) {
+  async function onDelete(formData: NewRevisionRequest) {
     formData.revise = false;
     console.log(formData);
   }

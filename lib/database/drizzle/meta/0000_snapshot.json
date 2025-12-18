@@ -1,5 +1,5 @@
 {
-  "id": "009c564c-e321-4130-83c8-6ae72e8b78f4",
+  "id": "f5e62be5-0c84-4414-bd51-73d695eeceb6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -943,6 +943,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": 1
+        },
+        "revise": {
+          "name": "revise",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
         }
       },
       "indexes": {},

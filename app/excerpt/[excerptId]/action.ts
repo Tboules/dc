@@ -1,7 +1,10 @@
 "use server";
 
 import { postExcerptLove } from "@/lib/database/handlers/excerpt-love";
-import { excerptUpsertSchema } from "@/lib/database/schema";
+import {
+  excerptUpsertSchema,
+  newRevisionRequestSchema,
+} from "@/lib/database/schema";
 import { createServerAction } from "zsa";
 
 export const upsertExcerptLove = createServerAction()
@@ -11,4 +14,10 @@ export const upsertExcerptLove = createServerAction()
 
     if (!res || !res[0]) throw "There was an issue loving this guy";
     return res[0];
+  });
+
+export const postRevisionRequest = createServerAction()
+  .input(newRevisionRequestSchema)
+  .handler(async ({ input }) => {
+    console.log(input);
   });
