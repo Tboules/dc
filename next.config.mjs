@@ -3,9 +3,6 @@ const withRoutes = nextRoutes();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {},
-  },
   reactStrictMode: true,
   crossOrigin: "anonymous",
   images: {

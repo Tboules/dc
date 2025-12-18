@@ -35,7 +35,6 @@ export default function FlagButton() {
 
   async function onRevise(formData: NewRevisionRequest) {
     await action.execute(formData);
-    //1 create the proper schema in order to upload the revision request
     //2 upload the request in the DB
     //3 set the status of the excerpt to REVISE
     //4 refresh the excerpt docs table
