@@ -4,8 +4,6 @@ import { USER_ROLES } from "@/lib/enums";
 import { handleProtectedRoute } from "@/lib/utils/auth";
 import AdminExcerptDocCard from "../_components/admin_excerpt_cards";
 import { BadgeCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { refreshExcerptDocuments } from "@/lib/database/handlers/excerpt-documents";
 import RefreshExcerptDocsButton from "../_components/refresh-excerpt-docs";
 
 export default async function UserAdminRoot() {

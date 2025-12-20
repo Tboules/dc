@@ -3,7 +3,7 @@
 import db from "@/lib/database";
 import { handleProtectedHandler, serverAuthSession } from "@/lib/utils/auth";
 import { UserExcerpt } from "@/app/user/_components/columns";
-import { and, count, eq, ne, sql, desc, or } from "drizzle-orm";
+import { and, count, eq, sql, desc, or } from "drizzle-orm";
 import {
   excerpts,
   excerptDocument,
