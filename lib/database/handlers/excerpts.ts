@@ -136,6 +136,7 @@ export async function selectUnpublishedExcerpts() {
       or(
         eq(liveExcerptsView.status, CONTENT_STATUS.DRAFT),
         eq(liveExcerptsView.status, CONTENT_STATUS.FLAGGED),
+        eq(liveExcerptsView.status, CONTENT_STATUS.REVISE),
       ),
     )
     .orderBy(desc(liveExcerptsView.excerptDateAdded));

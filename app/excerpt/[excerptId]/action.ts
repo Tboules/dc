@@ -1,11 +1,18 @@
 "use server";
 
+import db from "@/lib/database";
+import { getStatusId } from "@/lib/database/handlers/content-status";
 import { postExcerptLove } from "@/lib/database/handlers/excerpt-love";
 import {
+  excerptDocument,
+  excerpts,
   excerptUpsertSchema,
   newRevisionRequestSchema,
+  revisionRequest,
 } from "@/lib/database/schema";
-import { handleProtectedHandler, handleProtectedRoute } from "@/lib/utils/auth";
+import { CONTENT_STATUS } from "@/lib/enums";
+import { handleProtectedHandler } from "@/lib/utils/auth";
+import { eq } from "drizzle-orm";
 import { createServerAction } from "zsa";
 
 export const upsertExcerptLove = createServerAction()
@@ -22,5 +29,24 @@ export const postRevisionRequest = createServerAction()
   .handler(async ({ input }) => {
     const session = await handleProtectedHandler();
     input.createdBy = session.user.id;
-    console.log(input);
+    const contentStatus = input.revise
+      ? CONTENT_STATUS.REVISE
+      : CONTENT_STATUS.FLAGGED;
+
+    await db.transaction(async (tx) => {
+      // upload the request in the DB
+      await tx.insert(revisionRequest).values(input);
+
+      // set the status of the excerpt to REVISE
+      await tx
+        .update(excerpts)
+        .set({
+          statusId: await getStatusId(contentStatus),
+          lastUpdated: new Date(Date.now()),
+        })
+        .where(eq(excerpts.id, input.targetId));
+
+      // Refresh the excerpt docs table
+      await tx.refreshMaterializedView(excerptDocument);
+    });
   });

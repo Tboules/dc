@@ -21,8 +21,11 @@ import {
 } from "@/lib/database/schema";
 import { useServerAction } from "zsa-react";
 import { postRevisionRequest } from "@/app/excerpt/[excerptId]/action";
+import { useRouter } from "next/navigation";
+import ErrorModal, { useErrorModal } from "@/components/error/error-modal";
 
 export default function FlagButton() {
+  const router = useRouter();
   const { doc } = useExcerptActionButtonContext();
   const action = useServerAction(postRevisionRequest);
   const form = useForm<NewRevisionRequest>({
@@ -32,13 +35,16 @@ export default function FlagButton() {
       targetId: doc.excerptId,
     },
   });
+  const { isError, errorState, closeErrorModal, openErrorModal } =
+    useErrorModal();
 
   async function onRevise(formData: NewRevisionRequest) {
-    await action.execute(formData);
-    //2 upload the request in the DB
-    //3 set the status of the excerpt to REVISE
-    //4 refresh the excerpt docs table
-    //5 reload page
+    const [, err] = await action.execute(formData);
+    if (err) {
+      openErrorModal(err.message);
+      return;
+    }
+    router.push("/");
   }
   async function onDelete(formData: NewRevisionRequest) {
     formData.revise = false;
@@ -46,46 +52,57 @@ export default function FlagButton() {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button size="icon" variant="secondary" className="size-8">
-          <Flag />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Flag This Excerpt</DialogTitle>
-          <DialogDescription>
-            You can either request for this excerpt to be revised, or if you
-            feel that it is inappropriate or unorthodox you can request it be
-            removed completely.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col gap-2 mt-8">
-          <Form {...form}>
-            <form>
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Please explain why you wish to remove or revise this excerpt"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-          <Button onClick={form.handleSubmit(onRevise)}>Revise Excerpt</Button>
-          <Button onClick={form.handleSubmit(onDelete)} variant="destructive">
-            Take Down Excerpt Completely
+    <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button size="icon" variant="secondary" className="size-8">
+            <Flag />
           </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Flag This Excerpt</DialogTitle>
+            <DialogDescription>
+              You can either request for this excerpt to be revised, or if you
+              feel that it is inappropriate or unorthodox you can request it be
+              removed completely.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2 mt-8">
+            <Form {...form}>
+              <form>
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Please explain why you wish to remove or revise this excerpt"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
+            <Button onClick={form.handleSubmit(onRevise)}>
+              Revise Excerpt
+            </Button>
+            <Button onClick={form.handleSubmit(onDelete)} variant="destructive">
+              Take Down Excerpt Completely
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <ErrorModal
+        isError={isError}
+        closeModal={closeErrorModal}
+        message={errorState.message ?? ""}
+        resolutionCallback={errorState.resolutionCallback}
+      />
+    </>
   );
 }
